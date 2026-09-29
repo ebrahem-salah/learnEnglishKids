@@ -18,7 +18,7 @@ import { AudioService, Sticker } from '../services/audio.service';
 
     <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-yellow-300 max-w-5xl mx-auto text-center">
       <div class="flex justify-between items-center mb-6 bg-yellow-50 p-4 rounded-2xl border border-yellow-200">
-        <h2 class="text-2xl md:text-3xl font-black text-yellow-800">🖼️ ألبوم ملصقات البطل</h2>
+        <h2 class="text-2xl md:text-3xl font-black text-yellow-800">🛒 متجر الجوائز والمكافآت</h2>
         <div class="text-xl font-black text-amber-700 bg-white px-4 py-2 rounded-full border border-yellow-300 shadow-sm">
           ⭐ رصيدك: {{ data.stars() }} نجمة
         </div>

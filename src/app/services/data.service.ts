@@ -10,12 +10,77 @@ export class DataService {
   failed = signal<Set<string>>(new Set());
 
   // User Profile
-  childName = signal<string>('');
-  streak = signal(0);
-  lastLoginDate = signal<string>('');
+  childName = signal<string>(localStorage.getItem('childName') || '');
+  streak = signal<number>(parseInt(localStorage.getItem('streak') || '0', 10));
+  lastLoginDate = signal<string>(localStorage.getItem('lastLoginDate') || '');
+
+  constructor() {
+    this.checkStreak();
+    this.stars.set(parseInt(localStorage.getItem('stars') || '10', 10));
+    
+    // Load stickers
+    const savedStickers = localStorage.getItem('stickers');
+    if (savedStickers) {
+      try {
+        this.stickersData.set(JSON.parse(savedStickers));
+      } catch (e) {}
+    }
+  }
+
+  setChildName(name: string) {
+    this.childName.set(name);
+    localStorage.setItem('childName', name);
+  }
+
+  addStars(amount: number) {
+    const newStars = this.stars() + amount;
+    this.stars.set(newStars);
+    localStorage.setItem('stars', newStars.toString());
+  }
+
+  buySticker(sticker: Sticker) {
+    if (sticker.unlocked) {
+      alert('لديك هذا الملصق بالفعل!');
+      return;
+    }
+    if (this.stars() >= sticker.cost) {
+      this.addStars(-sticker.cost);
+      this.stickersData.update(s => {
+        const item = s.find(i => i.id === sticker.id);
+        if (item) item.unlocked = true;
+        return [...s];
+      });
+      localStorage.setItem('stickers', JSON.stringify(this.stickersData()));
+      alert('🎉 مبروك! لقد اشتريت الملصق بنجاح!');
+    } else {
+      alert('❌ عذراً، نجومك لا تكفي! تعلم المزيد لتربح نجوماً أكثر!');
+    }
+  }
+
+  checkStreak() {
+    const today = new Date().toDateString();
+    const last = this.lastLoginDate();
+    if (last === today) return;
+    
+    if (last) {
+      const lastDate = new Date(last);
+      const diff = new Date().getTime() - lastDate.getTime();
+      const days = diff / (1000 * 3600 * 24);
+      if (days > 2) {
+        this.streak.set(1);
+      } else {
+        this.streak.set(this.streak() + 1);
+      }
+    } else {
+      this.streak.set(1);
+    }
+    
+    this.lastLoginDate.set(today);
+    localStorage.setItem('streak', this.streak().toString());
+    localStorage.setItem('lastLoginDate', today);
+  }
 
   // Current text to trace (letter or word)
-  tracingText = signal<string>('A');
 
   stickersData = signal<Sticker[]>([
     { id: 'st1', name: 'كأس البطل', img: '🏆', cost: 5, unlocked: false },

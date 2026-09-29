@@ -110,8 +110,8 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
               🦁 أصوات وصور واقعية
             </a>
 
-            <a routerLink="/stickers" routerLinkActive="bg-yellow-600 text-white scale-105 shadow-lg" class="bg-yellow-100 text-yellow-800 hover:bg-yellow-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-yellow-300">
-              🖼️ ألبوم الجوائز
+            <a routerLink="/stickers" routerLinkActive="bg-pink-600 text-white scale-105 shadow-lg" class="bg-pink-100 text-pink-800 hover:bg-pink-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-pink-300">
+              🛒 متجر المكافآت
             </a>
 
             <button (click)="startQuiz('letter')" class="bg-pink-500 text-white px-4 py-2 rounded-full font-black hover:bg-pink-600 hover:scale-105 transition-all shadow-md text-sm md:text-base">

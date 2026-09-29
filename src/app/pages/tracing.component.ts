@@ -33,9 +33,14 @@ import { StrokeGuideComponent } from '../components/stroke-guide.component';
               {{ data.tracingText() }}<span class="text-6xl md:text-7xl text-amber-400 ml-2">{{ data.tracingText().toLowerCase() }}</span>
             </div>
 
-            <button (click)="audio.speak(data.tracingText(), 'en-US')" class="bg-amber-500 text-white px-5 py-3 rounded-full font-black hover:bg-amber-600 shadow-md w-full text-lg mb-2">
-              🔊 استمع للحرف
-            </button>
+            <div class="flex gap-2 w-full mb-2">
+              <button (click)="audio.speak(data.tracingText(), 'en-US')" class="bg-amber-500 text-white px-3 py-3 rounded-xl font-black hover:bg-amber-600 shadow-md flex-1 text-base">
+                🔊 اسم الحرف
+              </button>
+              <button (click)="audio.playPhonics(data.tracingText())" class="bg-pink-500 text-white px-3 py-3 rounded-xl font-black hover:bg-pink-600 shadow-md flex-1 text-base">
+                🗣️ صوت الحرف
+              </button>
+            </div>
             <p class="text-gray-600 font-bold mt-2">تتبع مسار الحرف في السبورة المجاورة ➡️</p>
           } @else {
             <div class="text-5xl md:text-6xl font-black text-amber-600 mb-6 py-4 drop-shadow-md">
@@ -67,9 +72,14 @@ import { StrokeGuideComponent } from '../components/stroke-guide.component';
               <button (click)="setPenColor('#10b981')" class="w-8 h-8 rounded-full bg-green-500 border-2 border-white shadow hover:scale-110"></button>
               <button (click)="setPenColor('#8b5cf6')" class="w-8 h-8 rounded-full bg-purple-500 border-2 border-white shadow hover:scale-110"></button>
             </div>
-            <button (click)="clearTracingCanvas()" class="bg-red-500 text-white px-4 py-1.5 rounded-full font-black hover:bg-red-600 shadow text-sm">
-              🗑️ مسح السبورة
-            </button>
+            <div class="flex gap-2">
+              <button (click)="downloadCanvas()" class="bg-indigo-500 text-white px-3 py-1.5 rounded-full font-black hover:bg-indigo-600 shadow text-sm flex items-center gap-1">
+                💾 حفظ
+              </button>
+              <button (click)="clearTracingCanvas()" class="bg-red-500 text-white px-3 py-1.5 rounded-full font-black hover:bg-red-600 shadow text-sm flex items-center gap-1">
+                🗑️ مسح
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -116,6 +126,29 @@ export class TracingComponent implements AfterViewInit {
 
   setPenColor(color: string) {
     this.penColor = color;
+  }
+
+  downloadCanvas() {
+    if (!this.tracingCanvas) return;
+    const cvs = this.tracingCanvas.nativeElement;
+    // Create a temporary canvas to draw the white background before saving
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = cvs.width;
+    tempCanvas.height = cvs.height;
+    const ctx = tempCanvas.getContext('2d');
+    if (ctx) {
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+      ctx.drawImage(cvs, 0, 0);
+      const dataUrl = tempCanvas.toDataURL('image/png');
+      const link = document.createElement('a');
+      link.download = `my-drawing-${this.data.tracingText()}.png`;
+      link.href = dataUrl;
+      link.click();
+      
+      this.data.addStars(5);
+      alert('🎉 أحسنت! تم حفظ رسمتك وحصلت على 5 نجوم ذهبية!');
+    }
   }
 
   private initCanvas() {

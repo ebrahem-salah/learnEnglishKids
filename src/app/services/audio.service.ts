@@ -63,26 +63,38 @@ export class AudioService {
 
   say(text: string, lang: string): Promise<void> {
     return new Promise(resolve => {
-      if (!('speechSynthesis' in window)) return resolve();
       this.unlockAudio();
-      speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = lang;
-      const v = this.getBestVoice(lang);
-      if (v) u.voice = v;
-      u.rate = (lang.startsWith('ar') ? 0.95 : 1) * (this.slow() ? 0.65 : 0.9);
-      u.pitch = 1.1;
+      const tl = lang.startsWith('ar') ? 'ar' : 'en';
+      const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=${tl}`;
+      const audio = new Audio(url);
+      
+      if (this.slow() && tl === 'en') {
+        audio.playbackRate = 0.65;
+      }
 
       let resolved = false;
       const done = () => {
         if (!resolved) { resolved = true; resolve(); }
       };
 
-      u.onend = done;
-      u.onerror = done;
-      setTimeout(done, 4000);
+      audio.onended = done;
+      audio.onerror = () => {
+        // Fallback to robotic browser TTS
+        if (!('speechSynthesis' in window)) return done();
+        speechSynthesis.cancel();
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = lang;
+        const v = this.getBestVoice(lang);
+        if (v) u.voice = v;
+        u.rate = (lang.startsWith('ar') ? 0.95 : 1) * (this.slow() ? 0.65 : 0.9);
+        u.pitch = 1.1;
+        u.onend = done;
+        u.onerror = done;
+        speechSynthesis.speak(u);
+      };
 
-      speechSynthesis.speak(u);
+      audio.play().catch(audio.onerror);
+      setTimeout(done, 5000);
     });
   }
 
@@ -100,6 +112,16 @@ export class AudioService {
   }
 
   speak(text: string, lang: string) { this.sequence(null, [[text, lang]]); }
+
+  playPhonics(letter: string) {
+    const phonicsMap: Record<string, string> = {
+      'a': 'ah', 'b': 'buh', 'c': 'kuh', 'd': 'duh', 'e': 'eh', 'f': 'fuh', 'g': 'guh', 'h': 'huh', 'i': 'ih', 'j': 'juh',
+      'k': 'kuh', 'l': 'll', 'm': 'mm', 'n': 'nn', 'o': 'oh', 'p': 'puh', 'q': 'quh', 'r': 'rr', 's': 'ssss', 't': 'tuh',
+      'u': 'uh', 'v': 'vuh', 'w': 'wuh', 'x': 'ks', 'y': 'yuh', 'z': 'zzzz'
+    };
+    const sound = phonicsMap[letter.toLowerCase()] || letter;
+    this.speak(sound, 'en-US');
+  }
 
   beep(freqs: number[], type: OscillatorType = 'sine') {
     try {
@@ -157,16 +179,23 @@ export class AudioService {
         const expected = expectedWord.toLowerCase().replace(/[^a-z\s]/g, '');
         const said = transcript.replace(/[^a-z\s]/g, '');
         
-        // Simple matching logic
         if (said.includes(expected) || expected.includes(said) || said === expected) {
           resolve(true);
         } else {
+          alert(`لقد سمعتك تقول: "${transcript}"\nولكن الكلمة الصحيحة هي: "${expectedWord}"\nحاول مرة أخرى!`);
           resolve(false);
         }
       };
 
-      recognition.onerror = () => {
+      recognition.onerror = (e: any) => {
         this.isListening.set(false);
+        if (e.error === 'not-allowed') {
+          alert('عذراً، يجب عليك السماح للمتصفح باستخدام الميكروفون لتعمل هذه الميزة!');
+        } else if (e.error === 'network') {
+          alert('يبدو أن هناك مشكلة في الاتصال بالإنترنت.');
+        } else {
+          console.error('Speech error:', e.error);
+        }
         resolve(false);
       };
 

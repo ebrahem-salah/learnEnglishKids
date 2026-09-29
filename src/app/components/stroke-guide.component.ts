@@ -12,8 +12,8 @@ type Segment = MoveSegment | LineSegment | BezierSegment;
   template: `
     <div class="relative flex flex-col items-center w-full">
       <div class="flex gap-2 w-full mb-3">
-        <button (click)="setCase(true)" [class]="isUpper ? 'bg-amber-500 text-white shadow-inner' : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'" class="flex-1 py-1.5 rounded-full font-black text-lg transition-all">A</button>
-        <button (click)="setCase(false)" [class]="!isUpper ? 'bg-amber-500 text-white shadow-inner' : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'" class="flex-1 py-1.5 rounded-full font-black text-lg transition-all">a</button>
+        <button (click)="setCase(true)" [class]="isUpper ? 'bg-amber-500 text-white shadow-inner' : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'" class="flex-1 py-1.5 rounded-full font-black text-lg transition-all">{{ text.charAt(0).toUpperCase() }}</button>
+        <button (click)="setCase(false)" [class]="!isUpper ? 'bg-amber-500 text-white shadow-inner' : 'bg-white text-gray-500 hover:bg-gray-100 border border-gray-200'" class="flex-1 py-1.5 rounded-full font-black text-lg transition-all">{{ text.charAt(0).toLowerCase() }}</button>
       </div>
 
       <div class="relative bg-white rounded-2xl shadow-inner border-2 border-blue-200 overflow-hidden" style="width: 200px; height: 200px;">
