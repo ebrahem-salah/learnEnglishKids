@@ -78,6 +78,7 @@ export class AudioService {
       };
 
       audio.onended = done;
+      audio.onpause = done; // In case browser pauses it
       audio.onerror = () => {
         // Fallback to robotic browser TTS
         if (!('speechSynthesis' in window)) return done();
@@ -94,7 +95,8 @@ export class AudioService {
       };
 
       audio.play().catch(audio.onerror);
-      setTimeout(done, 5000);
+      // Timeout to prevent hanging if events fail
+      setTimeout(done, 2500);
     });
   }
 
@@ -180,9 +182,10 @@ export class AudioService {
         const said = transcript.replace(/[^a-z\s]/g, '');
         
         if (said.includes(expected) || expected.includes(said) || said === expected) {
+          this.speak('Excellent!', 'en-US');
           resolve(true);
         } else {
-          alert(`لقد سمعتك تقول: "${transcript}"\nولكن الكلمة الصحيحة هي: "${expectedWord}"\nحاول مرة أخرى!`);
+          this.speak(`You said ${transcript}. Try again!`, 'en-US');
           resolve(false);
         }
       };
@@ -192,7 +195,7 @@ export class AudioService {
         if (e.error === 'not-allowed') {
           alert('عذراً، يجب عليك السماح للمتصفح باستخدام الميكروفون لتعمل هذه الميزة!');
         } else if (e.error === 'network') {
-          alert('يبدو أن هناك مشكلة في الاتصال بالإنترنت.');
+          this.speak('Network error. Check your connection.', 'en-US');
         } else {
           console.error('Speech error:', e.error);
         }

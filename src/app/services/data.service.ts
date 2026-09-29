@@ -94,7 +94,12 @@ export class DataService {
   ]);
 
   readonly phrasesData: Phrase[] = [
-    { en: 'Hello! How are you?', ar: 'مرحباً! كيف حالك؟', context: 'التحية', icon: '👋' },
+    { en: 'Hi!', ar: 'أهلاً!', context: 'التحية القصيرة', icon: '👋' },
+    { en: 'Hello!', ar: 'مرحباً!', context: 'التحية', icon: '✋' },
+    { en: 'Yes.', ar: 'نعم.', context: 'الموافقة', icon: '✅' },
+    { en: 'No.', ar: 'لا.', context: 'الرفض', icon: '❌' },
+    { en: 'Please.', ar: 'من فضلك.', context: 'الطلب بتهذيب', icon: '🙏' },
+    { en: 'Hello! How are you?', ar: 'مرحباً! كيف حالك؟', context: 'التحية والسؤال', icon: '💬' },
     { en: 'I am fine, thank you!', ar: 'أنا بخير، شكراً لك!', context: 'الرد على التحية', icon: '😊' },
     { en: 'My name is Alex.', ar: 'اسمي أليكس.', context: 'التعريف بالنفس', icon: '🧒' },
     { en: 'How old are you?', ar: 'كم عمرك؟', context: 'سؤال عن العمر', icon: '🎂' },
