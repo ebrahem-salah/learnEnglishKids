@@ -15,27 +15,52 @@ export class DataService {
   lastLoginDate = signal<string>(localStorage.getItem('lastLoginDate') || '');
 
   constructor() {
-    this.checkStreak();
-    this.stars.set(parseInt(localStorage.getItem('stars') || '10', 10));
-    
-    // Load stickers
-    const savedStickers = localStorage.getItem('stickers');
-    if (savedStickers) {
-      try {
-        this.stickersData.set(JSON.parse(savedStickers));
-      } catch (e) {}
+    try {
+      const s = JSON.parse(localStorage.getItem('abc-kids-progress') || '{}');
+      this.learned.set(new Set(s.learned || []));
+      this.stars.set(s.stars !== undefined ? s.stars : 10);
+      this.childName.set(s.childName || '');
+      this.streak.set(s.streak || 0);
+      this.lastLoginDate.set(s.lastLoginDate || '');
+      
+      if (s.unlockedStickers) {
+        // We will apply this after stickersData is initialized.
+        setTimeout(() => {
+          this.stickersData.update(list => list.map(st => ({ ...st, unlocked: s.unlockedStickers.includes(st.id) })));
+        });
+      }
+
+      this.checkStreak();
+    } catch { /* ignore */ }
+  }
+
+  checkStreak() {
+    const today = new Date().toDateString();
+    if (this.lastLoginDate() !== today) {
+      const yesterday = new Date();
+      yesterday.setDate(yesterday.getDate() - 1);
+      
+      if (this.lastLoginDate() === yesterday.toDateString()) {
+        this.streak.update(s => s + 1);
+      } else if (this.lastLoginDate() !== '') {
+        this.streak.set(1); // reset streak if missed a day
+      } else {
+        this.streak.set(1); // first day
+      }
+      this.lastLoginDate.set(today);
+      this.save();
     }
   }
 
   setChildName(name: string) {
     this.childName.set(name);
     localStorage.setItem('childName', name);
+    this.save();
   }
 
   addStars(amount: number) {
-    const newStars = this.stars() + amount;
-    this.stars.set(newStars);
-    localStorage.setItem('stars', newStars.toString());
+    this.stars.update(s => s + amount);
+    this.save();
   }
 
   buySticker(sticker: Sticker) {
@@ -50,38 +75,15 @@ export class DataService {
         if (item) item.unlocked = true;
         return [...s];
       });
-      localStorage.setItem('stickers', JSON.stringify(this.stickersData()));
+      this.save();
       alert('🎉 مبروك! لقد اشتريت الملصق بنجاح!');
     } else {
       alert('❌ عذراً، نجومك لا تكفي! تعلم المزيد لتربح نجوماً أكثر!');
     }
   }
 
-  checkStreak() {
-    const today = new Date().toDateString();
-    const last = this.lastLoginDate();
-    if (last === today) return;
-    
-    if (last) {
-      const lastDate = new Date(last);
-      const diff = new Date().getTime() - lastDate.getTime();
-      const days = diff / (1000 * 3600 * 24);
-      if (days > 2) {
-        this.streak.set(1);
-      } else {
-        this.streak.set(this.streak() + 1);
-      }
-    } else {
-      this.streak.set(1);
-    }
-    
-    this.lastLoginDate.set(today);
-    localStorage.setItem('streak', this.streak().toString());
-    localStorage.setItem('lastLoginDate', today);
-  }
-
   // Current text to trace (letter or word)
-
+  tracingText = signal<string>('A');
   stickersData = signal<Sticker[]>([
     { id: 'st1', name: 'كأس البطل', img: '🏆', cost: 5, unlocked: false },
     { id: 'st2', name: 'الصاروخ الذهبي', img: '🚀', cost: 10, unlocked: false },
@@ -681,40 +683,6 @@ export class DataService {
     }
   ];
 
-  constructor() {
-    try {
-      const s = JSON.parse(localStorage.getItem('abc-kids-progress') || '{}');
-      this.learned.set(new Set(s.learned || []));
-      this.stars.set(s.stars !== undefined ? s.stars : 10);
-      this.childName.set(s.childName || '');
-      this.streak.set(s.streak || 0);
-      this.lastLoginDate.set(s.lastLoginDate || '');
-      
-      if (s.unlockedStickers) {
-        this.stickersData.update(list => list.map(st => ({ ...st, unlocked: s.unlockedStickers.includes(st.id) })));
-      }
-
-      this.checkStreak();
-    } catch { /* ignore */ }
-  }
-
-  checkStreak() {
-    const today = new Date().toDateString();
-    if (this.lastLoginDate() !== today) {
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      
-      if (this.lastLoginDate() === yesterday.toDateString()) {
-        this.streak.update(s => s + 1);
-      } else if (this.lastLoginDate() !== '') {
-        this.streak.set(1); // reset streak if missed a day
-      } else {
-        this.streak.set(1); // first day
-      }
-      this.lastLoginDate.set(today);
-      this.save();
-    }
-  }
 
   countArray(n: number): number[] {
     return Array.from({ length: n }, (_, i) => i + 1);
