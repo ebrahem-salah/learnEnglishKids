@@ -1,3 +1,22 @@
 import { Routes } from '@angular/router';
+import { AlphabetComponent } from './pages/alphabet.component';
+import { TracingComponent } from './pages/tracing.component';
+import { PhrasesComponent } from './pages/phrases.component';
+import { StoriesComponent } from './pages/stories.component';
+import { NumbersComponent } from './pages/numbers.component';
+import { CategoriesComponent } from './pages/categories.component';
+import { StickersComponent } from './pages/stickers.component';
+import { GamesComponent } from './pages/games.component';
 
-export const routes: Routes = [];
+export const routes: Routes = [
+  { path: '', redirectTo: 'alphabet', pathMatch: 'full' },
+  { path: 'alphabet', component: AlphabetComponent },
+  { path: 'tracing', component: TracingComponent },
+  { path: 'phrases', component: PhrasesComponent },
+  { path: 'stories', component: StoriesComponent },
+  { path: 'numbers', component: NumbersComponent },
+  { path: 'categories', component: CategoriesComponent },
+  { path: 'games', component: GamesComponent },
+  { path: 'stickers', component: StickersComponent },
+  { path: '**', redirectTo: 'alphabet' }
+];
