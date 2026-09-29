@@ -18,5 +18,30 @@
 <body class="bg-gradient-to-b from-sky-100 via-blue-50 to-pink-50 min-h-screen">
   <app-root></app-root>
   <noscript>Please enable JavaScript to continue using this application.</noscript>
+
+  <!-- In-App Browser Detector -->
+  <div id="inapp-warning" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999999; color:white; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center;">
+    <h1 style="font-size:30px; margin-bottom:15px; color:#ffdd00;">⚠️ تنبيه هام</h1>
+    <p style="font-size:20px; line-height:1.5;">أنت تستخدم متصفح فيسبوك الداخلي، وهذا يمنع عمل <b>الميكروفون والصوت</b> في التطبيق.</p>
+    <p style="font-size:22px; margin-top:30px; font-weight:bold;">الرجاء الضغط على النقاط الثلاث (⋮) أو (⋯) بالأعلى واختيار:<br><br><span style="background:#ffdd00; color:black; padding:10px 20px; border-radius:10px; display:inline-block;">🌐 فتح في المتصفح الخارجي</span></p>
+  </div>
+
+  <script>
+    (function() {
+      var ua = navigator.userAgent || navigator.vendor || window.opera;
+      var isFacebookApp = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) || (ua.indexOf("Instagram") > -1);
+      
+      if (isFacebookApp) {
+        var isAndroid = /android/i.test(ua);
+        if (isAndroid) {
+          // محاولة إجبار الأندرويد على فتح جوجل كروم خارجياً
+          var url = window.location.href.replace(/^https?:\/\//i, "");
+          window.location.href = "intent://" + url + "#Intent;scheme=https;package=com.android.chrome;end";
+        }
+        // إظهار الرسالة التحذيرية في كل الأحوال (للأيفون، أو إذا فشل الأندرويد)
+        document.getElementById('inapp-warning').style.display = 'flex';
+      }
+    })();
+  </script>
 </body>
 </html>
