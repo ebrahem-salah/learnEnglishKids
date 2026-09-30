@@ -44,9 +44,14 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
         <header class="text-center py-6 mb-8 bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border-4 border-blue-200 relative overflow-hidden">
           <div class="flex items-center justify-center gap-3 mb-2">
             <span class="text-5xl animate-bounce">🎨</span>
-            <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-purple-600">
-              أكاديمية الإنجليزية للأبطال الصغار 🚀
-            </h1>
+            <div class="flex flex-col items-center">
+              <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-purple-600 leading-normal pb-1">
+                تعلم مع يونس
+              </h1>
+              <h2 class="text-xl md:text-2xl font-black text-gray-600 tracking-wider">
+                Learn With Younis
+              </h2>
+            </div>
             <span class="text-5xl animate-bounce">⭐</span>
           </div>
 

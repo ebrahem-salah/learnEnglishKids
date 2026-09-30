@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Learn English Kids</string>
+    <string name="title_activity_main">Learn English Kids</string>
+    <string name="package_name">com.ebrahem.learnenglishkids</string>
+    <string name="custom_url_scheme">com.ebrahem.learnenglishkids</string>
+</resources>

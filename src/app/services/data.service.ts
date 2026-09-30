@@ -1,6 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { AlphabetItem, Sticker, ExtraCategory, Song, Phrase, ShortStory } from './audio.service';
 
+declare const confetti: any;
+
 @Injectable({
   providedIn: 'root'
 })
@@ -24,7 +26,6 @@ export class DataService {
       this.lastLoginDate.set(s.lastLoginDate || '');
       
       if (s.unlockedStickers) {
-        // We will apply this after stickersData is initialized.
         setTimeout(() => {
           this.stickersData.update(list => list.map(st => ({ ...st, unlocked: s.unlockedStickers.includes(st.id) })));
         });
@@ -43,9 +44,9 @@ export class DataService {
       if (this.lastLoginDate() === yesterday.toDateString()) {
         this.streak.update(s => s + 1);
       } else if (this.lastLoginDate() !== '') {
-        this.streak.set(1); // reset streak if missed a day
+        this.streak.set(1);
       } else {
-        this.streak.set(1); // first day
+        this.streak.set(1);
       }
       this.lastLoginDate.set(today);
       this.save();
@@ -61,6 +62,14 @@ export class DataService {
   addStars(amount: number) {
     this.stars.update(s => s + amount);
     this.save();
+    if (amount > 0 && typeof confetti !== 'undefined') {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#FFD700', '#FFA500', '#FF6347']
+      });
+    }
   }
 
   buySticker(sticker: Sticker) {
@@ -76,6 +85,14 @@ export class DataService {
         return [...s];
       });
       this.save();
+      if (typeof confetti !== 'undefined') {
+        confetti({
+          particleCount: 200,
+          spread: 100,
+          origin: { y: 0.5 },
+          colors: ['#4CAF50', '#2196F3', '#9C27B0']
+        });
+      }
       alert('🎉 مبروك! لقد اشتريت الملصق بنجاح!');
     } else {
       alert('❌ عذراً، نجومك لا تكفي! تعلم المزيد لتربح نجوماً أكثر!');

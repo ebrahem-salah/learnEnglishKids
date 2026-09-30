@@ -61,12 +61,25 @@ export class AudioService {
     return this.voices.filter(v => norm(v.lang).startsWith(prefix)).sort((a, b) => score(b) - score(a))[0] ?? null;
   }
 
+  activeAudio: HTMLAudioElement | null = null;
+
   say(text: string, lang: string): Promise<void> {
     return new Promise(resolve => {
       this.unlockAudio();
+      
+      // Stop any currently playing audio and TTS
+      if (this.activeAudio) {
+        this.activeAudio.pause();
+        this.activeAudio.currentTime = 0;
+      }
+      if ('speechSynthesis' in window) {
+        speechSynthesis.cancel();
+      }
+
       const tl = lang.startsWith('ar') ? 'ar' : 'en';
       const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=${tl}`;
       const audio = new Audio(url);
+      this.activeAudio = audio;
       
       if (this.slow() && tl === 'en') {
         audio.playbackRate = 0.65;
@@ -74,7 +87,11 @@ export class AudioService {
 
       let resolved = false;
       const done = () => {
-        if (!resolved) { resolved = true; resolve(); }
+        if (!resolved) { 
+          resolved = true; 
+          if (this.activeAudio === audio) this.activeAudio = null;
+          resolve(); 
+        }
       };
 
       audio.onended = done;

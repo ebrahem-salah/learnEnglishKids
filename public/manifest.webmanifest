@@ -1,6 +1,6 @@
 {
-  "name": "learn-english-kids",
-  "short_name": "learn-english-kids",
+  "name": "Learn With Younis",
+  "short_name": "YounisApp",
   "display": "standalone",
   "scope": "./",
   "start_url": "./",
