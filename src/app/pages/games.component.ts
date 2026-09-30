@@ -1,7 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
-import { NgTemplateOutlet, NgClass } from '@angular/common';
 
 interface DragItem { word: string; img: string; }
 interface DropZone { letter: string; matchWord: string; currentItem: DragItem | null; }
@@ -11,17 +10,19 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
 @Component({
   selector: 'app-games',
   standalone: true,
-  imports: [NgTemplateOutlet, NgClass],
   template: `
     <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-orange-300 max-w-5xl mx-auto">
       <h2 class="text-4xl font-black text-orange-600 mb-6 text-center">🎮 ألعاب الذكاء والمرح</h2>
       
-      <div class="flex justify-center gap-4 mb-8">
+      <div class="flex justify-center flex-wrap gap-4 mb-8">
         <button (click)="setMode('match')" [class]="mode() === 'match' ? 'bg-orange-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-orange-200">
-          🧩 لعبة المطابقة
+          🧩 المطابقة
         </button>
         <button (click)="setMode('memory')" [class]="mode() === 'memory' ? 'bg-purple-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-purple-200">
-          🃏 لعبة الذاكرة
+          🃏 الذاكرة
+        </button>
+        <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-rose-200">
+          🔍 أين الصورة؟
         </button>
       </div>
 
@@ -75,9 +76,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
             </div>
           </div>
         }
-      } @else {
+      } @else if (mode() === 'memory') {
         <p class="text-gray-600 font-bold mb-6 text-center">طابق كل حرف مع الصورة المناسبة له!</p>
         
+
         @if (memoryWon()) {
           <div class="text-center py-10 bg-purple-50 rounded-3xl border-4 border-purple-300 mb-6">
             <div class="text-8xl mb-4 animate-bounce">🥇</div>
@@ -116,6 +118,33 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
             }
           </div>
         }
+      } @else if (mode() === 'quiz') {
+        <p class="text-gray-600 font-bold mb-6 text-center">استمع للكلمة واضغط على الصورة الصحيحة!</p>
+        
+        @if (quizWon()) {
+          <div class="text-center py-10 bg-rose-50 rounded-3xl border-4 border-rose-300 mb-6">
+            <div class="text-8xl mb-4 animate-bounce">🎯</div>
+            <h3 class="text-4xl font-black text-rose-700 mb-2">ممتاز يا بطل!</h3>
+            <p class="text-xl text-rose-600 font-bold mb-6">إجابة صحيحة! كسبت +5 نجوم! ⭐</p>
+            <button (click)="initQuizGame()" class="bg-rose-500 text-white px-8 py-3 rounded-full font-black text-2xl hover:bg-rose-600 shadow-xl hover:scale-105 transition-transform">
+              العب مرة أخرى 🔄
+            </button>
+          </div>
+        } @else if (quizQuestion()) {
+          <div class="flex flex-col items-center">
+            <button (click)="playQuizWord()" class="bg-blue-500 text-white px-8 py-4 rounded-full font-black text-2xl mb-8 shadow-xl hover:scale-110 transition-transform animate-pulse flex items-center gap-3">
+              <span>🔊</span> أين صورة: {{ quizQuestion()!.targetWord }}؟
+            </button>
+            
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
+              @for (opt of quizQuestion()!.options; track opt.word) {
+                <button (click)="checkQuizAnswer(opt.word)" class="bg-white p-6 rounded-3xl border-4 border-gray-200 shadow-md hover:border-rose-400 hover:scale-105 transition-all text-7xl md:text-8xl flex justify-center items-center h-40">
+                  {{ opt.img }}
+                </button>
+              }
+            </div>
+          </div>
+        }
       }
     </div>
   `
@@ -124,7 +153,7 @@ export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'match' | 'memory'>('match');
+  mode = signal<'match' | 'memory' | 'quiz'>('match');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -139,14 +168,19 @@ export class GamesComponent {
   flippedIndices: number[] = [];
   isProcessingFlip = false;
 
+  // Quiz Game State
+  quizQuestion = signal<{targetWord: string, targetImg: string, options: {word: string, img: string}[]} | null>(null);
+  quizWon = signal(false);
+
   constructor() {
     this.initMatchGame();
   }
 
-  setMode(m: 'match' | 'memory') {
+  setMode(m: 'match' | 'memory' | 'quiz') {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
-    else this.initMemoryGame();
+    else if (m === 'memory') this.initMemoryGame();
+    else this.initQuizGame();
   }
 
   // --- MATCH GAME LOGIC ---
@@ -277,6 +311,51 @@ export class GamesComponent {
           this.isProcessingFlip = false;
         }, 1200);
       }
+    }
+  }
+
+  // --- QUIZ GAME LOGIC ---
+  initQuizGame() {
+    this.quizWon.set(false);
+    
+    // Pick 4 random words
+    const allWords = this.data.alphabetData.flatMap(a => a.words).sort(() => 0.5 - Math.random());
+    const options = allWords.slice(0, 4);
+    
+    // Pick 1 target
+    const target = options[Math.floor(Math.random() * options.length)];
+    
+    this.quizQuestion.set({
+      targetWord: target.word,
+      targetImg: target.img,
+      options: options.sort(() => 0.5 - Math.random()) // shuffle them for display
+    });
+    
+    setTimeout(() => {
+      this.playQuizWord();
+    }, 500);
+  }
+
+  playQuizWord() {
+    const q = this.quizQuestion();
+    if (q) {
+      this.audio.speak(q.targetWord, 'en-US');
+    }
+  }
+
+  checkQuizAnswer(word: string) {
+    const q = this.quizQuestion();
+    if (!q) return;
+    
+    if (word === q.targetWord) {
+      // Success
+      this.audio.playSoundEffect('bell');
+      this.audio.speak('ممتاز! إجابة صحيحة!', 'ar-EG');
+      this.quizWon.set(true);
+      this.data.addStars(5);
+    } else {
+      // Wrong
+      this.audio.speak('حاول مرة أخرى', 'ar-EG');
     }
   }
 }

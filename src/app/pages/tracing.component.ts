@@ -65,22 +65,25 @@ import { StrokeGuideComponent } from '../components/stroke-guide.component';
         <div class="relative bg-amber-50 rounded-3xl border-4 border-dashed border-amber-400 p-2 shadow-inner w-full md:w-auto">
           <canvas #tracingCanvas width="400" height="320" class="bg-white rounded-2xl cursor-crosshair touch-none shadow max-w-full"></canvas>
           
-          <div class="flex justify-between items-center mt-4 px-2">
-            <div class="flex gap-1 md:gap-2 flex-wrap max-w-[200px]">
-              <button (click)="setPenColor('#ef4444')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-red-500 border-2 border-white shadow hover:scale-110"></button>
-              <button (click)="setPenColor('#f97316')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-orange-500 border-2 border-white shadow hover:scale-110"></button>
-              <button (click)="setPenColor('#eab308')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-yellow-500 border-2 border-white shadow hover:scale-110"></button>
-              <button (click)="setPenColor('#10b981')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-green-500 border-2 border-white shadow hover:scale-110"></button>
-              <button (click)="setPenColor('#3b82f6')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-blue-500 border-2 border-white shadow hover:scale-110"></button>
-              <button (click)="setPenColor('#8b5cf6')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-purple-500 border-2 border-white shadow hover:scale-110"></button>
-              <button (click)="setPenColor('#ec4899')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-pink-500 border-2 border-white shadow hover:scale-110"></button>
-              <button (click)="setPenColor('#000000')" class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-black border-2 border-white shadow hover:scale-110"></button>
+          <div class="flex flex-col gap-4 mt-4 px-2 w-full">
+            <!-- شريط الألوان -->
+            <div class="flex gap-2 flex-wrap justify-center bg-white p-2 rounded-2xl shadow-sm border-2 border-amber-200">
+              <button (click)="setPenColor('#ef4444')" class="w-8 h-8 rounded-full bg-red-500 border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#ef4444'"></button>
+              <button (click)="setPenColor('#f97316')" class="w-8 h-8 rounded-full bg-orange-500 border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#f97316'"></button>
+              <button (click)="setPenColor('#eab308')" class="w-8 h-8 rounded-full bg-yellow-500 border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#eab308'"></button>
+              <button (click)="setPenColor('#10b981')" class="w-8 h-8 rounded-full bg-green-500 border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#10b981'"></button>
+              <button (click)="setPenColor('#3b82f6')" class="w-8 h-8 rounded-full bg-blue-500 border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#3b82f6'"></button>
+              <button (click)="setPenColor('#8b5cf6')" class="w-8 h-8 rounded-full bg-purple-500 border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#8b5cf6'"></button>
+              <button (click)="setPenColor('#ec4899')" class="w-8 h-8 rounded-full bg-pink-500 border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#ec4899'"></button>
+              <button (click)="setPenColor('#000000')" class="w-8 h-8 rounded-full bg-black border-2 border-white shadow hover:scale-110 transition-transform" [class.ring-4]="penColor === '#000000'"></button>
             </div>
-            <div class="flex gap-2">
-              <button (click)="downloadCanvas()" class="bg-indigo-500 text-white px-3 py-1.5 rounded-full font-black hover:bg-indigo-600 shadow text-sm flex items-center gap-1">
-                💾 حفظ
+            
+            <!-- أزرار التحكم -->
+            <div class="flex justify-center gap-4">
+              <button (click)="downloadCanvas()" class="bg-indigo-500 text-white px-6 py-2 rounded-full font-black hover:bg-indigo-600 shadow-md text-base flex items-center gap-2 transition-transform hover:scale-105">
+                💾 حفظ الرسمة
               </button>
-              <button (click)="clearTracingCanvas()" class="bg-red-500 text-white px-3 py-1.5 rounded-full font-black hover:bg-red-600 shadow text-sm flex items-center gap-1">
+              <button (click)="clearTracingCanvas()" class="bg-red-500 text-white px-6 py-2 rounded-full font-black hover:bg-red-600 shadow-md text-base flex items-center gap-2 transition-transform hover:scale-105">
                 🗑️ مسح
               </button>
             </div>
@@ -97,7 +100,7 @@ export class TracingComponent implements AfterViewInit {
   audio = inject(AudioService);
 
   private isDrawing = false;
-  private penColor = '#ef4444';
+  penColor = '#ef4444';
 
   ngAfterViewInit() {
     this.initCanvas();

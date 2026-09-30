@@ -234,6 +234,20 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
           </div>
         }
 
+
+        <!-- الفوتر الأنيق -->
+        <footer class="mt-12 mb-6 text-center">
+          <div class="inline-block bg-white/80 backdrop-blur-sm px-8 py-4 rounded-3xl shadow-sm border border-gray-100">
+            <p class="text-gray-500 font-bold text-sm">تم التصميم بكل حب ❤️ بواسطة</p>
+            <p class="text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-500 to-pink-500 mt-1">
+              EBRAHEM SALAH
+            </p>
+            <p class="text-gray-400 font-bold text-sm mt-1 tracking-widest">
+              📱 01096986091
+            </p>
+          </div>
+        </footer>
+
       </div>
     </div>
   `
