@@ -98,10 +98,10 @@ interface TrainCar {
                              draggable="true"
                              (dragstart)="onDragStart($event, animal)"
                              (click)="playAnimalSound(animal)">
-                            {{ animal.img }}
+                            @if(animal.imagePath){<img [src]=\assets/images/+animal.imagePath\ class=\w-16 h-16 object-contain pointer-events-none\/>}@else{{{ animal.img }}}
                         </div>
                     } @else {
-                        <div class="text-6xl opacity-0 pointer-events-none">{{ animal.img }}</div>
+                        <div class="text-6xl opacity-0 pointer-events-none">@if(animal.imagePath){<img [src]=\assets/images/+animal.imagePath\ class=\w-16 h-16 object-contain pointer-events-none\/>}@else{{{ animal.img }}}</div>
                     }
                 }
             </div>
