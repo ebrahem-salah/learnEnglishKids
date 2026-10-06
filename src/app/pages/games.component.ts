@@ -24,6 +24,9 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
         <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-rose-200">
           🔍 أين الصورة؟
         </button>
+        <button (click)="setMode('journey')" [class]="mode() === 'journey' ? 'bg-sky-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-sky-200">
+          ✈️ رحلة الحروف
+        </button>
       </div>
 
       @if (mode() === 'match') {
@@ -145,6 +148,94 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
             </div>
           </div>
         }
+      } @else if (mode() === 'journey') {
+        <!-- لعبة رحلة الحروف -->
+        <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center justify-center select-none" dir="rtl">
+            <!-- الخلفية -->
+            <div class="absolute inset-0 -z-10 flex flex-col">
+                <div class="journey-sky flex-1 relative overflow-hidden">
+                    <div class="journey-cloud journey-cloud1"></div>
+                    <div class="journey-cloud journey-cloud2"></div>
+                </div>
+                <div class="journey-grass h-1/3 relative border-t-8 border-green-800"></div>
+            </div>
+
+            <!-- شاشة البداية -->
+            @if (journeyState() === 'start') {
+                <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div class="bg-white p-10 rounded-[3rem] shadow-2xl max-w-lg w-full border-[10px] border-blue-400 transform transition hover:scale-105">
+                        <div class="text-9xl mb-4 animate-bounce">🔤</div>
+                        <h2 class="text-5xl font-black text-blue-600 mb-4">بطل الحروف</h2>
+                        <p class="text-gray-600 mb-8 font-bold text-2xl">26 مرحلة لاكتشاف الكلمات والصور.. جاهز؟</p>
+                        <button (click)="startJourney()" class="w-full py-6 bg-yellow-400 hover:bg-yellow-500 text-blue-900 text-4xl font-black rounded-3xl shadow-[0_10px_0_#f57f17] active:translate-y-2 active:shadow-none transition-all">
+                            ابدأ اللعب!
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <!-- شاشة النهاية -->
+            @else if (journeyState() === 'finale') {
+                <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-blue-400 to-green-400 text-white p-4">
+                    <div class="text-center">
+                        <div class="text-[8rem] mb-8 animate-bounce">🏆</div>
+                        <h1 class="text-6xl font-black mb-4 drop-shadow-2xl">أنت عبقري!</h1>
+                        <p class="text-3xl font-bold mb-12">لقد أكملت جميع الحروف الـ 26 بنجاح!</p>
+                        <button (click)="resetJourney()" class="px-12 py-6 bg-white text-blue-600 text-3xl font-black rounded-full shadow-[0_10px_0_#ccc] active:translate-y-2 active:shadow-none transition-all">
+                            العب مرة أخرى
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <!-- منطقة اللعب -->
+            @else {
+                <!-- شريط التقدم -->
+                <div class="absolute top-4 left-0 w-full flex flex-col items-center z-20">
+                    <h2 class="text-white text-2xl font-black drop-shadow-md" style="text-shadow: 2px 2px 0 #333;">
+                        مرحلة {{ journeyLevelIndex() + 1 }} / 26
+                    </h2>
+                    <div class="journey-progress-container w-3/4 max-w-sm h-5 mt-2">
+                        <div class="journey-progress-fill h-full" [style.width.%]="(journeyLevelIndex() / 26) * 100"></div>
+                    </div>
+                </div>
+
+                @if (journeyTarget(); as target) {
+                    <!-- بطاقة الحرف -->
+                    <div class="journey-target-card mt-12 z-10">
+                        <span class="text-7xl font-black text-blue-600 drop-shadow-sm" style="text-shadow: 4px 4px 0 #bbdefb;">{{ target.letter }}</span>
+                    </div>
+
+                    <h3 class="text-white text-3xl font-black mt-6 drop-shadow-md text-center px-4 z-10" style="text-shadow: 2px 2px 0 #1976d2;">
+                        أين الصورة التي تبدأ بالحرف؟
+                    </h3>
+
+                    <!-- خيارات الصور -->
+                    <div class="grid grid-cols-3 gap-4 w-full max-w-lg px-4 mt-8 z-10" dir="ltr">
+                        @for (opt of journeyOptions(); track opt.word; let i = $index) {
+                            <button (click)="checkJourneyAnswer(opt, i)" 
+                                    [disabled]="journeyState() === 'win'"
+                                    [class.journey-shake]="wrongJourneyIndex === i"
+                                    [class.journey-correct]="journeyState() === 'win' && opt.isCorrect"
+                                    class="journey-option-btn">
+                                {{ opt.img }}
+                            </button>
+                        }
+                    </div>
+
+                    <!-- رسالة الفوز للمرحلة -->
+                    @if (journeyState() === 'win') {
+                        <div class="absolute inset-0 z-40 flex flex-col items-center justify-center">
+                            <div class="text-center bg-white/90 backdrop-blur-md px-10 py-6 rounded-[3rem] shadow-2xl border-[8px] border-green-400 animate-[bounceIn_0.5s_ease-out]">
+                                <div class="text-7xl mb-2">{{ target.img }}</div>
+                                <h2 class="text-5xl font-black text-green-600 mb-1 uppercase drop-shadow-sm">{{ target.word }}</h2>
+                                <h3 class="text-3xl font-bold text-gray-700">{{ target.ar }}</h3>
+                            </div>
+                        </div>
+                    }
+                }
+            }
+        </div>
       }
     </div>
   `
@@ -153,7 +244,7 @@ export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'match' | 'memory' | 'quiz'>('match');
+  mode = signal<'match' | 'memory' | 'quiz' | 'journey'>('match');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -172,15 +263,26 @@ export class GamesComponent {
   quizQuestion = signal<{targetWord: string, targetImg: string, options: {word: string, img: string}[]} | null>(null);
   quizWon = signal(false);
 
+  // Journey Game State
+  journeyState = signal<'start' | 'playing' | 'win' | 'finale'>('start');
+  journeyLevelIndex = signal(0);
+  journeyTarget = signal<{letter: string, word: string, img: string, ar: string} | null>(null);
+  journeyOptions = signal<{word: string, img: string, ar: string, isCorrect: boolean}[]>([]);
+  wrongJourneyIndex = -1;
+
   constructor() {
     this.initMatchGame();
   }
 
-  setMode(m: 'match' | 'memory' | 'quiz') {
+  setMode(m: 'match' | 'memory' | 'quiz' | 'journey') {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
     else if (m === 'memory') this.initMemoryGame();
-    else this.initQuizGame();
+    else if (m === 'quiz') this.initQuizGame();
+    else if (m === 'journey') {
+        this.journeyState.set('start');
+        this.journeyLevelIndex.set(0);
+    }
   }
 
   // --- MATCH GAME LOGIC ---
@@ -356,6 +458,86 @@ export class GamesComponent {
     } else {
       // Wrong
       this.audio.speak('حاول مرة أخرى', 'ar-EG');
+    }
+  }
+
+  // --- JOURNEY GAME LOGIC ---
+  startJourney() {
+    this.journeyLevelIndex.set(0);
+    this.loadJourneyLevel();
+  }
+
+  resetJourney() {
+    this.journeyState.set('start');
+    this.journeyLevelIndex.set(0);
+  }
+
+  loadJourneyLevel() {
+    const idx = this.journeyLevelIndex();
+    if (idx >= this.data.alphabetData.length) {
+      this.journeyState.set('finale');
+      this.audio.playSoundEffect('bell');
+      this.data.addStars(50); // Big reward!
+      this.audio.speak('Congratulations! You are amazing!', 'en-US');
+      return;
+    }
+
+    this.journeyState.set('playing');
+    this.wrongJourneyIndex = -1;
+
+    const letterData = this.data.alphabetData[idx];
+    const targetWord = letterData.words[0]; // first word for that letter
+    
+    this.journeyTarget.set({
+      letter: letterData.letter,
+      word: targetWord.word,
+      img: targetWord.img,
+      ar: (targetWord as any).ar_word || 'ممتاز'
+    });
+
+    // Pick 2 random wrong words from other letters
+    const allWords = this.data.alphabetData
+        .filter((_, i) => i !== idx)
+        .flatMap(a => a.words)
+        .sort(() => 0.5 - Math.random());
+    
+    const wrongs = allWords.slice(0, 2);
+    
+    let options = [
+      { ...targetWord, ar: 'صحيح', isCorrect: true },
+      { ...wrongs[0], ar: 'خطأ', isCorrect: false },
+      { ...wrongs[1], ar: 'خطأ', isCorrect: false }
+    ];
+    
+    // Shuffle options
+    options = options.sort(() => 0.5 - Math.random());
+    this.journeyOptions.set(options);
+
+    // Announce letter
+    setTimeout(() => {
+      this.audio.speak(letterData.letter, 'en-US');
+    }, 600);
+  }
+
+  checkJourneyAnswer(opt: {word: string, isCorrect: boolean}, index: number) {
+    if (this.journeyState() !== 'playing') return;
+
+    if (opt.isCorrect) {
+      this.audio.playSoundEffect('bell');
+      this.journeyState.set('win');
+      this.audio.speak(opt.word, 'en-US');
+      this.data.addStars(2);
+
+      setTimeout(() => {
+        this.journeyLevelIndex.update(i => i + 1);
+        this.loadJourneyLevel();
+      }, 3500);
+    } else {
+      this.audio.playSoundEffect('error');
+      this.wrongJourneyIndex = index;
+      setTimeout(() => {
+        this.wrongJourneyIndex = -1;
+      }, 400);
     }
   }
 }
