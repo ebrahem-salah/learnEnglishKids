@@ -38,10 +38,10 @@ interface TrainCar {
             <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/40 backdrop-blur-sm">
                 <div class="bg-white p-8 rounded-[3rem] shadow-2xl max-w-sm w-full border-[8px] border-green-400">
                     <div class="text-8xl mb-2 animate-bounce">🚂</div>
-                    <h2 class="text-4xl font-black text-green-600 mb-2 font-[Tajawal]">قطار الحيوانات</h2>
-                    <p class="text-gray-600 mb-6 font-bold text-xl font-[Tajawal]">استمع لأسماء الحيوانات وضعهم في القطار بالترتيب!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Tajawal] bg-green-500 hover:bg-green-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#16a34a] active:translate-y-2 active:shadow-none transition-all">
-                        ابدأ اللعب!
+                    <h2 class="text-4xl font-black text-green-600 mb-2 font-[Bubblegum]">Animal Train</h2>
+                    <p class="text-gray-600 mb-6 font-bold text-xl">Listen and place the animals in the train!</p>
+                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-green-500 hover:bg-green-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#16a34a] active:translate-y-2 active:shadow-none transition-all">
+                        Start Game!
                     </button>
                 </div>
             </div>

@@ -29,10 +29,10 @@ interface AppShape { en: string; ar: string; path: string; }
                     <div class="text-8xl mb-2 flex justify-center gap-2 animate-bounce">
                         <span style="color:#ef4444">🎨</span>
                     </div>
-                    <h2 class="text-4xl font-black text-amber-600 mb-2 font-[Tajawal]">تلوين الأشكال</h2>
-                    <p class="text-gray-600 mb-6 font-bold text-xl font-[Tajawal]">استمع للون المطلوب ولون به الشكل!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Tajawal] bg-amber-500 hover:bg-amber-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#d97706] active:translate-y-2 active:shadow-none transition-all">
-                        ابدأ اللعب!
+                    <h2 class="text-4xl font-black text-amber-600 mb-2 font-[Bubblegum]">Shape Colors</h2>
+                    <p class="text-gray-600 mb-6 font-bold text-xl">Listen and color the shape!</p>
+                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-amber-500 hover:bg-amber-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#d97706] active:translate-y-2 active:shadow-none transition-all">
+                        Start Game!
                     </button>
                 </div>
             </div>
@@ -40,8 +40,7 @@ interface AppShape { en: string; ar: string; path: string; }
             <div class="w-full h-full flex flex-col items-center justify-between pb-8 pt-20">
                 <!-- Instruction text -->
                 <div class="text-center mb-4">
-                    <h2 class="text-4xl font-black text-gray-800 tracking-wide uppercase">{{ targetColor()?.en }}</h2>
-                    <h3 class="text-2xl font-bold text-gray-500 mt-1 font-[Tajawal]">{{ targetColor()?.ar }}</h3>
+                    <h2 class="text-4xl font-black text-gray-800 tracking-wide uppercase font-[Bubblegum]">{{ targetColor()?.en }}</h2>
                 </div>
 
                 <!-- Shape Canvas -->

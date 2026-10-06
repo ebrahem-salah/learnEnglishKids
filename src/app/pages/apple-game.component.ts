@@ -33,10 +33,10 @@ interface Apple {
                     <div class="text-8xl mb-2 flex justify-center animate-bounce">
                         🍎
                     </div>
-                    <h2 class="text-4xl font-black text-red-600 mb-2 font-[Tajawal]">سلة التفاح</h2>
-                    <p class="text-gray-600 mb-6 font-bold text-xl font-[Tajawal]">استمع للرقم وضع التفاح في السلة!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Tajawal] bg-red-500 hover:bg-red-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#b91c1c] active:translate-y-2 active:shadow-none transition-all">
-                        ابدأ اللعب!
+                    <h2 class="text-4xl font-black text-red-600 mb-2 font-[Bubblegum]">Math Basket</h2>
+                    <p class="text-gray-600 mb-6 font-bold text-xl">Listen and put the apples in the basket!</p>
+                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-red-500 hover:bg-red-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#b91c1c] active:translate-y-2 active:shadow-none transition-all">
+                        Start Game!
                     </button>
                 </div>
             </div>

@@ -25,10 +25,10 @@ import { NgClass } from '@angular/common';
             <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/40 backdrop-blur-sm">
                 <div class="bg-white p-8 rounded-[3rem] shadow-2xl max-w-sm w-full border-[8px] border-teal-400">
                     <div class="text-8xl mb-2 animate-bounce">🧮</div>
-                    <h2 class="text-4xl font-black text-teal-600 mb-2 font-[Tajawal]">الحساب الذكي</h2>
-                    <p class="text-gray-600 mb-6 font-bold text-xl font-[Tajawal]">اجمع الأرقام واختر الإجابة الصحيحة!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Tajawal] bg-teal-500 hover:bg-teal-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#0f766e] active:translate-y-2 active:shadow-none transition-all">
-                        ابدأ اللعب!
+                    <h2 class="text-4xl font-black text-teal-600 mb-2 font-[Bubblegum]">Smart Math</h2>
+                    <p class="text-gray-600 mb-6 font-bold text-xl">Add the numbers and choose the right answer!</p>
+                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-teal-500 hover:bg-teal-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#0f766e] active:translate-y-2 active:shadow-none transition-all">
+                        Start Game!
                     </button>
                 </div>
             </div>

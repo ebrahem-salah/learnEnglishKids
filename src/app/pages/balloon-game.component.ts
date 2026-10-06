@@ -36,10 +36,10 @@ interface Balloon {
             <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/40 backdrop-blur-sm">
                 <div class="bg-white p-8 rounded-[3rem] shadow-2xl max-w-sm w-full border-[8px] border-sky-400">
                     <div class="text-8xl mb-2 animate-bounce">🎈</div>
-                    <h2 class="text-4xl font-black text-sky-600 mb-2 font-[Tajawal]">صائد البالونات</h2>
-                    <p class="text-gray-600 mb-6 font-bold text-xl font-[Tajawal]">استمع للحرف وفرقع البالونة الصحيحة!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Tajawal] bg-sky-500 hover:bg-sky-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#0284c7] active:translate-y-2 active:shadow-none transition-all">
-                        ابدأ اللعب!
+                    <h2 class="text-4xl font-black text-sky-600 mb-2 font-[Bubblegum]">Balloon Popper</h2>
+                    <p class="text-gray-600 mb-6 font-bold text-xl">Listen and pop the right balloon!</p>
+                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-sky-500 hover:bg-sky-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#0284c7] active:translate-y-2 active:shadow-none transition-all">
+                        Start Game!
                     </button>
                 </div>
             </div>

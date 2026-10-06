@@ -18,38 +18,38 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
   imports: [BalloonGameComponent, TrainGameComponent, ShapeGameComponent, AppleGameComponent, MathGameComponent],
   template: `
     <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-orange-300 max-w-5xl mx-auto">
-      <h2 class="text-4xl font-black text-orange-600 mb-6 text-center">🎮 ألعاب الذكاء والمرح</h2>
+      <h2 class="text-4xl font-black text-orange-600 mb-6 text-center font-[Bubblegum]">🎮 Brain & Fun Games</h2>
       
-      <div class="flex flex-wrap justify-center gap-4 mb-8">
+      <div class="flex flex-wrap justify-center gap-4 mb-8 font-[Bubblegum]">
         <button (click)="setMode('match')" [class]="mode() === 'match' ? 'bg-orange-500 text-white scale-105 shadow-lg ring-4 ring-orange-200' : 'bg-gray-100 text-gray-700 hover:bg-orange-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-orange-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🧩</span> المطابقة
+          <span class="text-4xl">🧩</span> Match
         </button>
         <button (click)="setMode('memory')" [class]="mode() === 'memory' ? 'bg-purple-500 text-white scale-105 shadow-lg ring-4 ring-purple-200' : 'bg-gray-100 text-gray-700 hover:bg-purple-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-purple-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🃏</span> الذاكرة
+          <span class="text-4xl">🃏</span> Memory
         </button>
         <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-105 shadow-lg ring-4 ring-rose-200' : 'bg-gray-100 text-gray-700 hover:bg-rose-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-rose-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🔍</span> أين الصورة؟
+          <span class="text-4xl">🔍</span> Find It
         </button>
         <button (click)="setMode('journey')" [class]="mode() === 'journey' ? 'bg-sky-500 text-white scale-105 shadow-lg ring-4 ring-sky-200' : 'bg-gray-100 text-gray-700 hover:bg-sky-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-sky-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">✈️</span> رحلة الحروف
+          <span class="text-4xl">✈️</span> Journey
         </button>
         <button (click)="setMode('shadow')" [class]="mode() === 'shadow' ? 'bg-amber-500 text-white scale-105 shadow-lg ring-4 ring-amber-200' : 'bg-gray-100 text-gray-700 hover:bg-amber-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-amber-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">👤</span> أين ظلي؟
+          <span class="text-4xl">👤</span> Shadows
         </button>
         <button (click)="setMode('balloon')" [class]="mode() === 'balloon' ? 'bg-cyan-500 text-white scale-105 shadow-lg ring-4 ring-cyan-200' : 'bg-gray-100 text-gray-700 hover:bg-cyan-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-cyan-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🎈</span> صائد البالونات
+          <span class="text-4xl">🎈</span> Balloons
         </button>
         <button (click)="setMode('train')" [class]="mode() === 'train' ? 'bg-emerald-500 text-white scale-105 shadow-lg ring-4 ring-emerald-200' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-emerald-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🚂</span> قطار الحيوانات
+          <span class="text-4xl">🚂</span> Train
         </button>
         <button (click)="setMode('shape')" [class]="mode() === 'shape' ? 'bg-pink-500 text-white scale-105 shadow-lg ring-4 ring-pink-200' : 'bg-gray-100 text-gray-700 hover:bg-pink-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-pink-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🎨</span> تلوين الأشكال
+          <span class="text-4xl">🎨</span> Colors
         </button>
         <button (click)="setMode('apple')" [class]="mode() === 'apple' ? 'bg-red-500 text-white scale-105 shadow-lg ring-4 ring-red-200' : 'bg-gray-100 text-gray-700 hover:bg-red-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-red-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🍎</span> سلة التفاح
+          <span class="text-4xl">🍎</span> Apples
         </button>
         <button (click)="setMode('math')" [class]="mode() === 'math' ? 'bg-teal-500 text-white scale-105 shadow-lg ring-4 ring-teal-200' : 'bg-gray-100 text-gray-700 hover:bg-teal-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-teal-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🧮</span> الحساب الذكي
+          <span class="text-4xl">🧮</span> Math
         </button>
       </div>
 
@@ -312,7 +312,8 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                     <div class="h-[40%] flex justify-evenly items-center relative z-20 w-full" dir="ltr">
                         @for (item of shadowItems(); track item.id; let i = $index) {
                             @if (!item.matched) {
-                                <div class="shadowgame-item shadowgame-idle-float"
+                                <div class="shadowgame-item"
+                                     [class.shadowgame-idle-float]="shadowDraggingIndex() !== i"
                                      [class.shadowgame-snapping-back]="shadowWrongIndex === i"
                                      [style.transform]="shadowDraggingIndex() === i ? 'translate(' + dragDx() + 'px, ' + dragDy() + 'px) scale(1.1)' : 'translate(0px, 0px)'"
                                      [style.zIndex]="shadowDraggingIndex() === i ? 1000 : 100"
@@ -739,6 +740,7 @@ export class GamesComponent {
 
   onShadowDragMove(e: MouseEvent | TouchEvent) {
     if (this.shadowDraggingIndex() === -1) return;
+    if (e.cancelable) e.preventDefault();
     const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
     const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
     
