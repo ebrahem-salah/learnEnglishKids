@@ -1,6 +1,8 @@
 import { Component, signal, inject } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
+import { BalloonGameComponent } from './balloon-game.component';
+import { TrainGameComponent } from './train-game.component';
 
 interface DragItem { word: string; img: string; }
 interface DropZone { letter: string; matchWord: string; currentItem: DragItem | null; }
@@ -10,25 +12,32 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
 @Component({
   selector: 'app-games',
   standalone: true,
+  imports: [BalloonGameComponent, TrainGameComponent],
   template: `
     <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-orange-300 max-w-5xl mx-auto">
       <h2 class="text-4xl font-black text-orange-600 mb-6 text-center">🎮 ألعاب الذكاء والمرح</h2>
       
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
-        <button (click)="setMode('match')" [class]="mode() === 'match' ? 'bg-orange-500 text-white scale-105 shadow-lg ring-4 ring-orange-200' : 'bg-gray-100 text-gray-700 hover:bg-orange-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-orange-200 flex flex-col items-center justify-center gap-2">
+      <div class="flex flex-wrap justify-center gap-4 mb-8">
+        <button (click)="setMode('match')" [class]="mode() === 'match' ? 'bg-orange-500 text-white scale-105 shadow-lg ring-4 ring-orange-200' : 'bg-gray-100 text-gray-700 hover:bg-orange-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-orange-200 flex flex-col items-center justify-center gap-2 text-center">
           <span class="text-4xl">🧩</span> المطابقة
         </button>
-        <button (click)="setMode('memory')" [class]="mode() === 'memory' ? 'bg-purple-500 text-white scale-105 shadow-lg ring-4 ring-purple-200' : 'bg-gray-100 text-gray-700 hover:bg-purple-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-purple-200 flex flex-col items-center justify-center gap-2">
+        <button (click)="setMode('memory')" [class]="mode() === 'memory' ? 'bg-purple-500 text-white scale-105 shadow-lg ring-4 ring-purple-200' : 'bg-gray-100 text-gray-700 hover:bg-purple-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-purple-200 flex flex-col items-center justify-center gap-2 text-center">
           <span class="text-4xl">🃏</span> الذاكرة
         </button>
-        <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-105 shadow-lg ring-4 ring-rose-200' : 'bg-gray-100 text-gray-700 hover:bg-rose-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-rose-200 flex flex-col items-center justify-center gap-2">
+        <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-105 shadow-lg ring-4 ring-rose-200' : 'bg-gray-100 text-gray-700 hover:bg-rose-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-rose-200 flex flex-col items-center justify-center gap-2 text-center">
           <span class="text-4xl">🔍</span> أين الصورة؟
         </button>
-        <button (click)="setMode('journey')" [class]="mode() === 'journey' ? 'bg-sky-500 text-white scale-105 shadow-lg ring-4 ring-sky-200' : 'bg-gray-100 text-gray-700 hover:bg-sky-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-sky-200 flex flex-col items-center justify-center gap-2">
+        <button (click)="setMode('journey')" [class]="mode() === 'journey' ? 'bg-sky-500 text-white scale-105 shadow-lg ring-4 ring-sky-200' : 'bg-gray-100 text-gray-700 hover:bg-sky-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-sky-200 flex flex-col items-center justify-center gap-2 text-center">
           <span class="text-4xl">✈️</span> رحلة الحروف
         </button>
-        <button (click)="setMode('shadow')" [class]="mode() === 'shadow' ? 'bg-amber-500 text-white scale-105 shadow-lg ring-4 ring-amber-200' : 'bg-gray-100 text-gray-700 hover:bg-amber-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-amber-200 flex flex-col items-center justify-center gap-2">
+        <button (click)="setMode('shadow')" [class]="mode() === 'shadow' ? 'bg-amber-500 text-white scale-105 shadow-lg ring-4 ring-amber-200' : 'bg-gray-100 text-gray-700 hover:bg-amber-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-amber-200 flex flex-col items-center justify-center gap-2 text-center">
           <span class="text-4xl">👤</span> أين ظلي؟
+        </button>
+        <button (click)="setMode('balloon')" [class]="mode() === 'balloon' ? 'bg-cyan-500 text-white scale-105 shadow-lg ring-4 ring-cyan-200' : 'bg-gray-100 text-gray-700 hover:bg-cyan-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-cyan-200 flex flex-col items-center justify-center gap-2 text-center">
+          <span class="text-4xl">🎈</span> صائد البالونات
+        </button>
+        <button (click)="setMode('train')" [class]="mode() === 'train' ? 'bg-emerald-500 text-white scale-105 shadow-lg ring-4 ring-emerald-200' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-emerald-200 flex flex-col items-center justify-center gap-2 text-center">
+          <span class="text-4xl">🚂</span> قطار الحيوانات
         </button>
       </div>
 
@@ -329,6 +338,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                 </div>
             }
         </div>
+      } @else if (mode() === 'balloon') {
+          <app-balloon-game></app-balloon-game>
+      } @else if (mode() === 'train') {
+          <app-train-game></app-train-game>
       }
     </div>
   `
@@ -337,7 +350,7 @@ export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'match' | 'memory' | 'quiz' | 'journey' | 'shadow'>('match');
+  mode = signal<'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train'>('match');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -390,7 +403,7 @@ export class GamesComponent {
     this.initMatchGame();
   }
 
-  setMode(m: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow') {
+  setMode(m: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train') {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
     else if (m === 'memory') this.initMemoryGame();
