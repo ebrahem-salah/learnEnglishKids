@@ -451,7 +451,7 @@ export class GamesComponent {
     
     const all = [...this.data.alphabetData].sort(() => 0.5 - Math.random()).slice(0, 3);
     const zones: DropZone[] = all.map(a => ({ letter: a.letter, matchWord: a.words[0].word, currentItem: null }));
-    const items: DragItem[] = all.map(a => ({ word: a.words[0].word, img: a.words[0].img })).sort(() => 0.5 - Math.random());
+    const items: DragItem[] = all.map(a => ({ word: a.words[0].word, img: a.words[0].img, imagePath: a.words[0].imagePath })).sort(() => 0.5 - Math.random());
     
     this.dropZones.set(zones);
     this.dragItems.set(items);
@@ -512,8 +512,8 @@ export class GamesComponent {
     let idCounter = 0;
     
     all.forEach(a => {
-      cards.push({ id: idCounter++, letter: a.letter, word: a.words[0].word, img: a.words[0].img, type: 'letter', isFlipped: false, isMatched: false });
-      cards.push({ id: idCounter++, letter: a.letter, word: a.words[0].word, img: a.words[0].img, type: 'img', isFlipped: false, isMatched: false });
+      cards.push({ id: idCounter++, letter: a.letter, word: a.words[0].word, img: a.words[0].img, imagePath: a.words[0].imagePath, type: 'letter', isFlipped: false, isMatched: false });
+      cards.push({ id: idCounter++, letter: a.letter, word: a.words[0].word, img: a.words[0].img, imagePath: a.words[0].imagePath, type: 'img', isFlipped: false, isMatched: false });
     });
     
     cards = cards.sort(() => 0.5 - Math.random());
