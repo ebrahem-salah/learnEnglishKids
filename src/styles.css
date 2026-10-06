@@ -126,3 +126,87 @@
     background: linear-gradient(90deg, #ffca28, #ffb300);
     transition: width 0.5s ease-out;
 }
+
+/* Shadow Game Styles */
+.shadowgame-scenery {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at center, #ffe082 0%, #ffb74d 100%);
+    overflow: hidden;
+}
+.shadowgame-bg-circle {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.15);
+}
+.shadowgame-c1 { width: 300px; height: 300px; top: -50px; left: -100px; }
+.shadowgame-c2 { width: 200px; height: 200px; bottom: 50px; right: -50px; }
+.shadowgame-c3 { width: 150px; height: 150px; top: 40%; left: 60%; }
+
+.shadowgame-item {
+    font-size: 5rem;
+    line-height: 1;
+    cursor: grab;
+    filter: drop-shadow(0 15px 15px rgba(0,0,0,0.3));
+    z-index: 100;
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    position: relative;
+}
+.shadowgame-item:active {
+    cursor: grabbing;
+}
+.shadowgame-idle-float {
+    animation: shadowgame-float 3s ease-in-out infinite;
+}
+.shadowgame-item:nth-child(1) { animation-delay: 0s; }
+.shadowgame-item:nth-child(2) { animation-delay: 0.5s; }
+.shadowgame-item:nth-child(3) { animation-delay: 1s; }
+
+@keyframes shadowgame-float {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-12px) scale(1.05); }
+}
+
+.shadowgame-shadows-area {
+    background: rgba(255, 255, 255, 0.2);
+    border-top-left-radius: 40px;
+    border-top-right-radius: 40px;
+    box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+}
+
+.shadowgame-slot {
+    width: 90px;
+    height: 90px;
+    background: rgba(255, 255, 255, 0.4);
+    border: 4px dashed #ff9800;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    transition: all 0.3s ease;
+}
+.shadowgame-emoji {
+    font-size: 4rem;
+    filter: brightness(0) opacity(0.6); 
+    pointer-events: none;
+    transition: all 0.5s;
+}
+.shadowgame-slot-hover {
+    background: rgba(255, 255, 255, 0.8);
+    border-color: #fff;
+    transform: scale(1.1);
+}
+.shadowgame-correct-match {
+    animation: shadowgame-successPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+@keyframes shadowgame-successPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.3); filter: brightness(1) opacity(1); } 
+    100% { transform: scale(1); filter: brightness(1) opacity(1); }
+}
+.shadowgame-snapping-back {
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+

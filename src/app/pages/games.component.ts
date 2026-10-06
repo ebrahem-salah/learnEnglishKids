@@ -14,18 +14,21 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
     <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-orange-300 max-w-5xl mx-auto">
       <h2 class="text-4xl font-black text-orange-600 mb-6 text-center">🎮 ألعاب الذكاء والمرح</h2>
       
-      <div class="flex justify-center flex-wrap gap-4 mb-8">
-        <button (click)="setMode('match')" [class]="mode() === 'match' ? 'bg-orange-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-orange-200">
-          🧩 المطابقة
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+        <button (click)="setMode('match')" [class]="mode() === 'match' ? 'bg-orange-500 text-white scale-105 shadow-lg ring-4 ring-orange-200' : 'bg-gray-100 text-gray-700 hover:bg-orange-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-orange-200 flex flex-col items-center justify-center gap-2">
+          <span class="text-4xl">🧩</span> المطابقة
         </button>
-        <button (click)="setMode('memory')" [class]="mode() === 'memory' ? 'bg-purple-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-purple-200">
-          🃏 الذاكرة
+        <button (click)="setMode('memory')" [class]="mode() === 'memory' ? 'bg-purple-500 text-white scale-105 shadow-lg ring-4 ring-purple-200' : 'bg-gray-100 text-gray-700 hover:bg-purple-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-purple-200 flex flex-col items-center justify-center gap-2">
+          <span class="text-4xl">🃏</span> الذاكرة
         </button>
-        <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-rose-200">
-          🔍 أين الصورة؟
+        <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-105 shadow-lg ring-4 ring-rose-200' : 'bg-gray-100 text-gray-700 hover:bg-rose-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-rose-200 flex flex-col items-center justify-center gap-2">
+          <span class="text-4xl">🔍</span> أين الصورة؟
         </button>
-        <button (click)="setMode('journey')" [class]="mode() === 'journey' ? 'bg-sky-500 text-white scale-110 shadow-lg' : 'bg-gray-100 text-gray-700'" class="px-6 py-2 rounded-full font-black text-xl transition-all border-2 border-sky-200">
-          ✈️ رحلة الحروف
+        <button (click)="setMode('journey')" [class]="mode() === 'journey' ? 'bg-sky-500 text-white scale-105 shadow-lg ring-4 ring-sky-200' : 'bg-gray-100 text-gray-700 hover:bg-sky-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-sky-200 flex flex-col items-center justify-center gap-2">
+          <span class="text-4xl">✈️</span> رحلة الحروف
+        </button>
+        <button (click)="setMode('shadow')" [class]="mode() === 'shadow' ? 'bg-amber-500 text-white scale-105 shadow-lg ring-4 ring-amber-200' : 'bg-gray-100 text-gray-700 hover:bg-amber-100'" class="px-2 py-4 rounded-3xl font-black text-lg transition-all border-2 border-amber-200 flex flex-col items-center justify-center gap-2">
+          <span class="text-4xl">👤</span> أين ظلي؟
         </button>
       </div>
 
@@ -236,6 +239,96 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                 }
             }
         </div>
+      } @else if (mode() === 'shadow') {
+        <!-- لعبة أين ظلي -->
+        <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none" dir="rtl">
+            <!-- الخلفية -->
+            <div class="shadowgame-scenery">
+                <div class="shadowgame-bg-circle shadowgame-c1"></div>
+                <div class="shadowgame-bg-circle shadowgame-c2"></div>
+                <div class="shadowgame-bg-circle shadowgame-c3"></div>
+            </div>
+
+            <!-- شاشة البداية -->
+            @if (shadowState() === 'start') {
+                <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/60 backdrop-blur-sm">
+                    <div class="bg-white p-8 rounded-[3rem] shadow-2xl max-w-sm w-full border-[8px] border-orange-400">
+                        <div class="text-8xl mb-2 flex justify-center gap-2 animate-bounce">
+                            <span>👤</span><span>👤</span>
+                        </div>
+                        <h2 class="text-4xl font-black text-orange-600 mb-2">تحدي الظلال</h2>
+                        <p class="text-gray-600 mb-6 font-bold text-xl">اسحب كل شكل وضعه فوق الظل المطابق له!</p>
+                        <button (click)="startShadowGame()" class="w-full py-4 bg-green-500 hover:bg-green-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#2e7d32] active:translate-y-2 active:shadow-none transition-all">
+                            هيا نلعب!
+                        </button>
+                    </div>
+                </div>
+            }
+
+            <!-- شاشة النهاية -->
+            @else if (shadowState() === 'win') {
+                <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-green-400 to-blue-500 text-white p-4">
+                    <div class="text-[8rem] mb-4 animate-bounce">🏆</div>
+                    <h1 class="text-6xl font-black mb-4 drop-shadow-xl text-center">أنت عبقري!</h1>
+                    <button (click)="resetShadowGame()" class="mt-8 px-10 py-5 bg-white text-blue-600 text-3xl font-black rounded-full shadow-[0_8px_0_#ccc] active:translate-y-2 active:shadow-none transition-all">
+                        العب مرة أخرى
+                    </button>
+                </div>
+            }
+
+            <!-- منطقة اللعب -->
+            @else {
+                <!-- شريط العناوين -->
+                <div class="absolute top-4 w-full flex flex-col items-center z-30 pointer-events-none">
+                    <h1 class="text-white text-3xl font-black drop-shadow-md mb-2" style="text-shadow: 2px 2px 0 #e65100;">طابق الأشكال الـ 3!</h1>
+                    <div class="w-48 h-4 bg-black/10 rounded-full overflow-hidden border-2 border-white">
+                        <div class="h-full bg-green-500 transition-all duration-500" [style.width.%]="(shadowLevelIndex() / 8) * 100"></div>
+                    </div>
+                </div>
+
+                <div class="w-full h-full flex flex-col justify-between pt-20">
+                    <!-- النصف العلوي: العناصر القابلة للسحب -->
+                    <div class="h-[40%] flex justify-evenly items-center relative z-20 w-full" dir="ltr">
+                        @for (item of shadowItems(); track item.id; let i = $index) {
+                            @if (!item.matched) {
+                                <div class="shadowgame-item shadowgame-idle-float"
+                                     [class.shadowgame-snapping-back]="shadowWrongIndex === i"
+                                     [style.transform]="shadowDraggingIndex() === i ? 'translate(' + dragDx() + 'px, ' + dragDy() + 'px) scale(1.1)' : 'translate(0px, 0px)'"
+                                     [style.zIndex]="shadowDraggingIndex() === i ? 1000 : 100"
+                                     [style.transition]="shadowDraggingIndex() === i ? 'none' : ''"
+                                     (mousedown)="onShadowDragStart($event, i)"
+                                     (touchstart)="onShadowDragStart($event, i)"
+                                     (window:mousemove)="onShadowDragMove($event)"
+                                     (window:touchmove)="onShadowDragMove($event)"
+                                     (window:mouseup)="onShadowDragEnd($event)"
+                                     (window:touchend)="onShadowDragEnd($event)">
+                                    {{ item.emoji }}
+                                </div>
+                            } @else {
+                                <div class="shadowgame-item opacity-0 pointer-events-none">{{ item.emoji }}</div>
+                            }
+                        }
+                    </div>
+
+                    <!-- النصف السفلي: الظلال -->
+                    <div class="shadowgame-shadows-area h-[40%] flex justify-evenly items-center w-full" dir="ltr">
+                        @for (slot of shadowSlots(); track slot.id; let j = $index) {
+                            <div class="shadowgame-slot"
+                                 id="shadow-slot-{{ j }}"
+                                 [class.shadowgame-slot-hover]="shadowHoverIndex() === j"
+                                 [class.border-transparent]="slot.matched"
+                                 [class.bg-transparent]="slot.matched">
+                                <span class="shadowgame-emoji"
+                                      [class.shadowgame-correct-match]="slot.matched"
+                                      [style.filter]="slot.matched ? 'brightness(1) opacity(1)' : 'brightness(0) opacity(0.6)'">
+                                    {{ slot.emoji }}
+                                </span>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
       }
     </div>
   `
@@ -244,7 +337,7 @@ export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'match' | 'memory' | 'quiz' | 'journey'>('match');
+  mode = signal<'match' | 'memory' | 'quiz' | 'journey' | 'shadow'>('match');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -270,11 +363,34 @@ export class GamesComponent {
   journeyOptions = signal<{word: string, img: string, ar: string, isCorrect: boolean}[]>([]);
   wrongJourneyIndex = -1;
 
+  // Shadow Game State
+  shadowState = signal<'start' | 'playing' | 'win'>('start');
+  shadowLevelIndex = signal(0);
+  shadowItems = signal<{id: string, emoji: string, matched: boolean}[]>([]);
+  shadowSlots = signal<{id: string, emoji: string, matched: boolean}[]>([]);
+  shadowDraggingIndex = signal<number>(-1);
+  shadowHoverIndex = signal<number>(-1);
+  dragDx = signal(0);
+  dragDy = signal(0);
+  shadowWrongIndex = -1;
+  private shadowStartX = 0;
+  private shadowStartY = 0;
+  private shadowLevels = [
+      ['🦋', '🐞', '🐝'],
+      ['🚗', '✈️', '🚀'],
+      ['🐶', '🐱', '🐰'],
+      ['🍎', '🍌', '🍉'],
+      ['⚽', '🏀', '🎾'],
+      ['🌳', '🌵', '🌴'],
+      ['🐟', '🐙', '🦀'],
+      ['👑', '💍', '💎']
+  ];
+
   constructor() {
     this.initMatchGame();
   }
 
-  setMode(m: 'match' | 'memory' | 'quiz' | 'journey') {
+  setMode(m: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow') {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
     else if (m === 'memory') this.initMemoryGame();
@@ -282,6 +398,10 @@ export class GamesComponent {
     else if (m === 'journey') {
         this.journeyState.set('start');
         this.journeyLevelIndex.set(0);
+    }
+    else if (m === 'shadow') {
+        this.shadowState.set('start');
+        this.shadowLevelIndex.set(0);
     }
   }
 
@@ -539,5 +659,133 @@ export class GamesComponent {
         this.wrongJourneyIndex = -1;
       }, 400);
     }
+  }
+
+  // --- SHADOW GAME LOGIC ---
+  startShadowGame() {
+    this.shadowLevelIndex.set(0);
+    this.loadShadowLevel();
+  }
+
+  resetShadowGame() {
+    this.shadowState.set('start');
+    this.shadowLevelIndex.set(0);
+  }
+
+  loadShadowLevel() {
+    const idx = this.shadowLevelIndex();
+    if (idx >= this.shadowLevels.length) {
+      this.shadowState.set('win');
+      this.audio.playSoundEffect('bell');
+      this.data.addStars(40);
+      this.audio.speak('أنت عبقري', 'ar-EG');
+      return;
+    }
+
+    this.shadowState.set('playing');
+    const items = [...this.shadowLevels[idx]];
+    
+    let tops = items.sort(() => 0.5 - Math.random()).map(e => ({ id: e, emoji: e, matched: false }));
+    let bottoms = items.sort(() => 0.5 - Math.random()).map(e => ({ id: e, emoji: e, matched: false }));
+    
+    this.shadowItems.set(tops);
+    this.shadowSlots.set(bottoms);
+  }
+
+  onShadowDragStart(e: MouseEvent | TouchEvent, index: number) {
+    if (this.shadowWrongIndex === index || this.shadowItems()[index].matched) return;
+    this.shadowDraggingIndex.set(index);
+    this.audio.playSoundEffect('bell');
+    
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    this.shadowStartX = clientX;
+    this.shadowStartY = clientY;
+    this.dragDx.set(0);
+    this.dragDy.set(0);
+  }
+
+  onShadowDragMove(e: MouseEvent | TouchEvent) {
+    if (this.shadowDraggingIndex() === -1) return;
+    const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    
+    this.dragDx.set(clientX - this.shadowStartX);
+    this.dragDy.set(clientY - this.shadowStartY);
+
+    this.checkShadowCollision(clientX, clientY);
+  }
+
+  onShadowDragEnd(e: MouseEvent | TouchEvent) {
+    const dragIdx = this.shadowDraggingIndex();
+    if (dragIdx === -1) return;
+    
+    const hoverIdx = this.shadowHoverIndex();
+    this.shadowDraggingIndex.set(-1);
+    this.shadowHoverIndex.set(-1);
+
+    if (hoverIdx !== -1) {
+      const draggedItem = this.shadowItems()[dragIdx];
+      const targetSlot = this.shadowSlots()[hoverIdx];
+
+      if (draggedItem.id === targetSlot.id) {
+        // Correct Match
+        this.audio.playSoundEffect('bell');
+        this.data.addStars(1);
+        
+        this.shadowItems.update(items => {
+            const arr = [...items];
+            arr[dragIdx].matched = true;
+            return arr;
+        });
+        
+        this.shadowSlots.update(slots => {
+            const arr = [...slots];
+            arr[hoverIdx].matched = true;
+            return arr;
+        });
+
+        // Check if level won
+        if (this.shadowItems().every(item => item.matched)) {
+            setTimeout(() => {
+                this.audio.playSoundEffect('bell');
+                this.audio.speak('ممتاز', 'ar-EG');
+                this.shadowLevelIndex.update(i => i + 1);
+                this.loadShadowLevel();
+            }, 1500);
+        }
+      } else {
+        // Wrong Match
+        this.shadowWrongMatch(dragIdx);
+      }
+    } else {
+      // Dropped nowhere
+      this.shadowWrongMatch(dragIdx);
+    }
+  }
+
+  private shadowWrongMatch(dragIdx: number) {
+      this.audio.playSoundEffect('error');
+      this.shadowWrongIndex = dragIdx;
+      setTimeout(() => {
+          this.shadowWrongIndex = -1;
+      }, 400);
+  }
+
+  private checkShadowCollision(x: number, y: number) {
+    let found = -1;
+    for (let i = 0; i < this.shadowSlots().length; i++) {
+        if (this.shadowSlots()[i].matched) continue;
+        const slotEl = document.getElementById('shadow-slot-' + i);
+        if (slotEl) {
+            const rect = slotEl.getBoundingClientRect();
+            if (x > rect.left - 20 && x < rect.right + 20 && y > rect.top - 20 && y < rect.bottom + 20) {
+                found = i;
+                break;
+            }
+        }
+    }
+    this.shadowHoverIndex.set(found);
   }
 }
