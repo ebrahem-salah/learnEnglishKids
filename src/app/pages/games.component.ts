@@ -3,6 +3,8 @@ import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 import { BalloonGameComponent } from './balloon-game.component';
 import { TrainGameComponent } from './train-game.component';
+import { ShapeGameComponent } from './shape-game.component';
+import { AppleGameComponent } from './apple-game.component';
 
 interface DragItem { word: string; img: string; }
 interface DropZone { letter: string; matchWord: string; currentItem: DragItem | null; }
@@ -12,7 +14,7 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
 @Component({
   selector: 'app-games',
   standalone: true,
-  imports: [BalloonGameComponent, TrainGameComponent],
+  imports: [BalloonGameComponent, TrainGameComponent, ShapeGameComponent, AppleGameComponent],
   template: `
     <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-orange-300 max-w-5xl mx-auto">
       <h2 class="text-4xl font-black text-orange-600 mb-6 text-center">🎮 ألعاب الذكاء والمرح</h2>
@@ -38,6 +40,12 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
         </button>
         <button (click)="setMode('train')" [class]="mode() === 'train' ? 'bg-emerald-500 text-white scale-105 shadow-lg ring-4 ring-emerald-200' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-emerald-200 flex flex-col items-center justify-center gap-2 text-center">
           <span class="text-4xl">🚂</span> قطار الحيوانات
+        </button>
+        <button (click)="setMode('shape')" [class]="mode() === 'shape' ? 'bg-pink-500 text-white scale-105 shadow-lg ring-4 ring-pink-200' : 'bg-gray-100 text-gray-700 hover:bg-pink-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-pink-200 flex flex-col items-center justify-center gap-2 text-center">
+          <span class="text-4xl">🎨</span> تلوين الأشكال
+        </button>
+        <button (click)="setMode('apple')" [class]="mode() === 'apple' ? 'bg-red-500 text-white scale-105 shadow-lg ring-4 ring-red-200' : 'bg-gray-100 text-gray-700 hover:bg-red-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-red-200 flex flex-col items-center justify-center gap-2 text-center">
+          <span class="text-4xl">🍎</span> سلة التفاح
         </button>
       </div>
 
@@ -342,6 +350,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
           <app-balloon-game></app-balloon-game>
       } @else if (mode() === 'train') {
           <app-train-game></app-train-game>
+      } @else if (mode() === 'shape') {
+          <app-shape-game></app-shape-game>
+      } @else if (mode() === 'apple') {
+          <app-apple-game></app-apple-game>
       }
     </div>
   `
@@ -350,7 +362,7 @@ export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train'>('match');
+  mode = signal<'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple'>('match');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -403,7 +415,7 @@ export class GamesComponent {
     this.initMatchGame();
   }
 
-  setMode(m: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train') {
+  setMode(m: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple') {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
     else if (m === 'memory') this.initMemoryGame();
