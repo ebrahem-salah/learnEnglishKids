@@ -161,10 +161,18 @@ export class AudioService {
     } catch { /* ignore */ }
   }
 
+  playCelebration() {
+    this.beep([523, 659, 784, 1046], 'triangle');
+  }
+
   playSoundEffect(type: string) {
     try {
       const c = (this.ctxAudio ??= new AudioContext());
       let freqs: number[] = [400, 600];
+      if (type === 'ding') freqs = [523, 659, 784];
+      if (type === 'buzz') freqs = [150, 120];
+      if (type === 'pop') freqs = [350, 500];
+      if (type === 'bell') freqs = [880, 1174];
       if (type === 'roar') freqs = [150, 100, 80];
       if (type === 'meow') freqs = [700, 900, 650];
       if (type === 'bark') freqs = [250, 450];
@@ -173,10 +181,15 @@ export class AudioService {
 
       freqs.forEach((f, i) => {
         const o = c.createOscillator(), g = c.createGain();
-        o.type = 'sawtooth'; o.frequency.value = f; o.connect(g); g.connect(c.destination);
-        const t = c.currentTime + i * 0.15;
-        g.gain.setValueAtTime(0.2, t); g.gain.exponentialRampToValueAtTime(0.001, t + 0.35);
-        o.start(t); o.stop(t + 0.35);
+        o.type = (type === 'ding' || type === 'bell') ? 'sine' : 'sawtooth';
+        o.frequency.value = f;
+        o.connect(g);
+        g.connect(c.destination);
+        const t = c.currentTime + i * 0.12;
+        g.gain.setValueAtTime(0.2, t);
+        g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+        o.start(t);
+        o.stop(t + 0.3);
       });
     } catch { /* ignore */ }
   }

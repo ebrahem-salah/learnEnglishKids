@@ -7,6 +7,10 @@ import { ShapeGameComponent } from './shape-game.component';
 import { AppleGameComponent } from './apple-game.component';
 import { MathGameComponent } from './math-game.component';
 import { PuzzleGameComponent } from './puzzle-game.component';
+import { SpellingGameComponent } from './spelling-game.component';
+import { SortingGameComponent } from './sorting-game.component';
+import { AnimalSoundGameComponent } from './animal-sound-game.component';
+import { PatternMemoryGameComponent } from './pattern-memory-game.component';
 
 interface DragItem { word: string; img: string; imagePath?: string; }
 interface DropZone { letter: string; matchWord: string; currentItem: DragItem | null; }
@@ -16,7 +20,18 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; im
 @Component({
   selector: 'app-games',
   standalone: true,
-  imports: [BalloonGameComponent, TrainGameComponent, ShapeGameComponent, AppleGameComponent, MathGameComponent, PuzzleGameComponent],
+  imports: [
+    BalloonGameComponent,
+    TrainGameComponent,
+    ShapeGameComponent,
+    AppleGameComponent,
+    MathGameComponent,
+    PuzzleGameComponent,
+    SpellingGameComponent,
+    SortingGameComponent,
+    AnimalSoundGameComponent,
+    PatternMemoryGameComponent
+  ],
   template: `
     @if (mode() === 'menu') {
       <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-orange-300 max-w-6xl mx-auto font-[Bubblegum]">
@@ -411,6 +426,14 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; im
           <app-math-game></app-math-game>
       } @else if (mode() === 'puzzle') {
           <app-puzzle-game></app-puzzle-game>
+      } @else if (mode() === 'spelling') {
+          <app-spelling-game></app-spelling-game>
+      } @else if (mode() === 'sorting') {
+          <app-sorting-game></app-sorting-game>
+      } @else if (mode() === 'sound') {
+          <app-animal-sound-game></app-animal-sound-game>
+      } @else if (mode() === 'pattern') {
+          <app-pattern-memory-game></app-pattern-memory-game>
       }
       </div>
     }
@@ -420,7 +443,7 @@ export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle'>('menu');
+  mode = signal<'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle' | 'spelling' | 'sorting' | 'sound' | 'pattern'>('menu');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -491,7 +514,51 @@ export class GamesComponent {
       ]
   ];
 
-  gameList: { id: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle', title: string, desc: string, icon: string, image?: string, bg: string, border: string, textColor: string, btnBg: string }[] = [
+  gameList: { id: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle' | 'spelling' | 'sorting' | 'sound' | 'pattern', title: string, desc: string, icon: string, image?: string, bg: string, border: string, textColor: string, btnBg: string }[] = [
+    {
+      id: 'spelling',
+      title: 'Word Builder',
+      desc: 'Look at the 3D picture and spell the word',
+      icon: '🐝',
+      image: 'bee.png',
+      bg: 'bg-amber-100',
+      border: 'border-amber-400',
+      textColor: 'text-amber-800',
+      btnBg: 'bg-amber-500 hover:bg-amber-600'
+    },
+    {
+      id: 'sorting',
+      title: 'Category Sorter',
+      desc: 'Sort fruits, animals, and vehicles into baskets',
+      icon: '🧺',
+      image: 'apple.png',
+      bg: 'bg-emerald-100',
+      border: 'border-emerald-400',
+      textColor: 'text-emerald-800',
+      btnBg: 'bg-emerald-500 hover:bg-emerald-600'
+    },
+    {
+      id: 'sound',
+      title: 'Animal Sounds',
+      desc: 'Listen to mystery animal calls and guess who it is',
+      icon: '🎧',
+      image: 'lion.png',
+      bg: 'bg-indigo-100',
+      border: 'border-indigo-400',
+      textColor: 'text-indigo-800',
+      btnBg: 'bg-indigo-500 hover:bg-indigo-600'
+    },
+    {
+      id: 'pattern',
+      title: 'Pattern Memory',
+      desc: 'Watch the flashing color lights and repeat the sequence',
+      icon: '🧠',
+      image: 'color_balloons.png',
+      bg: 'bg-purple-100',
+      border: 'border-purple-400',
+      textColor: 'text-purple-800',
+      btnBg: 'bg-purple-500 hover:bg-purple-600'
+    },
     {
       id: 'train',
       title: 'Animal Train',
@@ -623,7 +690,7 @@ export class GamesComponent {
 
   constructor() {}
 
-  setMode(m: 'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle') {
+  setMode(m: 'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle' | 'spelling' | 'sorting' | 'sound' | 'pattern') {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
     else if (m === 'memory') this.initMemoryGame();
