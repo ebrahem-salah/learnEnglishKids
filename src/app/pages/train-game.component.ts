@@ -1,7 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
-import { NgClass } from '@angular/common';
 
 interface Animal {
   en: string;
@@ -20,7 +19,6 @@ interface TrainCar {
 @Component({
   selector: 'app-train-game',
   standalone: true,
-  imports: [NgClass],
   template: `
     <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col justify-end select-none bg-gradient-to-b from-blue-200 to-green-100" dir="ltr">
         

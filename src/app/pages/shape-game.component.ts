@@ -1,7 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
-import { NgStyle } from '@angular/common';
 
 interface AppColor { en: string; ar: string; hex: string; }
 interface AppShape { en: string; ar: string; path: string; }
@@ -9,7 +8,6 @@ interface AppShape { en: string; ar: string; path: string; }
 @Component({
   selector: 'app-shape-game',
   standalone: true,
-  imports: [NgStyle],
   template: `
     <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-amber-50" dir="ltr">
         

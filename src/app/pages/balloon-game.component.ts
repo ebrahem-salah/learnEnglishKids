@@ -1,7 +1,6 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
-import { NgClass } from '@angular/common';
 
 interface Balloon {
   id: number;
@@ -17,7 +16,6 @@ interface Balloon {
 @Component({
   selector: 'app-balloon-game',
   standalone: true,
-  imports: [NgClass],
   template: `
     <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-gradient-to-b from-sky-300 to-sky-100" dir="ltr">
         

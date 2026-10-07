@@ -1,7 +1,6 @@
 import { Component, signal, inject } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
-import { NgClass } from '@angular/common';
 
 interface PuzzlePiece {
   id: number;
@@ -17,7 +16,6 @@ interface PuzzleSlot {
 @Component({
   selector: 'app-puzzle-game',
   standalone: true,
-  imports: [NgClass],
   template: `
     <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-gradient-to-b from-indigo-200 to-purple-100" dir="ltr">
         

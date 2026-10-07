@@ -73,7 +73,7 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
           </div>
 
           <!-- شريط الإنجاز والنقاط -->
-          <div class="max-w-md mx-auto px-6 mb-5">
+          <div class="max-w-md mx-auto px-6 mb-4">
             <div class="flex justify-between text-base font-black text-gray-700 mb-1">
               <span>📚 المستكشف: {{ data.learned().size }} / 26</span>
               <span class="text-yellow-600 font-extrabold text-lg flex items-center gap-1">
@@ -83,6 +83,45 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
             <div class="h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner p-0.5">
               <div class="h-full bg-gradient-to-r from-green-400 via-teal-400 to-blue-500 rounded-full transition-all duration-700 shadow" [style.width.%]="(data.learned().size / 26) * 100"></div>
             </div>
+          </div>
+
+          <!-- شريط البحث الفوري والقاموس الناطق (Visual Dictionary Search) -->
+          <div class="max-w-md mx-auto px-4 mb-6 relative">
+            <div class="relative flex items-center">
+              <input #searchInput
+                     type="text"
+                     placeholder="🔍 ابحث عن أي كلمة أو حيوان (مثل: Lion أو قطة)..."
+                     (input)="onSearch(searchInput.value)"
+                     class="w-full bg-amber-50/90 border-2 border-amber-300 rounded-2xl px-4 py-2.5 pr-10 text-base font-black text-amber-950 focus:outline-none focus:border-amber-500 placeholder-gray-400 shadow-inner" />
+              @if (searchQuery()) {
+                <button (click)="clearSearch(searchInput)" class="absolute left-3 text-gray-400 hover:text-gray-600 font-black text-lg">✕</button>
+              }
+            </div>
+
+            <!-- قائمة النتائج الفورية المنسدلة -->
+            @if (searchResults().length > 0) {
+              <div class="absolute left-4 right-4 top-12 bg-white rounded-2xl shadow-2xl border-3 border-amber-300 z-50 max-h-72 overflow-y-auto p-2 space-y-1">
+                @for (item of searchResults(); track item.word) {
+                  <div (click)="selectSearchResult(item)"
+                       class="p-2.5 rounded-xl hover:bg-amber-100 flex items-center justify-between cursor-pointer transition-colors border-b border-gray-100 last:border-none">
+                    <div class="flex items-center gap-3">
+                      @if (item.imagePath) {
+                        <img [src]="'assets/images/' + item.imagePath" class="w-10 h-10 object-contain drop-shadow" alt="" />
+                      } @else {
+                        <span class="text-2xl">{{ item.img }}</span>
+                      }
+                      <div class="text-right">
+                        <span class="font-black text-amber-950 text-base">{{ item.word }}</span>
+                        <span class="text-xs font-bold text-gray-500 mr-2">({{ item.ar_word }})</span>
+                      </div>
+                    </div>
+                    <button class="bg-amber-400 hover:bg-amber-500 text-amber-950 rounded-full w-8 h-8 flex items-center justify-center text-sm shadow">
+                      🔊
+                    </button>
+                  </div>
+                }
+              </div>
+            }
           </div>
 
           <!-- قائمة التبديل الشاملة عبر Angular Router Pages -->
@@ -266,6 +305,37 @@ export class App {
   mascotSpeech = signal<string>('أهلاً بك في الأكاديمية! تنقل بين الصفحات واستمتع بالألعاب والدروس 🌟');
   quiz = signal<Quiz | null>(null);
   memoryGame = signal<{ cards: MemoryCard[]; firstCard: MemoryCard | null; lock: boolean; completed: boolean } | null>(null);
+
+  searchQuery = signal<string>('');
+  searchResults = signal<WordItem[]>([]);
+
+  onSearch(query: string) {
+    const q = query.trim().toLowerCase();
+    this.searchQuery.set(q);
+    if (!q) {
+      this.searchResults.set([]);
+      return;
+    }
+
+    const allWords: WordItem[] = this.data.alphabetData.flatMap(a => a.words);
+    const matches = allWords.filter(w =>
+      w.word.toLowerCase().includes(q) ||
+      w.ar_word.includes(q)
+    ).slice(0, 8);
+
+    this.searchResults.set(matches);
+  }
+
+  selectSearchResult(item: WordItem) {
+    this.audio.speak(item.word, 'en-US');
+    this.data.tracingText.set(item.word);
+  }
+
+  clearSearch(inputEl: HTMLInputElement) {
+    inputEl.value = '';
+    this.searchQuery.set('');
+    this.searchResults.set([]);
+  }
 
   constructor() {
     setTimeout(() => {

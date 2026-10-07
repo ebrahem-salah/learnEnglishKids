@@ -102,12 +102,12 @@ export class DataService {
   // Current text to trace (letter or word)
   tracingText = signal<string>('A');
   stickersData = signal<Sticker[]>([
-    { id: 'st1', name: 'كأس البطل', img: '🏆', cost: 5, unlocked: false },
-    { id: 'st2', name: 'الصاروخ الذهبي', img: '🚀', cost: 10, unlocked: false },
-    { id: 'st3', name: 'تاج الملك', img: '👑', cost: 15, unlocked: false },
-    { id: 'st4', name: 'وحيد القرن', img: '🦄', cost: 20, unlocked: false },
-    { id: 'st5', name: 'الفرس اللطيف', img: '🐬', cost: 25, unlocked: false },
-    { id: 'st6', name: 'وسام الشرف', img: '🎖️', cost: 30, unlocked: false }
+    { id: 'st1', name: 'كأس البطل الذهبي', img: '🏆', imagePath: 'gift.png', cost: 5, unlocked: false },
+    { id: 'st2', name: 'الصاروخ الفضائي', img: '🚀', imagePath: 'rocket.png', cost: 10, unlocked: false },
+    { id: 'st3', name: 'تاج الملكة', img: '👑', imagePath: 'queen.png', cost: 15, unlocked: false },
+    { id: 'st4', name: 'وحيد القرن السحري', img: '🦄', imagePath: 'unicorn.png', cost: 20, unlocked: false },
+    { id: 'st5', name: 'الدولفين الذكي', img: '🐬', imagePath: 'dolphin.png', cost: 25, unlocked: false },
+    { id: 'st6', name: 'نجمة التفوق', img: '⭐', imagePath: 'star.png', cost: 30, unlocked: false }
   ]);
 
   readonly phrasesData: Phrase[] = [
