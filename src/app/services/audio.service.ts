@@ -83,43 +83,59 @@ export class AudioService {
       }
 
       const tl = lang.startsWith('ar') ? 'ar' : 'en';
-      const url = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=${tl}`;
-      const audio = new Audio(url);
-      this.activeAudio = audio;
-      
-      if (this.slow() && tl === 'en') {
-        audio.playbackRate = 0.65;
-      }
+      const cleanWord = text.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const localUrl = `assets/audio/words/${cleanWord}.mp3`;
+      const fallbackUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=${tl}`;
 
-      let resolved = false;
-      const done = () => {
-        if (!resolved) { 
-          resolved = true; 
-          if (this.activeAudio === audio) this.activeAudio = null;
-          resolve(); 
+      // Check if we should attempt local offline file first (for English words/numbers/letters)
+      const tryPlayUrl = (src: string, isLocal: boolean) => {
+        const audio = new Audio(src);
+        this.activeAudio = audio;
+        
+        if (this.slow() && tl === 'en') {
+          audio.playbackRate = 0.75;
         }
+
+        let resolved = false;
+        const done = () => {
+          if (!resolved) { 
+            resolved = true; 
+            if (this.activeAudio === audio) this.activeAudio = null;
+            resolve(); 
+          }
+        };
+
+        audio.onended = done;
+        audio.onpause = done;
+        audio.onerror = () => {
+          if (isLocal) {
+            // Local file didn't exist for this complex sentence, fallback to remote/TTS
+            tryPlayUrl(fallbackUrl, false);
+          } else {
+            // Fallback to robotic browser TTS
+            if (!('speechSynthesis' in window)) return done();
+            speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = lang;
+            const v = this.getBestVoice(lang);
+            if (v) u.voice = v;
+            u.rate = (lang.startsWith('ar') ? 0.95 : 1) * (this.slow() ? 0.65 : 0.9);
+            u.pitch = 1.1;
+            u.onend = done;
+            u.onerror = done;
+            speechSynthesis.speak(u);
+          }
+        };
+
+        audio.play().catch(audio.onerror);
+        setTimeout(done, 3000);
       };
 
-      audio.onended = done;
-      audio.onpause = done; // In case browser pauses it
-      audio.onerror = () => {
-        // Fallback to robotic browser TTS
-        if (!('speechSynthesis' in window)) return done();
-        speechSynthesis.cancel();
-        const u = new SpeechSynthesisUtterance(text);
-        u.lang = lang;
-        const v = this.getBestVoice(lang);
-        if (v) u.voice = v;
-        u.rate = (lang.startsWith('ar') ? 0.95 : 1) * (this.slow() ? 0.65 : 0.9);
-        u.pitch = 1.1;
-        u.onend = done;
-        u.onerror = done;
-        speechSynthesis.speak(u);
-      };
-
-      audio.play().catch(audio.onerror);
-      // Timeout to prevent hanging if events fail
-      setTimeout(done, 2500);
+      if (tl === 'en' && cleanWord.length < 35 && !text.includes(' ') && !text.includes('.')) {
+        tryPlayUrl(localUrl, true);
+      } else {
+        tryPlayUrl(fallbackUrl, false);
+      }
     });
   }
 
