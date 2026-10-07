@@ -65,13 +65,24 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
               </div>
               <button (click)="step(1)" class="w-14 h-14 rounded-full bg-white shadow-lg text-3xl font-black hover:bg-blue-100 text-blue-600 hover:scale-110 transition-all border border-blue-200">›</button>
             </div>
-            <div class="mt-4 flex justify-center gap-3 flex-wrap font-[Bubblegum]">
-              <button (click)="playLetter(selected)"
-                class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3.5 rounded-full text-xl font-black hover:from-blue-600 hover:to-indigo-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
-                🔊 Listen & Phonics
+            <div class="mt-4 flex justify-center gap-2 flex-wrap font-[Bubblegum]">
+              <!-- Button 1: Letter Name (e.g. "Letter A") -->
+              <button (click)="playLetterName(selected)"
+                class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-5 py-3 rounded-full text-base font-black hover:from-blue-600 hover:to-indigo-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
+                🔤 اسم الحرف (Letter {{ selected.letter }})
+              </button>
+              <!-- Button 2: Phonics Sound (e.g. "æ... ah") -->
+              <button (click)="playPhonicsSound(selected)"
+                class="bg-gradient-to-r from-purple-500 to-pink-500 text-white px-5 py-3 rounded-full text-base font-black hover:from-purple-600 hover:to-pink-600 hover:scale-105 transition-all shadow-lg border-2 border-white">
+                🗣️ صوت الحرف (Phonics)
+              </button>
+              <!-- Button 3: Full phrase -->
+              <button (click)="playLetterFull(selected)"
+                class="bg-gradient-to-r from-emerald-500 to-teal-500 text-white px-5 py-3 rounded-full text-base font-black hover:from-emerald-600 hover:to-teal-600 hover:scale-105 transition-all shadow-lg border-2 border-white">
+                🌟 {{ selected.letter }} for {{ selected.words[0].word }}
               </button>
               <button (click)="writeWord(selected.letter)"
-                class="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-3.5 rounded-full text-xl font-black hover:from-amber-600 hover:to-orange-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
+                class="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-5 py-3 rounded-full text-base font-black hover:from-amber-600 hover:to-orange-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
                 ✏️ Practice Letter
               </button>
             </div>
@@ -142,12 +153,36 @@ export class AlphabetComponent {
     this.selectLetter(this.data.alphabetData[i]);
   }
 
+  // Play local letter name file: "Letter A"
+  playLetterName(item: AlphabetItem) {
+    const letter = item.letter.toLowerCase();
+    const audio = new Audio(`assets/audio/words/${letter}.mp3`);
+    audio.play().catch(() => this.audio.speak(`Letter ${item.letter}`, 'en-US'));
+  }
+
+  // Play local phonics sound file: "æ" or "buh"
+  playPhonicsSound(item: AlphabetItem) {
+    const letter = item.letter.toLowerCase();
+    const audio = new Audio(`assets/audio/words/phonics_${letter}.mp3`);
+    audio.play().catch(() => this.audio.playPhonics(letter));
+  }
+
+  // Play full educational phrase: "A is for Apple. Apple."
+  playLetterFull(item: AlphabetItem) {
+    const letter = item.letter.toLowerCase();
+    const audio = new Audio(`assets/audio/words/letter_${letter}_full.mp3`);
+    audio.play().catch(() => {
+      this.audio.sequence('L' + item.letter, [
+        [item.letter, 'en-US'],
+        [item.letter + ' is for ' + item.words[0].word, 'en-US'],
+        [item.words[0].word, 'en-US']
+      ]);
+    });
+  }
+
+  // Keep old playLetter for backward compatibility
   playLetter(item: AlphabetItem) {
-    this.audio.sequence('L' + item.letter, [
-      [item.letter, 'en-US'],
-      [item.letter + ' for ' + item.words[0].word, 'en-US'],
-      [item.ar_letter, 'ar-EG']
-    ]);
+    this.playLetterName(item);
   }
 
   playWord(w: WordItem) {
