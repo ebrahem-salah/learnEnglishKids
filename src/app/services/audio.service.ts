@@ -131,7 +131,7 @@ export class AudioService {
         setTimeout(done, 3000);
       };
 
-      if (tl === 'en' && cleanWord.length < 35 && !text.includes(' ') && !text.includes('.')) {
+      if (tl === 'en') {
         tryPlayUrl(localUrl, true);
       } else {
         tryPlayUrl(fallbackUrl, false);
@@ -166,8 +166,11 @@ export class AudioService {
       'k': 'kuh', 'l': 'll', 'm': 'mm', 'n': 'nn', 'o': 'oh', 'p': 'puh', 'q': 'quh', 'r': 'rr', 's': 'ssss', 't': 'tuh',
       'u': 'uh', 'v': 'vuh', 'w': 'wuh', 'x': 'ks', 'y': 'yuh', 'z': 'zzzz'
     };
+    const key = `phonics_${letter.toLowerCase()}`;
     const sound = phonicsMap[letter.toLowerCase()] || letter;
-    this.speak(sound, 'en-US');
+    // Attempt local phonics file first
+    const audio = new Audio(`assets/audio/words/${key}.mp3`);
+    audio.play().catch(() => this.speak(sound, 'en-US'));
   }
 
   beep(freqs: number[], type: OscillatorType = 'sine') {
