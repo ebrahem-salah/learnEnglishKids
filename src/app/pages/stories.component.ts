@@ -49,7 +49,7 @@ import { AudioService } from '../services/audio.service';
               </button>
             </div>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">
               @for (page of story.pages; track page.en) {
                 <div (click)="audio.speak(page.en, 'en-US')" class="bg-white p-5 rounded-2xl border-2 border-purple-100 shadow hover:shadow-lg hover:border-purple-300 text-center hover:scale-105 transition-all cursor-pointer group">
                   <div class="h-28 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">

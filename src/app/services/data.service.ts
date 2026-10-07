@@ -153,44 +153,54 @@ export class DataService {
       icon: '🦁',
       imagePath: 'lion.png',
       pages: [
-        { en: 'Leo is a little lion.', ar: 'ليو هو أسد صغير.', img: '🦁', imagePath: 'lion.png' },
-        { en: 'Leo likes to play in the sun.', ar: 'يحب ليو اللعب في الشمس.', img: '☀️', imagePath: 'sun.png' },
-        { en: 'Leo made a new rabbit friend!', ar: 'صادق ليو أرنباً جديداً!', img: '🐰', imagePath: 'rabbit.png' }
+        { en: 'Once upon a time, Leo the little lion woke up.', ar: 'ذات مرة، استيقظ الأسد الصغير ليو في الصباح.', img: '🦁', imagePath: 'lion.png' },
+        { en: 'The warm golden sun was shining bright in the sky.', ar: 'كانت الشمس الذهبية الدافئة تشرق براقة في السماء.', img: '☀️', imagePath: 'sun.png' },
+        { en: 'Leo hopped through the green grassy valley.', ar: 'قفز ليو بحماس عبر الوادي الأخضر العشبي.', img: '🌳', imagePath: 'tree.png' },
+        { en: 'Suddenly, he met a cute little rabbit named Bella.', ar: 'وفجأة، التقى بأرنبة صغيرة لطيفة تدعى بيلا.', img: '🐰', imagePath: 'rabbit.png' },
+        { en: 'They ate sweet red apples together under the big tree.', ar: 'تناولا معاً تفاحاً أحمر لذيذاً تحت الشجرة الكبيرة.', img: '🍎', imagePath: 'apple.png' },
+        { en: 'They became best friends and played until sunset!', ar: 'أصبحا أعز صديقين ولعبا بسعادة حتى غروب الشمس!', img: '⭐', imagePath: 'star.png' }
       ]
     },
     {
-      title: 'The Space Rocket',
-      ar_title: 'صاروخ الفضاء',
+      title: 'Journey to the Stars',
+      ar_title: 'رحلة إلى النجوم والقمر',
       icon: '🚀',
       imagePath: 'rocket.png',
       pages: [
-        { en: 'The rocket goes up!', ar: 'الصاروخ ينطلق للأعلى!', img: '🚀', imagePath: 'rocket.png' },
-        { en: 'It reaches the moon.', ar: 'يصل إلى القمر.', img: '🌙', imagePath: 'moon.png' },
-        { en: 'The stars are shining bright.', ar: 'النجوم تلمع ببريق.', img: '⭐', imagePath: 'star.png' }
+        { en: 'The shiny spaceship is ready on the launch pad.', ar: 'سفينة الفضاء اللامعة جاهزة على منصة الإطلاق.', img: '🚀', imagePath: 'rocket.png' },
+        { en: 'Three, two, one, blast off into the clouds!', ar: 'ثلاثة، اثنان، واحد، انطلاق نحو السحاب!', img: '☁️', imagePath: 'cloud.png' },
+        { en: 'The rocket flies high beyond Planet Earth.', ar: 'يحلق الصاروخ عالياً متجاوزاً كوكب الأرض الجميل.', img: '🌍', imagePath: 'earth.png' },
+        { en: 'It lands softly on the glowing silver moon.', ar: 'يهبط الصاروخ بهدوء على سطح القمر الفضي المشع.', img: '🌙', imagePath: 'moon.png' },
+        { en: 'Millions of colorful stars sparkle like diamonds.', ar: 'ملايين النجوم الملونة تلمع كالألماس في الفضاء.', img: '⭐', imagePath: 'star.png' },
+        { en: 'The astronaut waves happily back to Earth!', ar: 'يلوح رائد الفضاء بيده سعيداً للأرض!', img: '👨‍🚀', imagePath: 'astronaut.png' }
       ]
     },
     {
-      title: 'A Day at the Farm',
-      ar_title: 'يوم في المزرعة',
+      title: 'A Busy Day at the Farm',
+      ar_title: 'يوم حافل في المزرعة السعيدة',
       icon: '🚜',
       imagePath: 'farm.png',
       pages: [
-        { en: 'The sun rises on the farm.', ar: 'تشرق الشمس في المزرعة.', img: '🌅', imagePath: 'sun.png' },
-        { en: 'The cow says moo.', ar: 'البقرة تقول موو.', img: '🐄', imagePath: 'cow.png' },
-        { en: 'The duck swims in the pond.', ar: 'البطة تسبح في البركة.', img: '🦆', imagePath: 'duck.png' },
-        { en: 'The horse runs fast.', ar: 'الحصان يركض بسرعة.', img: '🐎', imagePath: 'horse.png' }
+        { en: 'The farm wakes up as the rooster greets the morning sun.', ar: 'تستيقظ المزرعة بينما يحيي الديك شمس الصباح المشرقة.', img: '🌅', imagePath: 'sun.png' },
+        { en: 'The friendly cow grazes and gives fresh milk.', ar: 'ترعى البقرة الودودة في الحقل وتمنحنا حليباً طازجاً.', img: '🐄', imagePath: 'cow.png' },
+        { en: 'Two fluffy ducks swim splashing in the clear pond.', ar: 'بطتان رقيقتان تسبحان وترشان الماء في البركة الصافية.', img: '🦆', imagePath: 'duck.png' },
+        { en: 'The brown horse gallops gracefully across the fence.', ar: 'يركض الحصان البني برشاقة وسرعة بمحاذاة السياج.', img: '🐎', imagePath: 'horse.png' },
+        { en: 'The farmer collects red tomatoes and ripe strawberries.', ar: 'يجمع المزارع الطماطم الحمراء والفراولة الناضجة اللذيذة.', img: '🍓', imagePath: 'strawberry.png' },
+        { en: 'It was a wonderful, peaceful day on the farm!', ar: 'لقد كان يوماً رائعاً وهادئاً في المزرعة الجميلة!', img: '🚜', imagePath: 'farm.png' }
       ]
     },
     {
-      title: 'Going to School',
-      ar_title: 'الذهاب إلى المدرسة',
+      title: 'Sara First Day at School',
+      ar_title: 'يوم سارة الأول في المدرسة',
       icon: '🏫',
       imagePath: 'bus.png',
       pages: [
-        { en: 'Sara wakes up early.', ar: 'تستيقظ سارة مبكراً.', img: '⏰', imagePath: 'sun.png' },
-        { en: 'She eats her breakfast.', ar: 'تتناول فطورها.', img: '🥣', imagePath: 'milk.png' },
-        { en: 'She takes her yellow bus.', ar: 'تستقل حافلتها الصفراء.', img: '🚌', imagePath: 'bus.png' },
-        { en: 'Sara loves reading books.', ar: 'سارة تحب قراءة الكتب.', img: '📚', imagePath: 'book.png' }
+        { en: 'Sara woke up early with a bright smile on her face.', ar: 'استيقظت سارة مبكراً بابتسامة مشرقة على وجهها.', img: '⏰', imagePath: 'sun.png' },
+        { en: 'She packed her notebook, pencils, and healthy breakfast.', ar: 'وضعت في حقيبتها دفترها وأقلامها وفطورها الصحي.', img: '🥛', imagePath: 'milk.png' },
+        { en: 'The cheerful yellow school bus arrived at her door.', ar: 'وصلت حافلة المدرسة الصفراء المبهجة عند باب بيتها.', img: '🚌', imagePath: 'bus.png' },
+        { en: 'Her kind teacher welcomed everyone into the classroom.', ar: 'رحبت المعلمة اللطيفة بالجميع داخل الفصل الدراسي.', img: '👩‍🏫', imagePath: 'book.png' },
+        { en: 'They read exciting stories and drew colorful rainbows.', ar: 'قرأوا قصصاً مشوقة ورسموا قوس قزح بألوان زاهية.', img: '🌈', imagePath: 'rainbow.png' },
+        { en: 'Sara shouted: I love learning and making new friends!', ar: 'هتفت سارة بفرح: أنا أحب التعلم وتكوين أصدقاء جدد!', img: '🎒', imagePath: 'gift.png' }
       ]
     }
   ];

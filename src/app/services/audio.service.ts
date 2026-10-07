@@ -27,7 +27,7 @@ export class AudioService {
   private voices: SpeechSynthesisVoice[] = [];
   private playToken = 0;
   private ctxAudio?: AudioContext;
-  slow = signal(false);
+  slow = signal(true);
   playing = signal<string | null>(null);
 
   constructor() {

@@ -1,5 +1,5 @@
 import { Component, signal, inject } from '@angular/core';
-import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } from '@angular/router';
 import { NgTemplateOutlet } from '@angular/common';
 import { DataService } from './services/data.service';
 import { AudioService, WordItem } from './services/audio.service';
@@ -40,153 +40,162 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
           </div>
         }
 
-        <!-- الهيدر ونظام التنقل الاحترافي Navigation Bar -->
-        <header class="text-center py-6 mb-8 bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border-4 border-blue-200 relative overflow-hidden">
-          <div class="flex items-center justify-center gap-3 mb-2">
-            <span class="text-5xl animate-bounce">🎨</span>
-            <div class="flex flex-col items-center">
-              <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-purple-600 leading-normal pb-1">
-                تعلم مع يونس
-              </h1>
-              <h2 class="text-xl md:text-2xl font-black text-gray-600 tracking-wider">
-                Learn With Younis
-              </h2>
-            </div>
-            <span class="text-5xl animate-bounce">⭐</span>
-          </div>
+        <!-- زر العودة للشاشة الرئيسية والهيدر المدمج للصفحات الداخلية -->
+        @if (!isHome()) {
+          <div class="flex items-center justify-between bg-white/95 backdrop-blur-md rounded-2xl p-4 mb-6 shadow-md border-2 border-blue-200">
+            <a routerLink="/alphabet" class="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-black px-5 py-2.5 rounded-xl shadow hover:scale-105 active:scale-95 transition-all text-base md:text-lg">
+              <span class="text-xl">🏠</span>
+              <span>الرئيسية (Home)</span>
+            </a>
 
-          <!-- شخصية الأرنب المشجع Mascot -->
-          <div class="flex flex-col md:flex-row items-center justify-center gap-4 bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 py-3 px-6 rounded-2xl max-w-xl mx-auto mb-4 border border-pink-200 shadow-sm cursor-pointer hover:scale-105 transition-all" (click)="speakMascot()">
-            <div class="flex items-center gap-4">
-              <span class="text-5xl animate-pulse">🐰</span>
-              <div class="text-right">
-                <div class="text-xs font-black text-pink-500">صديقك الأرنب "باني":</div>
-                <div class="text-base md:text-lg font-black text-purple-900">{{ mascotSpeech() }}</div>
+            <div class="flex items-center gap-3">
+              <button (click)="audio.slow.set(!audio.slow())" class="bg-blue-50 border border-blue-300 text-blue-800 px-3.5 py-1.5 rounded-xl font-black text-sm hover:bg-blue-100 transition-all flex items-center gap-1 shadow-sm">
+                {{ audio.slow() ? '🐢 نطق بطيء (مفعّل)' : '🐇 نطق طبيعي' }}
+              </button>
+              <div class="bg-amber-100 text-amber-900 px-4 py-1.5 rounded-xl font-black text-base border border-amber-300 flex items-center gap-1">
+                <span>⭐</span> {{ data.stars() }}
               </div>
             </div>
-            @if (data.childName()) {
-              <div class="md:mr-auto bg-white px-4 py-1.5 rounded-full border border-pink-200 shadow-sm flex items-center gap-2">
-                <span class="font-black text-pink-600 text-sm">أيام متتالية:</span>
-                <span class="font-black text-orange-500 text-lg">{{ data.streak() }} 🔥</span>
+          </div>
+        }
+
+        <!-- الهيدر الكامل ونظام التنقل فقط في الصفحة الرئيسية -->
+        @if (isHome()) {
+          <header class="text-center py-6 mb-8 bg-white/95 backdrop-blur-md rounded-3xl shadow-xl border-4 border-blue-200 relative overflow-hidden">
+            <div class="flex items-center justify-center gap-3 mb-2">
+              <span class="text-5xl animate-bounce">🎨</span>
+              <div class="flex flex-col items-center">
+                <h1 class="text-3xl md:text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-pink-500 to-purple-600 leading-normal pb-1">
+                  تعلم مع يونس
+                </h1>
+                <h2 class="text-xl md:text-2xl font-black text-gray-600 tracking-wider">
+                  Learn With Younis
+                </h2>
               </div>
-            }
-          </div>
-
-          <!-- شريط الإنجاز والنقاط -->
-          <div class="max-w-md mx-auto px-6 mb-4">
-            <div class="flex justify-between text-base font-black text-gray-700 mb-1">
-              <span>📚 المستكشف: {{ data.learned().size }} / 26</span>
-              <span class="text-yellow-600 font-extrabold text-lg flex items-center gap-1">
-                🏆 النجوم: {{ data.stars() }} ⭐
-              </span>
+              <span class="text-5xl animate-bounce">⭐</span>
             </div>
-            <div class="h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner p-0.5">
-              <div class="h-full bg-gradient-to-r from-green-400 via-teal-400 to-blue-500 rounded-full transition-all duration-700 shadow" [style.width.%]="(data.learned().size / 26) * 100"></div>
-            </div>
-          </div>
 
-          <!-- شريط البحث الفوري والقاموس الناطق (Visual Dictionary Search) -->
-          <div class="max-w-md mx-auto px-4 mb-6 relative">
-            <div class="relative flex items-center">
-              <input #searchInput
-                     type="text"
-                     placeholder="🔍 ابحث عن أي كلمة أو حيوان (مثل: Lion أو قطة)..."
-                     (input)="onSearch(searchInput.value)"
-                     class="w-full bg-amber-50/90 border-2 border-amber-300 rounded-2xl px-4 py-2.5 pr-10 text-base font-black text-amber-950 focus:outline-none focus:border-amber-500 placeholder-gray-400 shadow-inner" />
-              @if (searchQuery()) {
-                <button (click)="clearSearch(searchInput)" class="absolute left-3 text-gray-400 hover:text-gray-600 font-black text-lg">✕</button>
+            <!-- شخصية الأرنب المشجع Mascot -->
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4 bg-gradient-to-r from-pink-50 via-purple-50 to-indigo-50 py-3 px-6 rounded-2xl max-w-xl mx-auto mb-4 border border-pink-200 shadow-sm cursor-pointer hover:scale-105 transition-all" (click)="speakMascot()">
+              <div class="flex items-center gap-4">
+                <span class="text-5xl animate-pulse">🐰</span>
+                <div class="text-right">
+                  <div class="text-xs font-black text-pink-500">صديقك الأرنب "باني":</div>
+                  <div class="text-base md:text-lg font-black text-purple-900">{{ mascotSpeech() }}</div>
+                </div>
+              </div>
+              @if (data.childName()) {
+                <div class="md:mr-auto bg-white px-4 py-1.5 rounded-full border border-pink-200 shadow-sm flex items-center gap-2">
+                  <span class="font-black text-pink-600 text-sm">أيام متتالية:</span>
+                  <span class="font-black text-orange-500 text-lg">{{ data.streak() }} 🔥</span>
+                </div>
               }
             </div>
 
-            <!-- قائمة النتائج الفورية المنسدلة -->
-            @if (searchResults().length > 0) {
-              <div class="absolute left-4 right-4 top-12 bg-white rounded-2xl shadow-2xl border-3 border-amber-300 z-50 max-h-72 overflow-y-auto p-2 space-y-1">
-                @for (item of searchResults(); track item.word) {
-                  <div (click)="selectSearchResult(item)"
-                       class="p-2.5 rounded-xl hover:bg-amber-100 flex items-center justify-between cursor-pointer transition-colors border-b border-gray-100 last:border-none">
-                    <div class="flex items-center gap-3">
-                      @if (item.imagePath) {
-                        <img [src]="'assets/images/' + item.imagePath" class="w-10 h-10 object-contain drop-shadow" alt="" />
-                      } @else {
-                        <span class="text-2xl">{{ item.img }}</span>
-                      }
-                      <div class="text-right">
-                        <span class="font-black text-amber-950 text-base">{{ item.word }}</span>
-                        <span class="text-xs font-bold text-gray-500 mr-2">({{ item.ar_word }})</span>
-                      </div>
-                    </div>
-                    <button class="bg-amber-400 hover:bg-amber-500 text-amber-950 rounded-full w-8 h-8 flex items-center justify-center text-sm shadow">
-                      🔊
-                    </button>
-                  </div>
+            <!-- شريط الإنجاز والنقاط -->
+            <div class="max-w-md mx-auto px-6 mb-4">
+              <div class="flex justify-between text-base font-black text-gray-700 mb-1">
+                <span>📚 المستكشف: {{ data.learned().size }} / 26</span>
+                <span class="text-yellow-600 font-extrabold text-lg flex items-center gap-1">
+                  🏆 النجوم: {{ data.stars() }} ⭐
+                </span>
+              </div>
+              <div class="h-4 bg-gray-200 rounded-full overflow-hidden shadow-inner p-0.5">
+                <div class="h-full bg-gradient-to-r from-green-400 via-teal-400 to-blue-500 rounded-full transition-all duration-700 shadow" [style.width.%]="(data.learned().size / 26) * 100"></div>
+              </div>
+            </div>
+
+            <!-- شريط البحث الفوري والقاموس الناطق (Visual Dictionary Search) -->
+            <div class="max-w-md mx-auto px-4 mb-6 relative">
+              <div class="relative flex items-center">
+                <input #searchInput
+                       type="text"
+                       placeholder="🔍 ابحث عن أي كلمة أو حيوان (مثل: Lion أو قطة)..."
+                       (input)="onSearch(searchInput.value)"
+                       class="w-full bg-amber-50/90 border-2 border-amber-300 rounded-2xl px-4 py-2.5 pr-10 text-base font-black text-amber-950 focus:outline-none focus:border-amber-500 placeholder-gray-400 shadow-inner" />
+                @if (searchQuery()) {
+                  <button (click)="clearSearch(searchInput)" class="absolute left-3 text-gray-400 hover:text-gray-600 font-black text-lg">✕</button>
                 }
               </div>
-            }
-          </div>
 
-          <!-- قائمة التبديل الشاملة عبر Angular Router Pages -->
-          <nav class="flex flex-wrap justify-center gap-2 md:gap-3 px-4">
-            <a routerLink="/alphabet" routerLinkActive="bg-blue-600 text-white scale-105 shadow-lg" class="bg-blue-100 text-blue-800 hover:bg-blue-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-blue-300">
-              🔤 الحروف والكلمات
-            </a>
+              <!-- قائمة النتائج الفورية المنسدلة -->
+              @if (searchResults().length > 0) {
+                <div class="absolute left-4 right-4 top-12 bg-white rounded-2xl shadow-2xl border-3 border-amber-300 z-50 max-h-72 overflow-y-auto p-2 space-y-1">
+                  @for (item of searchResults(); track item.word) {
+                    <div (click)="selectSearchResult(item)"
+                         class="p-2.5 rounded-xl hover:bg-amber-100 flex items-center justify-between cursor-pointer transition-colors border-b border-gray-100 last:border-none">
+                      <div class="flex items-center gap-3">
+                        @if (item.imagePath) {
+                          <img [src]="'assets/images/' + item.imagePath" class="w-10 h-10 object-contain drop-shadow" alt="" />
+                        } @else {
+                          <span class="text-2xl">{{ item.img }}</span>
+                        }
+                        <div class="text-right">
+                          <span class="font-black text-amber-950 text-base">{{ item.word }}</span>
+                          <span class="text-xs font-bold text-gray-500 mr-2">({{ item.ar_word }})</span>
+                        </div>
+                      </div>
+                      <button class="bg-amber-400 hover:bg-amber-500 text-amber-950 rounded-full w-8 h-8 flex items-center justify-center text-sm shadow">
+                        🔊
+                      </button>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
 
-            <a routerLink="/tracing" routerLinkActive="bg-amber-600 text-white scale-105 shadow-lg" class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-amber-300">
-              ✏️ سبورة الكتابة
-            </a>
+            <!-- قائمة التبديل الشاملة عبر Angular Router Pages -->
+            <nav class="flex flex-wrap justify-center gap-2 md:gap-3 px-4">
+              <a routerLink="/alphabet" routerLinkActive="bg-blue-600 text-white scale-105 shadow-lg" class="bg-blue-100 text-blue-800 hover:bg-blue-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-blue-300">
+                🔤 الحروف والكلمات
+              </a>
 
-            <a routerLink="/speech" routerLinkActive="bg-rose-600 text-white scale-105 shadow-lg" class="bg-rose-100 text-rose-800 hover:bg-rose-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-rose-300">
-              🎙️ مدرب النطق (AI)
-            </a>
+              <a routerLink="/tracing" routerLinkActive="bg-amber-600 text-white scale-105 shadow-lg" class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-amber-300">
+                ✏️ سبورة الكتابة
+              </a>
 
-            <a routerLink="/junior" routerLinkActive="bg-teal-600 text-white scale-105 shadow-lg" class="bg-teal-100 text-teal-800 hover:bg-teal-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-teal-300">
-              🧑‍🎓 محادثات وقواعد (للكبار)
-            </a>
+              <a routerLink="/speech" routerLinkActive="bg-rose-600 text-white scale-105 shadow-lg" class="bg-rose-100 text-rose-800 hover:bg-rose-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-rose-300">
+                🎙️ مدرب النطق (AI)
+              </a>
 
-            <a routerLink="/certificates" routerLinkActive="bg-amber-600 text-white scale-105 shadow-lg" class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-amber-300">
-              🏆 شهادة الإنجاز
-            </a>
+              <a routerLink="/junior" routerLinkActive="bg-teal-600 text-white scale-105 shadow-lg" class="bg-teal-100 text-teal-800 hover:bg-teal-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-teal-300">
+                🧑‍🎓 محادثات وقواعد (للكبار)
+              </a>
 
-            <a routerLink="/phrases" routerLinkActive="bg-teal-600 text-white scale-105 shadow-lg" class="bg-teal-100 text-teal-800 hover:bg-teal-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-teal-300">
-              💬 جمل يومية
-            </a>
+              <a routerLink="/certificates" routerLinkActive="bg-amber-600 text-white scale-105 shadow-lg" class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-amber-300">
+                🏆 شهادة الإنجاز
+              </a>
 
-            <a routerLink="/stories" routerLinkActive="bg-purple-600 text-white scale-105 shadow-lg" class="bg-purple-100 text-purple-800 hover:bg-purple-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-purple-300">
-              📖 القصص المصورة
-            </a>
+              <a routerLink="/phrases" routerLinkActive="bg-teal-600 text-white scale-105 shadow-lg" class="bg-teal-100 text-teal-800 hover:bg-teal-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-teal-300">
+                💬 جمل يومية
+              </a>
 
-            <a routerLink="/games" routerLinkActive="bg-orange-600 text-white scale-105 shadow-lg" class="bg-orange-100 text-orange-800 hover:bg-orange-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-orange-300">
-              🎮 ألعاب الذكاء
-            </a>
+              <a routerLink="/stories" routerLinkActive="bg-purple-600 text-white scale-105 shadow-lg" class="bg-purple-100 text-purple-800 hover:bg-purple-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-purple-300">
+                📖 القصص المصورة
+              </a>
 
-            <a routerLink="/numbers" routerLinkActive="bg-emerald-600 text-white scale-105 shadow-lg" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-emerald-300">
-              🔢 الأرقام (1-30)
-            </a>
+              <a routerLink="/games" routerLinkActive="bg-orange-600 text-white scale-105 shadow-lg" class="bg-orange-100 text-orange-800 hover:bg-orange-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-orange-300">
+                🎮 ألعاب الذكاء
+              </a>
 
-            <a routerLink="/categories" routerLinkActive="bg-indigo-600 text-white scale-105 shadow-lg" class="bg-indigo-100 text-indigo-800 hover:bg-indigo-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-indigo-300">
-              🦁 أصوات وصور واقعية
-            </a>
+              <a routerLink="/numbers" routerLinkActive="bg-emerald-600 text-white scale-105 shadow-lg" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-emerald-300">
+                🔢 الأرقام (1-30)
+              </a>
 
-            <a routerLink="/stickers" routerLinkActive="bg-pink-600 text-white scale-105 shadow-lg" class="bg-pink-100 text-pink-800 hover:bg-pink-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-pink-300">
-              🛒 متجر المكافآت
-            </a>
+              <a routerLink="/categories" routerLinkActive="bg-indigo-600 text-white scale-105 shadow-lg" class="bg-indigo-100 text-indigo-800 hover:bg-indigo-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-indigo-300">
+                🦁 أصوات وصور واقعية
+              </a>
 
-            <button (click)="startQuiz('letter')" class="bg-pink-500 text-white px-4 py-2 rounded-full font-black hover:bg-pink-600 hover:scale-105 transition-all shadow-md text-sm md:text-base">
-              🎮 اختبار الحروف
-            </button>
+              <a routerLink="/stickers" routerLinkActive="bg-pink-600 text-white scale-105 shadow-lg" class="bg-pink-100 text-pink-800 hover:bg-pink-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-pink-300">
+                🛒 متجر المكافآت
+              </a>
 
-            <button (click)="startQuiz('word')" class="bg-purple-500 text-white px-4 py-2 rounded-full font-black hover:bg-purple-600 hover:scale-105 transition-all shadow-md text-sm md:text-base">
-              🧩 اختبار الصور
-            </button>
-
-            <button (click)="startMemoryGame()" class="bg-orange-500 text-white px-4 py-2 rounded-full font-black hover:bg-orange-600 hover:scale-105 transition-all shadow-md text-sm md:text-base">
-              🃏 لعبة الذاكرة
-            </button>
-
-            <button (click)="audio.slow.set(!audio.slow())" class="bg-white border-2 border-blue-400 text-blue-700 px-4 py-2 rounded-full font-black hover:bg-blue-50 transition-all shadow-sm text-sm">
-              {{ audio.slow() ? '🐢 نطق بطيء' : '🐇 نطق عادي' }}
-            </button>
-          </nav>
-        </header>
+              <button (click)="audio.slow.set(!audio.slow())" class="bg-white border-2 border-blue-400 text-blue-700 px-4 py-2 rounded-full font-black hover:bg-blue-50 transition-all shadow-sm text-sm">
+                {{ audio.slow() ? '🐢 نطق بطيء (مفعّل)' : '🐇 نطق عادي' }}
+              </button>
+            </nav>
+          </header>
+        }
 
         <!-- الشاشة الرئيسية المنفصلة التي يتم عرض الصفحات بداخلها -->
         <main>
@@ -301,6 +310,9 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
 export class App {
   data = inject(DataService);
   audio = inject(AudioService);
+  router = inject(Router);
+
+  isHome = signal<boolean>(true);
 
   mascotSpeech = signal<string>('أهلاً بك في الأكاديمية! تنقل بين الصفحات واستمتع بالألعاب والدروس 🌟');
   quiz = signal<Quiz | null>(null);
@@ -338,6 +350,13 @@ export class App {
   }
 
   constructor() {
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        const url = event.urlAfterRedirects || event.url;
+        this.isHome.set(url === '/' || url === '/alphabet' || url === '');
+      }
+    });
+
     setTimeout(() => {
       if (this.data.childName()) {
         this.mascotSpeech.set(`أهلاً بك يا ${this.data.childName()}! تنقل بين الصفحات لنتعلم معاً 🌟`);
