@@ -18,106 +18,127 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; im
   standalone: true,
   imports: [BalloonGameComponent, TrainGameComponent, ShapeGameComponent, AppleGameComponent, MathGameComponent, PuzzleGameComponent],
   template: `
-    <div class="bg-white rounded-3xl p-6 shadow-xl border-4 border-orange-300 max-w-5xl mx-auto">
-      <h2 class="text-4xl font-black text-orange-600 mb-6 text-center font-[Bubblegum]">🎮 Brain & Fun Games</h2>
-      
-      <div class="flex flex-wrap justify-center gap-4 mb-8 font-[Bubblegum]">
-        <button (click)="setMode('match')" [class]="mode() === 'match' ? 'bg-orange-500 text-white scale-105 shadow-lg ring-4 ring-orange-200' : 'bg-gray-100 text-gray-700 hover:bg-orange-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-orange-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🧩</span> Match
-        </button>
-        <button (click)="setMode('memory')" [class]="mode() === 'memory' ? 'bg-purple-500 text-white scale-105 shadow-lg ring-4 ring-purple-200' : 'bg-gray-100 text-gray-700 hover:bg-purple-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-purple-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🃏</span> Memory
-        </button>
-        <button (click)="setMode('quiz')" [class]="mode() === 'quiz' ? 'bg-rose-500 text-white scale-105 shadow-lg ring-4 ring-rose-200' : 'bg-gray-100 text-gray-700 hover:bg-rose-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-rose-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🔍</span> Find It
-        </button>
-        <button (click)="setMode('journey')" [class]="mode() === 'journey' ? 'bg-sky-500 text-white scale-105 shadow-lg ring-4 ring-sky-200' : 'bg-gray-100 text-gray-700 hover:bg-sky-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-sky-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">✈️</span> Journey
-        </button>
-        <button (click)="setMode('shadow')" [class]="mode() === 'shadow' ? 'bg-amber-500 text-white scale-105 shadow-lg ring-4 ring-amber-200' : 'bg-gray-100 text-gray-700 hover:bg-amber-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-amber-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">👤</span> Shadows
-        </button>
-        <button (click)="setMode('balloon')" [class]="mode() === 'balloon' ? 'bg-cyan-500 text-white scale-105 shadow-lg ring-4 ring-cyan-200' : 'bg-gray-100 text-gray-700 hover:bg-cyan-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-cyan-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🎈</span> Balloons
-        </button>
-        <button (click)="setMode('train')" [class]="mode() === 'train' ? 'bg-emerald-500 text-white scale-105 shadow-lg ring-4 ring-emerald-200' : 'bg-gray-100 text-gray-700 hover:bg-emerald-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-emerald-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🚂</span> Train
-        </button>
-        <button (click)="setMode('shape')" [class]="mode() === 'shape' ? 'bg-pink-500 text-white scale-105 shadow-lg ring-4 ring-pink-200' : 'bg-gray-100 text-gray-700 hover:bg-pink-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-pink-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🎨</span> Colors
-        </button>
-        <button (click)="setMode('apple')" [class]="mode() === 'apple' ? 'bg-red-500 text-white scale-105 shadow-lg ring-4 ring-red-200' : 'bg-gray-100 text-gray-700 hover:bg-red-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-red-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🍎</span> Apples
-        </button>
-        <button (click)="setMode('math')" [class]="mode() === 'math' ? 'bg-teal-500 text-white scale-105 shadow-lg ring-4 ring-teal-200' : 'bg-gray-100 text-gray-700 hover:bg-teal-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-teal-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🧮</span> Math
-        </button>
-        <button (click)="setMode('puzzle')" [class]="mode() === 'puzzle' ? 'bg-indigo-500 text-white scale-105 shadow-lg ring-4 ring-indigo-200' : 'bg-gray-100 text-gray-700 hover:bg-indigo-100'" class="w-36 py-4 rounded-3xl font-black text-lg transition-all border-2 border-indigo-200 flex flex-col items-center justify-center gap-2 text-center">
-          <span class="text-4xl">🖼️</span> Puzzle
-        </button>
-      </div>
+    @if (mode() === 'menu') {
+      <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-orange-300 max-w-6xl mx-auto font-[Bubblegum]">
+        <div class="text-center mb-8">
+          <div class="text-6xl mb-2 animate-bounce">🎮</div>
+          <h2 class="text-4xl md:text-5xl font-black text-orange-600 mb-2">Brain & Fun Games</h2>
+          <p class="text-gray-500 font-bold text-xl">Choose your favorite game and start playing!</p>
+        </div>
 
-      @if (mode() === 'match') {
-        <p class="text-gray-600 font-bold mb-6 text-center">اسحب الصورة إلى الحرف المناسب!</p>
-
-        @if (gameWon()) {
-          <div class="text-center py-10 bg-green-50 rounded-3xl border-4 border-green-300 mb-6">
-            <div class="text-8xl mb-4 animate-bounce">🏆</div>
-            <h3 class="text-4xl font-black text-green-700 mb-2">أنت بطل عبقري!</h3>
-            <p class="text-xl text-green-600 font-bold mb-6">لقد نجحت وكسبت +10 نجوم! ⭐</p>
-            <button (click)="initMatchGame()" class="bg-orange-500 text-white px-8 py-3 rounded-full font-black text-2xl hover:bg-orange-600 shadow-xl hover:scale-105 transition-transform">
-              العب مرة أخرى 🔄
-            </button>
-          </div>
-        } @else {
-          <!-- مناطق الإفلات (الحروف) -->
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-            @for (zone of dropZones(); track zone.letter; let i = $index) {
-              <div class="bg-orange-50 rounded-3xl p-6 border-4 border-dashed transition-all flex flex-col items-center min-h-[160px]"
-                   [class]="dragHoverIndex === i ? 'border-orange-500 bg-orange-100 scale-105' : 'border-orange-300'"
-                   (dragover)="allowDrop($event, i)"
-                   (dragleave)="dragLeave($event)"
-                   (drop)="drop($event, i)">
-                
-                <div class="text-6xl font-black text-orange-400 mb-2">{{ zone.letter }}</div>
-                
-                @if (zone.currentItem) {
-                  <div class="bg-white p-3 rounded-2xl shadow-md border-2 border-green-400 animate-bounce">
-                    <span class="text-5xl">{{ zone.currentItem.img }}</span>
-                    <div class="text-lg font-black text-green-700 mt-1 text-center">{{ zone.currentItem.word }}</div>
-                  </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          @for (game of gameList; track game.id) {
+            <div (click)="setMode(game.id)"
+                 class="group relative bg-white rounded-3xl p-6 border-4 cursor-pointer hover:scale-105 hover:shadow-2xl transition-all flex flex-col items-center text-center overflow-hidden"
+                 [class]="game.border">
+              <!-- Glow -->
+              <div class="absolute -top-12 -right-12 w-32 h-32 rounded-full opacity-20 blur-xl group-hover:scale-150 transition-transform" [class]="game.bg"></div>
+              
+              <!-- Icon / Image -->
+              <div class="w-24 h-24 rounded-2xl flex items-center justify-center text-6xl mb-4 shadow-md group-hover:rotate-6 transition-transform" [class]="game.bg">
+                @if (game.image) {
+                  <img [src]="'assets/images/' + game.image" class="w-16 h-16 object-contain pointer-events-none drop-shadow" />
                 } @else {
-                  <div class="text-gray-400 font-bold mt-4">أسقط الصورة هنا 👇</div>
+                  <span>{{ game.icon }}</span>
                 }
               </div>
-            }
-          </div>
 
-          <!-- العناصر القابلة للسحب (الصور) -->
+              <!-- Title & Desc -->
+              <h3 class="text-2xl font-black mb-1" [class]="game.textColor">{{ game.title }}</h3>
+              <p class="text-gray-500 text-sm font-sans font-bold mb-5">{{ game.desc }}</p>
+
+              <!-- Play Button -->
+              <button class="mt-auto w-full py-3 rounded-2xl text-white font-black text-lg shadow-md group-hover:shadow-lg transition-all" [class]="game.btnBg">
+                Play Game 🚀
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    } @else {
+      <!-- Standalone Game View -->
+      <div class="bg-white rounded-3xl p-4 md:p-6 shadow-xl border-4 border-orange-300 max-w-5xl mx-auto">
+        <!-- Top Bar with Prominent Back Button -->
+        <div class="flex items-center justify-between mb-6 pb-4 border-b-2 border-orange-100 font-[Bubblegum]">
+          <button (click)="backToMenu()" 
+                  class="flex items-center gap-2 bg-gradient-to-r from-orange-400 to-amber-500 hover:from-orange-500 hover:to-amber-600 text-white font-black px-6 py-2.5 rounded-2xl shadow-lg hover:scale-105 active:scale-95 transition-all text-xl border-2 border-orange-200">
+            <span class="text-2xl">⬅️</span>
+            <span>All Games</span>
+          </button>
+
+          <div class="flex items-center gap-4">
+            <div class="text-2xl font-black text-orange-600 hidden sm:block">
+              {{ getCurrentGameTitle() }}
+            </div>
+            <div class="bg-amber-100 text-amber-900 px-4 py-2 rounded-2xl font-black text-lg border border-amber-300 flex items-center gap-1 shadow-sm">
+              <span>⭐</span> {{ data.stars() }} Stars
+            </div>
+          </div>
+        </div>
+
+        @if (mode() === 'match') {
+          <p class="text-gray-600 font-bold mb-6 text-center text-lg font-[Bubblegum]">Drag the picture to its matching letter!</p>
+
+          @if (gameWon()) {
+            <div class="text-center py-10 bg-green-50 rounded-3xl border-4 border-green-300 mb-6 font-[Bubblegum]">
+              <div class="text-8xl mb-4 animate-bounce">🏆</div>
+              <h3 class="text-4xl font-black text-green-700 mb-2">You are a Champion!</h3>
+              <p class="text-xl text-green-600 font-bold mb-6">You won +10 stars! ⭐</p>
+              <button (click)="initMatchGame()" class="bg-orange-500 text-white px-8 py-3 rounded-full font-black text-2xl hover:bg-orange-600 shadow-xl hover:scale-105 transition-transform">
+                Play Again 🔄
+              </button>
+            </div>
+          } @else {
+            <!-- Drop Zones -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+              @for (zone of dropZones(); track zone.letter; let i = $index) {
+                <div class="bg-orange-50 rounded-3xl p-6 border-4 border-dashed transition-all flex flex-col items-center min-h-[160px]"
+                     [class]="dragHoverIndex === i ? 'border-orange-500 bg-orange-100 scale-105' : 'border-orange-300'"
+                     (dragover)="allowDrop($event, i)"
+                     (dragleave)="dragLeave($event)"
+                     (drop)="drop($event, i)">
+                  
+                  <div class="text-6xl font-black text-orange-400 mb-2 font-[Bubblegum]">{{ zone.letter }}</div>
+                  
+                  @if (zone.currentItem) {
+                    <div class="bg-white p-3 rounded-2xl shadow-md border-2 border-green-400 animate-bounce">
+                      @if(zone.currentItem.imagePath){<img [src]="'assets/images/' + zone.currentItem.imagePath" class="w-16 h-16 object-contain"/>}@else{<span class="text-5xl">{{ zone.currentItem.img }}</span>}
+                      <div class="text-lg font-black text-green-700 mt-1 text-center font-[Bubblegum]">{{ zone.currentItem.word }}</div>
+                    </div>
+                  } @else {
+                    <div class="text-gray-400 font-bold mt-4 font-[Bubblegum]">Drop picture here 👇</div>
+                  }
+                </div>
+              }
+            </div>
+          <!-- Draggable Items (Pictures) -->
           <div class="bg-blue-50 rounded-3xl p-6 border-2 border-blue-200">
             <div class="flex flex-wrap justify-center gap-4">
               @for (item of dragItems(); track item.word; let i = $index) {
                 <div class="bg-white p-4 rounded-2xl shadow-sm border-2 border-blue-300 cursor-grab hover:shadow-md hover:-translate-y-1 transition-transform flex flex-col items-center"
                      draggable="true"
                      (dragstart)="dragStart($event, i)">
-                  <span class="text-5xl mb-2">{{ item.img }}</span>
-                  <span class="text-base font-black text-blue-900">{{ item.word }}</span>
+                  @if (item.imagePath) {
+                    <img [src]="'assets/images/' + item.imagePath" class="w-16 h-16 object-contain mb-2 pointer-events-none" />
+                  } @else {
+                    <span class="text-5xl mb-2">{{ item.img }}</span>
+                  }
+                  <span class="text-base font-black text-blue-900 font-[Bubblegum]">{{ item.word }}</span>
                 </div>
               }
             </div>
           </div>
         }
       } @else if (mode() === 'memory') {
-        <p class="text-gray-600 font-bold mb-6 text-center">طابق كل حرف مع الصورة المناسبة له!</p>
-        
+        <p class="text-gray-600 font-bold mb-6 text-center text-lg font-[Bubblegum]">Match each letter card with its picture!</p>
 
         @if (memoryWon()) {
-          <div class="text-center py-10 bg-purple-50 rounded-3xl border-4 border-purple-300 mb-6">
+          <div class="text-center py-10 bg-purple-50 rounded-3xl border-4 border-purple-300 mb-6 font-[Bubblegum]">
             <div class="text-8xl mb-4 animate-bounce">🥇</div>
-            <h3 class="text-4xl font-black text-purple-700 mb-2">ذاكرتك حديدية!</h3>
-            <p class="text-xl text-purple-600 font-bold mb-6">لقد طابقت جميع البطاقات وكسبت +15 نجمة! ⭐</p>
+            <h3 class="text-4xl font-black text-purple-700 mb-2">Incredible Memory!</h3>
+            <p class="text-xl text-purple-600 font-bold mb-6">You matched all cards and won +15 stars! ⭐</p>
             <button (click)="initMemoryGame()" class="bg-purple-500 text-white px-8 py-3 rounded-full font-black text-2xl hover:bg-purple-600 shadow-xl hover:scale-105 transition-transform">
-              العب مرة أخرى 🔄
+              Play Again 🔄
             </button>
           </div>
         } @else {
@@ -391,14 +412,15 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; im
       } @else if (mode() === 'puzzle') {
           <app-puzzle-game></app-puzzle-game>
       }
-    </div>
+      </div>
+    }
   `
 })
 export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle'>('match');
+  mode = signal<'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle'>('menu');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -469,11 +491,139 @@ export class GamesComponent {
       ]
   ];
 
-  constructor() {
-    this.initMatchGame();
+  gameList: { id: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle', title: string, desc: string, icon: string, image?: string, bg: string, border: string, textColor: string, btnBg: string }[] = [
+    {
+      id: 'train',
+      title: 'Animal Train',
+      desc: 'Listen and arrange animals in train wagons',
+      icon: '🚂',
+      image: 'train_engine.png',
+      bg: 'bg-emerald-100',
+      border: 'border-emerald-300',
+      textColor: 'text-emerald-700',
+      btnBg: 'bg-emerald-500 hover:bg-emerald-600'
+    },
+    {
+      id: 'shadow',
+      title: 'Shadow Match',
+      desc: 'Match real items onto their exact dark shadows',
+      icon: '👤',
+      image: 'butterfly.png',
+      bg: 'bg-amber-100',
+      border: 'border-amber-300',
+      textColor: 'text-amber-700',
+      btnBg: 'bg-amber-500 hover:bg-amber-600'
+    },
+    {
+      id: 'balloon',
+      title: 'Balloon Popper',
+      desc: 'Pop floating balloons to learn letters & colors',
+      icon: '🎈',
+      image: 'color_balloons.png',
+      bg: 'bg-cyan-100',
+      border: 'border-cyan-300',
+      textColor: 'text-cyan-700',
+      btnBg: 'bg-cyan-500 hover:bg-cyan-600'
+    },
+    {
+      id: 'puzzle',
+      title: 'Jigsaw Puzzle',
+      desc: 'Assemble pieces to reveal the 3D character',
+      icon: '🖼️',
+      image: 'dog.png',
+      bg: 'bg-indigo-100',
+      border: 'border-indigo-300',
+      textColor: 'text-indigo-700',
+      btnBg: 'bg-indigo-500 hover:bg-indigo-600'
+    },
+    {
+      id: 'math',
+      title: 'Smart Math',
+      desc: 'Solve fun chalkboard addition equations',
+      icon: '🧮',
+      bg: 'bg-teal-100',
+      border: 'border-teal-300',
+      textColor: 'text-teal-700',
+      btnBg: 'bg-teal-500 hover:bg-teal-600'
+    },
+    {
+      id: 'apple',
+      title: 'Math Basket',
+      desc: 'Catch falling number apples into the basket',
+      icon: '🍎',
+      image: 'apple.png',
+      bg: 'bg-red-100',
+      border: 'border-red-300',
+      textColor: 'text-red-700',
+      btnBg: 'bg-red-500 hover:bg-red-600'
+    },
+    {
+      id: 'match',
+      title: 'Letter Match',
+      desc: 'Drag real pictures to matching letter dropzones',
+      icon: '🧩',
+      bg: 'bg-orange-100',
+      border: 'border-orange-300',
+      textColor: 'text-orange-700',
+      btnBg: 'bg-orange-500 hover:bg-orange-600'
+    },
+    {
+      id: 'memory',
+      title: 'Memory Cards',
+      desc: 'Flip and find matching letter & picture pairs',
+      icon: '🃏',
+      bg: 'bg-purple-100',
+      border: 'border-purple-300',
+      textColor: 'text-purple-700',
+      btnBg: 'bg-purple-500 hover:bg-purple-600'
+    },
+    {
+      id: 'quiz',
+      title: 'Find It!',
+      desc: 'Listen to the word and tap the matching image',
+      icon: '🔍',
+      bg: 'bg-rose-100',
+      border: 'border-rose-300',
+      textColor: 'text-rose-700',
+      btnBg: 'bg-rose-500 hover:bg-rose-600'
+    },
+    {
+      id: 'journey',
+      title: 'Alphabet Journey',
+      desc: '26 adventure levels across all alphabet letters',
+      icon: '✈️',
+      image: 'airplane.png',
+      bg: 'bg-sky-100',
+      border: 'border-sky-300',
+      textColor: 'text-sky-700',
+      btnBg: 'bg-sky-500 hover:bg-sky-600'
+    },
+    {
+      id: 'shape',
+      title: 'Colors & Shapes',
+      desc: 'Recognize vibrant colors and shapes',
+      icon: '🎨',
+      image: 'red_color.png',
+      bg: 'bg-pink-100',
+      border: 'border-pink-300',
+      textColor: 'text-pink-700',
+      btnBg: 'bg-pink-500 hover:bg-pink-600'
+    }
+  ];
+
+  getCurrentGameTitle(): string {
+    const found = this.gameList.find(g => g.id === this.mode());
+    return found ? found.icon + ' ' + found.title : '';
   }
 
-  setMode(m: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle') {
+  backToMenu() {
+    this.audio.playSoundEffect('bell');
+    this.mode.set('menu');
+  }
+
+  constructor() {}
+
+  setMode(m: 'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle') {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
     else if (m === 'memory') this.initMemoryGame();
