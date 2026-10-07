@@ -21,6 +21,8 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
       }
     </ng-template>
 
+
+
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
       @for (item of data.alphabetData; track item.letter; let i = $index) {
         <div (click)="selectLetter(item)"
