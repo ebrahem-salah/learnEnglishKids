@@ -95,8 +95,20 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
               ✏️ سبورة الكتابة
             </a>
 
+            <a routerLink="/speech" routerLinkActive="bg-rose-600 text-white scale-105 shadow-lg" class="bg-rose-100 text-rose-800 hover:bg-rose-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-rose-300">
+              🎙️ مدرب النطق (AI)
+            </a>
+
+            <a routerLink="/junior" routerLinkActive="bg-teal-600 text-white scale-105 shadow-lg" class="bg-teal-100 text-teal-800 hover:bg-teal-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-teal-300">
+              🧑‍🎓 محادثات وقواعد (للكبار)
+            </a>
+
+            <a routerLink="/certificates" routerLinkActive="bg-amber-600 text-white scale-105 shadow-lg" class="bg-amber-100 text-amber-800 hover:bg-amber-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-amber-300">
+              🏆 شهادة الإنجاز
+            </a>
+
             <a routerLink="/phrases" routerLinkActive="bg-teal-600 text-white scale-105 shadow-lg" class="bg-teal-100 text-teal-800 hover:bg-teal-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-teal-300">
-              💬 المحادثات والجمل
+              💬 جمل يومية
             </a>
 
             <a routerLink="/stories" routerLinkActive="bg-purple-600 text-white scale-105 shadow-lg" class="bg-purple-100 text-purple-800 hover:bg-purple-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-purple-300">

@@ -137,6 +137,12 @@ export class AudioService {
   }
 
   speak(text: string, lang: string) { this.sequence(null, [[text, lang]]); }
+  speakSlow(text: string, lang: string) {
+    const prev = this.slow();
+    this.slow.set(true);
+    this.speak(text, lang);
+    setTimeout(() => this.slow.set(prev), 2000);
+  }
 
   playPhonics(letter: string) {
     const phonicsMap: Record<string, string> = {

@@ -7,12 +7,18 @@ import { NumbersComponent } from './pages/numbers.component';
 import { CategoriesComponent } from './pages/categories.component';
 import { StickersComponent } from './pages/stickers.component';
 import { GamesComponent } from './pages/games.component';
+import { SpeechCoachComponent } from './pages/speech-coach.component';
+import { JuniorConversationsComponent } from './pages/junior-conversations.component';
+import { CertificatesComponent } from './pages/certificates.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'alphabet', pathMatch: 'full' },
   { path: 'alphabet', component: AlphabetComponent },
   { path: 'tracing', component: TracingComponent },
   { path: 'phrases', component: PhrasesComponent },
+  { path: 'junior', component: JuniorConversationsComponent },
+  { path: 'speech', component: SpeechCoachComponent },
+  { path: 'certificates', component: CertificatesComponent },
   { path: 'stories', component: StoriesComponent },
   { path: 'numbers', component: NumbersComponent },
   { path: 'categories', component: CategoriesComponent },
