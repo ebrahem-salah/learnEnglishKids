@@ -5,7 +5,13 @@ export interface AlphabetItem { letter: string; ar_letter: string; words: WordIt
 export interface Sticker { id: string; name: string; img: string; cost: number; unlocked: boolean; }
 export interface Song { title: string; ar_title: string; lyrics: string; icon: string; audioText: string; }
 export interface Phrase { en: string; ar: string; context: string; icon: string; }
-export interface ShortStory { title: string; ar_title: string; icon: string; pages: { en: string; ar: string; img: string }[]; }
+export interface ShortStory { 
+  title: string; 
+  ar_title: string; 
+  icon: string; 
+  imagePath?: string; 
+  pages: { en: string; ar: string; img: string; imagePath?: string }[]; 
+}
 
 export interface ExtraCategory {
   id: string;

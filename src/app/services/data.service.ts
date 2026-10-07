@@ -151,42 +151,46 @@ export class DataService {
       title: 'The Brave Little Lion',
       ar_title: 'الأسد الصغير الشجاع',
       icon: '🦁',
+      imagePath: 'lion.png',
       pages: [
-        { en: 'Leo is a little lion.', ar: 'ليو هو أسد صغير.', img: '🦁' },
-        { en: 'Leo likes to play in the sun.', ar: 'يحب ليو اللعب في الشمس.', img: '☀️' },
-        { en: 'Leo made a new rabbit friend!', ar: 'صادق ليو أرنباً جديداً!', img: '🐰' }
+        { en: 'Leo is a little lion.', ar: 'ليو هو أسد صغير.', img: '🦁', imagePath: 'lion.png' },
+        { en: 'Leo likes to play in the sun.', ar: 'يحب ليو اللعب في الشمس.', img: '☀️', imagePath: 'sun.png' },
+        { en: 'Leo made a new rabbit friend!', ar: 'صادق ليو أرنباً جديداً!', img: '🐰', imagePath: 'rabbit.png' }
       ]
     },
     {
       title: 'The Space Rocket',
       ar_title: 'صاروخ الفضاء',
       icon: '🚀',
+      imagePath: 'rocket.png',
       pages: [
-        { en: 'The rocket goes up!', ar: 'الصاروخ ينطلق للأعلى!', img: '🚀' },
-        { en: 'It reaches the moon.', ar: 'يصل إلى القمر.', img: '🌙' },
-        { en: 'The stars are shining bright.', ar: 'النجوم تلمع ببريق.', img: '⭐' }
+        { en: 'The rocket goes up!', ar: 'الصاروخ ينطلق للأعلى!', img: '🚀', imagePath: 'rocket.png' },
+        { en: 'It reaches the moon.', ar: 'يصل إلى القمر.', img: '🌙', imagePath: 'moon.png' },
+        { en: 'The stars are shining bright.', ar: 'النجوم تلمع ببريق.', img: '⭐', imagePath: 'star.png' }
       ]
     },
     {
       title: 'A Day at the Farm',
       ar_title: 'يوم في المزرعة',
       icon: '🚜',
+      imagePath: 'farm.png',
       pages: [
-        { en: 'The sun rises on the farm.', ar: 'تشرق الشمس في المزرعة.', img: '🌅' },
-        { en: 'The cow says moo.', ar: 'البقرة تقول موو.', img: '🐄' },
-        { en: 'The duck swims in the pond.', ar: 'البطة تسبح في البركة.', img: '🦆' },
-        { en: 'The horse runs fast.', ar: 'الحصان يركض بسرعة.', img: '🐎' }
+        { en: 'The sun rises on the farm.', ar: 'تشرق الشمس في المزرعة.', img: '🌅', imagePath: 'sun.png' },
+        { en: 'The cow says moo.', ar: 'البقرة تقول موو.', img: '🐄', imagePath: 'cow.png' },
+        { en: 'The duck swims in the pond.', ar: 'البطة تسبح في البركة.', img: '🦆', imagePath: 'duck.png' },
+        { en: 'The horse runs fast.', ar: 'الحصان يركض بسرعة.', img: '🐎', imagePath: 'horse.png' }
       ]
     },
     {
       title: 'Going to School',
       ar_title: 'الذهاب إلى المدرسة',
       icon: '🏫',
+      imagePath: 'bus.png',
       pages: [
-        { en: 'Sara wakes up early.', ar: 'تستيقظ سارة مبكراً.', img: '⏰' },
-        { en: 'She eats her breakfast.', ar: 'تتناول فطورها.', img: '🥣' },
-        { en: 'She takes her yellow bus.', ar: 'تستقل حافلتها الصفراء.', img: '🚌' },
-        { en: 'Sara loves reading books.', ar: 'سارة تحب قراءة الكتب.', img: '📚' }
+        { en: 'Sara wakes up early.', ar: 'تستيقظ سارة مبكراً.', img: '⏰', imagePath: 'sun.png' },
+        { en: 'She eats her breakfast.', ar: 'تتناول فطورها.', img: '🥣', imagePath: 'milk.png' },
+        { en: 'She takes her yellow bus.', ar: 'تستقل حافلتها الصفراء.', img: '🚌', imagePath: 'bus.png' },
+        { en: 'Sara loves reading books.', ar: 'سارة تحب قراءة الكتب.', img: '📚', imagePath: 'book.png' }
       ]
     }
   ];
