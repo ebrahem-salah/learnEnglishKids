@@ -9,8 +9,10 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
   standalone: true,
   imports: [NgTemplateOutlet],
   template: `
-    <ng-template #pic let-e let-hd="hd" let-cls="cls">
-      @if (hd && !data.failed().has(hd)) {
+    <ng-template #pic let-e let-hd="hd" let-img="img" let-cls="cls">
+      @if (img) {
+        <img [src]="'assets/images/' + img" alt="" loading="lazy" [class]="cls + ' object-contain drop-shadow-md'" />
+      } @else if (hd && !data.failed().has(hd)) {
         <img [src]="hd" alt="" loading="lazy" [class]="cls + ' object-cover rounded-2xl shadow-sm'" (error)="data.markFailed(hd)" />
       } @else if (!data.failed().has(e)) {
         <img [src]="data.imgUrl(e)" (error)="data.markFailed(e)" alt="" loading="lazy" [class]="cls" />
@@ -22,7 +24,7 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
       @for (item of data.alphabetData; track item.letter; let i = $index) {
         <div (click)="selectLetter(item)"
-          class="bg-white rounded-3xl p-5 flex flex-col items-center cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all border-b-8 group relative overflow-hidden"
+          class="bg-white rounded-3xl p-5 flex flex-col items-center cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all border-b-8 group relative overflow-hidden font-[Bubblegum]"
           [class]="data.learned().has(item.letter) ? 'border-green-400 bg-green-50/30' : 'border-blue-200 hover:border-blue-400'">
           
           @if (data.learned().has(item.letter)) {
@@ -34,11 +36,11 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
           </div>
           
           <div class="h-16 flex items-center justify-center my-1">
-            <ng-container *ngTemplateOutlet="pic; context: { $implicit: item.words[0].img, hd: item.words[0].realImg, cls: 'w-14 h-14 group-hover:scale-125 transition-transform drop-shadow' }" />
+            <ng-container *ngTemplateOutlet="pic; context: { $implicit: item.words[0].img, hd: item.words[0].realImg, img: item.words[0].imagePath, cls: 'w-16 h-16 group-hover:scale-125 transition-transform drop-shadow' }" />
           </div>
           
           <div class="text-xs font-black text-blue-700 bg-blue-100/80 px-3 py-1 rounded-full mt-2 border border-blue-200">
-            {{ item.words.length }} كلمات 🌟
+            {{ item.words.length }} Words 🌟
           </div>
         </div>
       }
@@ -54,54 +56,54 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
             <div class="flex items-center justify-center gap-6 md:gap-12">
               <button (click)="step(-1)" class="w-14 h-14 rounded-full bg-white shadow-lg text-3xl font-black hover:bg-blue-100 text-blue-600 hover:scale-110 transition-all border border-blue-200">‹</button>
               <div>
-                <div class="text-7xl md:text-9xl font-black text-blue-600 tracking-tight drop-shadow">
+                <div class="text-7xl md:text-9xl font-black text-blue-600 tracking-tight drop-shadow font-[Bubblegum]">
                   {{ selected.letter }}<span class="text-5xl md:text-7xl text-pink-500">{{ selected.letter.toLowerCase() }}</span>
                 </div>
-                <div class="text-2xl font-black text-gray-700 mt-2">النطق العربي: <span class="text-purple-600 font-extrabold">{{ selected.ar_letter }}</span></div>
+                <div class="text-xl font-bold text-gray-500 mt-2">Letter Sound: <span class="text-purple-600 font-extrabold uppercase">{{ selected.letter }}</span></div>
               </div>
               <button (click)="step(1)" class="w-14 h-14 rounded-full bg-white shadow-lg text-3xl font-black hover:bg-blue-100 text-blue-600 hover:scale-110 transition-all border border-blue-200">›</button>
             </div>
-            <div class="mt-4 flex justify-center gap-3 flex-wrap">
+            <div class="mt-4 flex justify-center gap-3 flex-wrap font-[Bubblegum]">
               <button (click)="playLetter(selected)"
                 class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-8 py-3.5 rounded-full text-xl font-black hover:from-blue-600 hover:to-indigo-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
-                🔊 استمع إلى الحرف والنطق
+                🔊 Listen & Phonics
               </button>
               <button (click)="writeWord(selected.letter)"
                 class="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-8 py-3.5 rounded-full text-xl font-black hover:from-amber-600 hover:to-orange-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
-                ✏️ تدرّب على كتابة الحرف
+                ✏️ Practice Letter
               </button>
             </div>
           </div>
 
-          <div class="mb-4 text-2xl font-black text-gray-800 border-b-4 border-blue-100 pb-2 flex items-center justify-between">
-            <span>📖 كلمات تبدأ بحرف {{ selected.letter }}:</span>
-            <span class="text-sm font-bold text-gray-500">اضغط على زر النطق لتهجئة الكلمة!</span>
+          <div class="mb-4 text-2xl font-black text-gray-800 border-b-4 border-blue-100 pb-2 flex items-center justify-between font-[Bubblegum]">
+            <span>📖 Words starting with {{ selected.letter }}:</span>
+            <span class="text-sm font-bold text-gray-500">Tap to listen & spell!</span>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             @for (w of selected.words; track w.word) {
               <div class="bg-gradient-to-b from-green-50 to-emerald-50 rounded-3xl p-5 text-center border-2 border-green-200 hover:shadow-xl hover:-translate-y-1 transition-all flex flex-col">
                 <div class="h-28 flex items-center justify-center mb-3 bg-white/70 rounded-2xl border border-green-100 shadow-inner overflow-hidden">
-                  <ng-container *ngTemplateOutlet="pic; context: { $implicit: w.img, hd: w.realImg, cls: 'w-24 h-24 drop-shadow-md hover:scale-110 transition-transform' }" />
+                  <ng-container *ngTemplateOutlet="pic; context: { $implicit: w.img, hd: w.realImg, img: w.imagePath, cls: 'w-24 h-24 drop-shadow-md hover:scale-110 transition-transform' }" />
                 </div>
-                <div class="text-3xl font-black text-green-700 mb-1 tracking-wide">{{ w.word }}</div>
+                <div class="text-3xl font-black text-green-700 mb-1 tracking-wide font-[Bubblegum]">{{ w.word }}</div>
                 <div class="text-xl font-extrabold text-gray-600 mb-4">{{ w.ar_word }}</div>
-                <div class="flex flex-col gap-2 mt-auto">
+                <div class="flex flex-col gap-2 mt-auto font-[Bubblegum]">
                   <div class="flex gap-2">
                     <button (click)="playWord(w)" class="flex-1 bg-green-500 text-white py-2.5 rounded-2xl font-black hover:bg-green-600 transition-all shadow border border-green-600 text-base">
-                      🔊 نطق الكلمة
+                      🔊 Listen
                     </button>
                     <button (click)="spellWord(w)" class="bg-white border-2 border-green-500 text-green-700 px-4 py-2.5 rounded-2xl font-black hover:bg-green-100 transition-all text-base shadow-sm">
-                      🔤 تهجئة
+                      🔤 Spell
                     </button>
                   </div>
                   <button (click)="writeWord(w.word)" class="w-full bg-amber-500 text-white py-2.5 rounded-2xl font-black hover:bg-amber-600 transition-all shadow border border-amber-600 text-base">
-                    ✏️ تدرّب على كتابة الكلمة
+                    ✏️ Practice Writing
                   </button>
                   <button (click)="testPronunciation(w.word)" [disabled]="audio.isListening()" class="w-full bg-red-500 text-white py-2.5 rounded-2xl font-black hover:bg-red-600 transition-all shadow text-base disabled:opacity-50">
                     @if (audio.isListening()) {
-                      <span class="animate-pulse">🔴 جاري الاستماع للطفل...</span>
+                      <span class="animate-pulse">🔴 Listening...</span>
                     } @else {
-                      <span>🎙️ اختبر نطقك (تحدث الآن)</span>
+                      <span>🎙️ Test Pronunciation</span>
                     }
                   </button>
                 </div>
