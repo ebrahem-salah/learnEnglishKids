@@ -152,9 +152,9 @@ export class DataService {
       ar_title: 'الأسد الصغير الشجاع',
       icon: '🦁',
       pages: [
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Leo is a little lion.', ar: 'ليو هو أسد صغير.', img: '🦁' },
+        { en: 'Leo likes to play in the sun.', ar: 'يحب ليو اللعب في الشمس.', img: '☀️' },
+        { en: 'Leo made a new rabbit friend!', ar: 'صادق ليو أرنباً جديداً!', img: '🐰' }
       ]
     },
     {
@@ -162,9 +162,9 @@ export class DataService {
       ar_title: 'صاروخ الفضاء',
       icon: '🚀',
       pages: [
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'The rocket goes up!', ar: 'الصاروخ ينطلق للأعلى!', img: '🚀' },
+        { en: 'It reaches the moon.', ar: 'يصل إلى القمر.', img: '🌙' },
+        { en: 'The stars are shining bright.', ar: 'النجوم تلمع ببريق.', img: '⭐' }
       ]
     },
     {
@@ -172,10 +172,10 @@ export class DataService {
       ar_title: 'يوم في المزرعة',
       icon: '🚜',
       pages: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'The sun rises on the farm.', ar: 'تشرق الشمس في المزرعة.', img: '🌅' },
+        { en: 'The cow says moo.', ar: 'البقرة تقول موو.', img: '🐄' },
+        { en: 'The duck swims in the pond.', ar: 'البطة تسبح في البركة.', img: '🦆' },
+        { en: 'The horse runs fast.', ar: 'الحصان يركض بسرعة.', img: '🐎' }
       ]
     },
     {
@@ -183,10 +183,10 @@ export class DataService {
       ar_title: 'الذهاب إلى المدرسة',
       icon: '🏫',
       pages: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Sara wakes up early.', ar: 'تستيقظ سارة مبكراً.', img: '⏰' },
+        { en: 'She eats her breakfast.', ar: 'تتناول فطورها.', img: '🥣' },
+        { en: 'She takes her yellow bus.', ar: 'تستقل حافلتها الصفراء.', img: '🚌' },
+        { en: 'Sara loves reading books.', ar: 'سارة تحب قراءة الكتب.', img: '📚' }
       ]
     }
   ];
@@ -254,21 +254,21 @@ export class DataService {
       title: 'عالم الحيوانات (Animals & Sounds)',
       icon: '🦁',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Lion', ar: 'أسد', img: '🦁', realImg: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=300&auto=format&fit=crop', soundEffect: 'roar', imagePath: 'lion.png' },
+        { en: 'Elephant', ar: 'فيل', img: '🐘', realImg: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=300&auto=format&fit=crop', soundEffect: 'trumpet', imagePath: 'elephant.png' },
+        { en: 'Cat', ar: 'قطة', img: '🐱', realImg: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&auto=format&fit=crop', soundEffect: 'meow', imagePath: 'cat.png' },
+        { en: 'Dog', ar: 'كلب', img: '🐶', realImg: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=300&auto=format&fit=crop', soundEffect: 'bark', imagePath: 'dog.png' },
+        { en: 'Bird', ar: 'طائر', img: '🐦', realImg: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=300&auto=format&fit=crop', soundEffect: 'tweet', imagePath: 'bird.png' },
+        { en: 'Frog', ar: 'ضفدع', img: '🐸', realImg: 'https://images.unsplash.com/photo-1559253664-ca249d4608c6?w=300&auto=format&fit=crop', soundEffect: 'croak', imagePath: 'frog.png' },
+        { en: 'Tiger', ar: 'نمر', img: '🐅', realImg: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=300&auto=format&fit=crop', soundEffect: 'roar', imagePath: 'tiger.png' },
+        { en: 'Monkey', ar: 'قرد', img: '🐒', realImg: 'https://images.unsplash.com/photo-1540573133985-78164d64a234?w=300&auto=format&fit=crop', imagePath: 'monkey.png' },
+        { en: 'Giraffe', ar: 'زرافة', img: '🦒', realImg: 'https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=300&auto=format&fit=crop', imagePath: 'giraffe.png' },
+        { en: 'Dolphin', ar: 'دلفين', img: '🐬', realImg: 'https://images.unsplash.com/photo-1607153333879-c174d261b141?w=300&auto=format&fit=crop', imagePath: 'dolphin.png' },
+        { en: 'Horse', ar: 'حصان', img: '🐎', realImg: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?w=300&auto=format&fit=crop', imagePath: 'horse.png' },
+        { en: 'Cow', ar: 'بقرة', img: '🐄', realImg: 'https://images.unsplash.com/photo-1570042225831-d98fa7577f1e?w=300&auto=format&fit=crop', imagePath: 'cow.png' },
+        { en: 'Sheep', ar: 'خروف', img: '🐑', realImg: 'https://images.unsplash.com/photo-1484557052118-f32bd25b45b5?w=300&auto=format&fit=crop' },
+        { en: 'Rabbit', ar: 'أرنب', img: '🐇', realImg: 'https://images.unsplash.com/photo-1585110396000-c9fd4e4e11fd?w=300&auto=format&fit=crop', imagePath: 'rabbit.png' },
+        { en: 'Bear', ar: 'دب', img: '🐻', realImg: 'https://images.unsplash.com/photo-1530595467537-0b5996c41f2d?w=300&auto=format&fit=crop', imagePath: 'bear.png' }
       ]
     },
     {
@@ -276,16 +276,16 @@ export class DataService {
       title: 'الأطعمة والوجبات (Food & Meals)',
       icon: '🍕',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Pizza', ar: 'بيتزا', img: '🍕', realImg: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=300&auto=format&fit=crop', imagePath: 'pizza.png' },
+        { en: 'Burger', ar: 'برجر', img: '🍔', realImg: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&auto=format&fit=crop' },
+        { en: 'Cake', ar: 'كعكة', img: '🍰', realImg: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&auto=format&fit=crop', imagePath: 'cake.png' },
+        { en: 'Bread', ar: 'خبز', img: '🍞', realImg: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=300&auto=format&fit=crop' },
+        { en: 'Cheese', ar: 'جبن', img: '🧀', realImg: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=300&auto=format&fit=crop' },
+        { en: 'Popcorn', ar: 'فشار', img: '🍿', realImg: 'https://images.unsplash.com/photo-1578849278619-e73505e9610f?w=300&auto=format&fit=crop' },
+        { en: 'Soup', ar: 'حساء / شوربة', img: '🥣', realImg: 'https://images.unsplash.com/photo-1547592180-85f173990554?w=300&auto=format&fit=crop' },
+        { en: 'Sandwich', ar: 'شطيرة', img: '🥪', realImg: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?w=300&auto=format&fit=crop' },
+        { en: 'Rice', ar: 'أرز', img: '🍚', realImg: 'https://images.unsplash.com/photo-1536304929831-ee1ca9d44906?w=300&auto=format&fit=crop' },
+        { en: 'Egg', ar: 'بيضة', img: '🍳', realImg: 'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=300&auto=format&fit=crop', imagePath: 'egg.png' }
       ]
     },
     {
@@ -293,16 +293,16 @@ export class DataService {
       title: 'الفواكه الخفيفة (Fresh Fruits)',
       icon: '🍎',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Apple', ar: 'تفاحة', img: '🍎', realImg: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&auto=format&fit=crop', imagePath: 'apple.png' },
+        { en: 'Banana', ar: 'موز', img: '🍌', realImg: 'https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?w=300&auto=format&fit=crop', imagePath: 'banana.png' },
+        { en: 'Orange', ar: 'برتقال', img: '🍊', realImg: 'https://images.unsplash.com/photo-1611080626919-7cf5a9dbab5b?w=300&auto=format&fit=crop', imagePath: 'orange.png' },
+        { en: 'Strawberry', ar: 'فراولة', img: '🍓', realImg: 'https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=300&auto=format&fit=crop', imagePath: 'strawberry.png' },
+        { en: 'Watermelon', ar: 'بطيخ', img: '🍉', realImg: 'https://images.unsplash.com/photo-1587049352846-4a222e784d38?w=300&auto=format&fit=crop', imagePath: 'watermelon.png' },
+        { en: 'Grapes', ar: 'عنب', img: '🍇', realImg: 'https://images.unsplash.com/photo-1537640538966-79f369143f8f?w=300&auto=format&fit=crop' },
+        { en: 'Mango', ar: 'مانجو', img: '🥭', realImg: 'https://images.unsplash.com/photo-1553279768-865429fa0078?w=300&auto=format&fit=crop' },
+        { en: 'Pineapple', ar: 'أناناس', img: '🍍', realImg: 'https://images.unsplash.com/photo-1550258987-190a2d41a8ba?w=300&auto=format&fit=crop' },
+        { en: 'Peach', ar: 'خوخ', img: '🍑', realImg: 'https://images.unsplash.com/photo-1531171000775-85f2fa668d27?w=300&auto=format&fit=crop' },
+        { en: 'Cherry', ar: 'كرز', img: '🍒', realImg: 'https://images.unsplash.com/photo-1528821128474-27f963b062bf?w=300&auto=format&fit=crop' }
       ]
     },
     {
@@ -310,16 +310,16 @@ export class DataService {
       title: 'الخضروات الطازجة (Vegetables)',
       icon: '🥕',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Carrot', ar: 'جزر', img: '🥕', realImg: 'https://images.unsplash.com/photo-1598170845058-12ef4a457939?w=300&auto=format&fit=crop' },
+        { en: 'Tomato', ar: 'طماطم', img: '🍅', realImg: 'https://images.unsplash.com/photo-1592924357228-91a4daadcfea?w=300&auto=format&fit=crop', imagePath: 'tomato.png' },
+        { en: 'Cucumber', ar: 'خيار', img: '🥒', realImg: 'https://images.unsplash.com/photo-1449300079323-02e209d9d3a6?w=300&auto=format&fit=crop' },
+        { en: 'Broccoli', ar: 'بروكلي', img: '🥦', realImg: 'https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?w=300&auto=format&fit=crop' },
+        { en: 'Corn', ar: 'ذرة', img: '🌽', realImg: 'https://images.unsplash.com/photo-1551754655-cd27e38d2076?w=300&auto=format&fit=crop' },
+        { en: 'Potato', ar: 'بطاطس', img: '🥔', realImg: 'https://images.unsplash.com/photo-1518977676601-b53f82aba655?w=300&auto=format&fit=crop' },
+        { en: 'Onion', ar: 'بصل', img: '🧅', realImg: 'https://images.unsplash.com/photo-1518977956812-cd3dbadaaf31?w=300&auto=format&fit=crop', imagePath: 'onion.png' },
+        { en: 'Pepper', ar: 'فلفل', img: '🫑', realImg: 'https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?w=300&auto=format&fit=crop' },
+        { en: 'Garlic', ar: 'ثوم', img: '🧄', realImg: 'https://images.unsplash.com/photo-1540148426946-57ac8af45499?w=300&auto=format&fit=crop' },
+        { en: 'Lettuce', ar: 'خس', img: '🥬', realImg: 'https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?w=300&auto=format&fit=crop' }
       ]
     },
     {
@@ -327,14 +327,14 @@ export class DataService {
       title: 'المشروبات والعصائر (Drinks & Beverages)',
       icon: '🧃',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Milk', ar: 'حليب', img: '🥛', realImg: 'https://images.unsplash.com/photo-1563636619-e9143da7973b?w=300&auto=format&fit=crop', imagePath: 'milk.png' },
+        { en: 'Water', ar: 'ماء', img: '💧', realImg: 'https://images.unsplash.com/photo-1548839140-29a749e1bc4e?w=300&auto=format&fit=crop' },
+        { en: 'Juice', ar: 'عصير', img: '🧃', realImg: 'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=300&auto=format&fit=crop', imagePath: 'juice.png' },
+        { en: 'Tea', ar: 'شاي', img: '🍵', realImg: 'https://images.unsplash.com/photo-1576092768241-dec231879fc3?w=300&auto=format&fit=crop' },
+        { en: 'Smoothie', ar: 'مخفوق فواكه', img: '🥤', realImg: 'https://images.unsplash.com/photo-1553530666-ba11a7da3888?w=300&auto=format&fit=crop' },
+        { en: 'Hot Chocolate', ar: 'شوكولاتة ساخنة', img: '☕', realImg: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?w=300&auto=format&fit=crop' },
+        { en: 'Coffee', ar: 'قهوة', img: '☕', realImg: 'https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=300&auto=format&fit=crop' },
+        { en: 'Lemonade', ar: 'عصير ليمون', img: '🍋', realImg: 'https://images.unsplash.com/photo-1513558161293-cdaf765ed2fd?w=300&auto=format&fit=crop' }
       ]
     },
     {
@@ -342,16 +342,16 @@ export class DataService {
       title: 'أغراض البيت والمدرسة (Home & School Things)',
       icon: '🏠',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Door', ar: 'باب', img: '🚪', realImg: 'https://images.unsplash.com/photo-1513694203232-719a280e022f?w=300&auto=format&fit=crop', imagePath: 'door.png' },
+        { en: 'Chair', ar: 'كرسي', img: '🪑', realImg: 'https://images.unsplash.com/photo-1580481072645-022f9a6d8310?w=300&auto=format&fit=crop' },
+        { en: 'Table', ar: 'طاولة / تربيزة', img: '🪵', realImg: 'https://images.unsplash.com/photo-1530018607912-eff2daa1bac4?w=300&auto=format&fit=crop' },
+        { en: 'Window', ar: 'شباك / نافذة', img: '🪟', realImg: 'https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?w=300&auto=format&fit=crop', imagePath: 'window.png' },
+        { en: 'Book', ar: 'كتاب', img: '📖', realImg: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&auto=format&fit=crop', imagePath: 'book.png' },
+        { en: 'Pencil', ar: 'قلم رصاص', img: '✏️', realImg: 'https://images.unsplash.com/photo-1585336261026-8f5786372966?w=300&auto=format&fit=crop', imagePath: 'pencil.png' },
+        { en: 'Bag / Backpack', ar: 'حقيبة مدرسية', img: '🎒', realImg: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&auto=format&fit=crop' },
+        { en: 'Clock / Watch', ar: 'ساعة حائط', img: '⏰', realImg: 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=300&auto=format&fit=crop' },
+        { en: 'Bed', ar: 'سرير', img: '🛏️', realImg: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=300&auto=format&fit=crop' },
+        { en: 'Lamp', ar: 'مصباح', img: '💡', realImg: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&auto=format&fit=crop', imagePath: 'lamp.png' }
       ]
     },
     {
@@ -359,12 +359,12 @@ export class DataService {
       title: 'وسائل المواصلات (Vehicles)',
       icon: '🚗',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Car', ar: 'سيارة', img: '🚗', realImg: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=300&auto=format&fit=crop', soundEffect: 'vroom', imagePath: 'car.png' },
+        { en: 'Airplane', ar: 'طائرة', img: '✈️', realImg: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=300&auto=format&fit=crop', soundEffect: 'jet', imagePath: 'airplane.png' },
+        { en: 'Train', ar: 'قطار', img: '🚂', realImg: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=300&auto=format&fit=crop', soundEffect: 'choo', imagePath: 'train.png' },
+        { en: 'Bus', ar: 'حافلة', img: '🚌', realImg: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=300&auto=format&fit=crop', soundEffect: 'horn', imagePath: 'bus.png' },
+        { en: 'Rocket', ar: 'صاروخ', img: '🚀', realImg: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?w=300&auto=format&fit=crop', soundEffect: 'blast', imagePath: 'rocket.png' },
+        { en: 'Bicycle', ar: 'دراجة', img: '🚲', realImg: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=300&auto=format&fit=crop', soundEffect: 'bell' }
       ]
     },
     {
@@ -372,16 +372,16 @@ export class DataService {
       title: 'الألوان (Colors)',
       icon: '🎨',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Red', ar: 'أحمر', img: '🔴', realImg: 'https://images.unsplash.com/photo-1531315630201-bb15abeb1653?w=300&auto=format&fit=crop' },
+        { en: 'Blue', ar: 'أزرق', img: '🔵', realImg: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=300&auto=format&fit=crop' },
+        { en: 'Green', ar: 'أخضر', img: '🟢', realImg: 'https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=300&auto=format&fit=crop' },
+        { en: 'Yellow', ar: 'أصفر', img: '🟡', realImg: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=300&auto=format&fit=crop', imagePath: 'yellow.png' },
+        { en: 'Orange', ar: 'برتقالي', img: '🟠', realImg: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=300&auto=format&fit=crop', imagePath: 'orange.png' },
+        { en: 'Purple', ar: 'بنفسجي', img: '🟣', realImg: 'https://images.unsplash.com/photo-1552084117-56a98a414520?w=300&auto=format&fit=crop' },
+        { en: 'Pink', ar: 'وردي', img: '🌸', realImg: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=300&auto=format&fit=crop' },
+        { en: 'Black', ar: 'أسود', img: '⚫', realImg: 'https://images.unsplash.com/photo-1505909182942-e2f09aee3e89?w=300&auto=format&fit=crop' },
+        { en: 'White', ar: 'أبيض', img: '⚪', realImg: 'https://images.unsplash.com/photo-1516382722697-e01124c1e459?w=300&auto=format&fit=crop' },
+        { en: 'Brown', ar: 'بني', img: '🟤', realImg: 'https://images.unsplash.com/photo-1550508122-d7b102875f60?w=300&auto=format&fit=crop' }
       ]
     },
     {
@@ -389,14 +389,14 @@ export class DataService {
       title: 'الملابس (Clothes)',
       icon: '👕',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Shirt', ar: 'قميص', img: '👕', realImg: 'https://images.unsplash.com/photo-1596755094514-f87e32f6b717?w=300&auto=format&fit=crop' },
+        { en: 'Pants', ar: 'بنطال', img: '👖', realImg: 'https://images.unsplash.com/photo-1541099649105-f69ad21f3246?w=300&auto=format&fit=crop' },
+        { en: 'Dress', ar: 'فستان', img: '👗', realImg: 'https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=300&auto=format&fit=crop' },
+        { en: 'Shoes', ar: 'حذاء', img: '👞', realImg: 'https://images.unsplash.com/photo-1549298916-b41d501d3772?w=300&auto=format&fit=crop' },
+        { en: 'Hat', ar: 'قبعة', img: '🧢', realImg: 'https://images.unsplash.com/photo-1521369909029-2afed882ba28?w=300&auto=format&fit=crop', imagePath: 'hat.png' },
+        { en: 'Jacket', ar: 'سترة', img: '🧥', realImg: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?w=300&auto=format&fit=crop', imagePath: 'jacket.png' },
+        { en: 'Socks', ar: 'جوارب', img: '🧦', realImg: 'https://images.unsplash.com/photo-1582966772680-860e372bb558?w=300&auto=format&fit=crop' },
+        { en: 'Skirt', ar: 'تنورة', img: '👗', realImg: 'https://images.unsplash.com/photo-1583496661160-c588c4c40f31?w=300&auto=format&fit=crop' }
       ]
     },
     {
@@ -404,14 +404,14 @@ export class DataService {
       title: 'الهوايات والأفعال (Hobbies & Actions)',
       icon: '🏃',
       items: [
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object],
-        [object Object]
+        { en: 'Read', ar: 'يقرأ', img: '📖', realImg: 'https://images.unsplash.com/photo-1512820790803-83ca734da794?w=300&auto=format&fit=crop' },
+        { en: 'Write', ar: 'يكتب', img: '✍️', realImg: 'https://images.unsplash.com/photo-1455390582262-044cdead27d8?w=300&auto=format&fit=crop' },
+        { en: 'Draw', ar: 'يرسم', img: '🎨', realImg: 'https://images.unsplash.com/photo-1513364776144-60967b0f800f?w=300&auto=format&fit=crop' },
+        { en: 'Play', ar: 'يلعب', img: '⚽', realImg: 'https://images.unsplash.com/photo-1511512578047-dfb367046420?w=300&auto=format&fit=crop' },
+        { en: 'Learn', ar: 'يتعلم', img: '🧠', realImg: 'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=300&auto=format&fit=crop' },
+        { en: 'Run', ar: 'يركض', img: '🏃', realImg: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=300&auto=format&fit=crop' },
+        { en: 'Swim', ar: 'يسبح', img: '🏊', realImg: 'https://images.unsplash.com/photo-1519315901367-f34f815be0c1?w=300&auto=format&fit=crop' },
+        { en: 'Sing', ar: 'يغني', img: '🎤', realImg: 'https://images.unsplash.com/photo-1516280440502-62947029517e?w=300&auto=format&fit=crop' }
       ]
     }
   ];
@@ -446,8 +446,8 @@ export class DataService {
         { word: 'Car', ar_word: 'سيارة', img: '🚗', imagePath: 'car.png' },
         { word: 'Cow', ar_word: 'بقرة', img: '🐄', imagePath: 'cow.png' },
         { word: 'Cake', ar_word: 'كعكة', img: '🍰', imagePath: 'cake.png' },
-        { word: 'Camel', ar_word: 'جمل', img: '🐪', imagePath: 'camel.png' },
-        { word: 'Crown', ar_word: 'تاج', img: '👑', imagePath: 'crown.png' }
+        { word: 'Camel', ar_word: 'جمل', img: '🐪' },
+        { word: 'Crown', ar_word: 'تاج', img: '👑' }
       ] 
     },
     { 
@@ -458,7 +458,7 @@ export class DataService {
         { word: 'Door', ar_word: 'باب', img: '🚪', imagePath: 'door.png' },
         { word: 'Dolphin', ar_word: 'دلفين', img: '🐬', imagePath: 'dolphin.png' },
         { word: 'Drum', ar_word: 'طبلة', img: '🥁', imagePath: 'drum.png' },
-        { word: 'Dress', ar_word: 'فستان', img: '👗', imagePath: 'dress.png' }
+        { word: 'Dress', ar_word: 'فستان', img: '👗' }
       ] 
     },
     { 
@@ -467,7 +467,7 @@ export class DataService {
         { word: 'Elephant', ar_word: 'فيل', img: '🐘', realImg: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=300&auto=format&fit=crop', imagePath: 'elephant.png' },
         { word: 'Egg', ar_word: 'بيضة', img: '🥚', imagePath: 'egg.png' },
         { word: 'Eye', ar_word: 'عين', img: '👁️', imagePath: 'eye.png' },
-        { word: 'Ear', ar_word: 'أذن', img: '👂', imagePath: 'ear.png' },
+        { word: 'Ear', ar_word: 'أذن', img: '👂' },
         { word: 'Earth', ar_word: 'الأرض', img: '🌍', imagePath: 'earth.png' },
         { word: 'Eagle', ar_word: 'نسر', img: '🦅', imagePath: 'eagle.png' }
       ] 
@@ -475,12 +475,12 @@ export class DataService {
     { 
       letter: 'F', ar_letter: 'إف', 
       words: [
-        { word: 'Fish', ar_word: 'سمكة', img: '🐟', imagePath: 'fish.png' },
+        { word: 'Fish', ar_word: 'سمكة', img: '🐟' },
         { word: 'Frog', ar_word: 'ضفدع', img: '🐸', imagePath: 'frog.png' },
         { word: 'Flower', ar_word: 'زهرة', img: '🌸', imagePath: 'flower.png' },
         { word: 'Fire', ar_word: 'نار', img: '🔥', imagePath: 'fire.png' },
         { word: 'Fox', ar_word: 'ثعلب', img: '🦊', imagePath: 'fox.png' },
-        { word: 'Foot', ar_word: 'قدم', img: '🦶', imagePath: 'foot.png' }
+        { word: 'Foot', ar_word: 'قدم', img: '🦶' }
       ] 
     },
     { 
@@ -499,7 +499,7 @@ export class DataService {
       words: [
         { word: 'Hat', ar_word: 'قبعة', img: '🎩', imagePath: 'hat.png' },
         { word: 'Horse', ar_word: 'حصان', img: '🐎', imagePath: 'horse.png' },
-        { word: 'Hand', ar_word: 'يد', img: '✋', imagePath: 'hand.png' },
+        { word: 'Hand', ar_word: 'يد', img: '✋' },
         { word: 'House', ar_word: 'منزل', img: '🏠', imagePath: 'house.png' },
         { word: 'Heart', ar_word: 'قلب', img: '❤️', imagePath: 'heart.png' },
         { word: 'Helicopter', ar_word: 'مروحية', img: '🚁', imagePath: 'helicopter.png' }
@@ -524,7 +524,7 @@ export class DataService {
         { word: 'Jellyfish', ar_word: 'قنديل البحر', img: '🪼', imagePath: 'jellyfish.png' },
         { word: 'Jeep', ar_word: 'سيارة جيب', img: '🚙', imagePath: 'jeep.png' },
         { word: 'Jam', ar_word: 'مربى', img: '🍯', imagePath: 'jam.png' },
-        { word: 'Jump', ar_word: 'قفز', img: '🤸', imagePath: 'jump.png' }
+        { word: 'Jump', ar_word: 'قفز', img: '🤸' }
       ] 
     },
     { 
@@ -568,7 +568,7 @@ export class DataService {
         { word: 'Nut', ar_word: 'بندقة', img: '🥜', imagePath: 'nut.png' },
         { word: 'Net', ar_word: 'شبكة', img: '🥅', imagePath: 'net.png' },
         { word: 'Ninja', ar_word: 'نينجا', img: '🥷', imagePath: 'ninja.png' },
-        { word: 'Notebook', ar_word: 'دفتر', img: '📓', imagePath: 'notebook.png' }
+        { word: 'Notebook', ar_word: 'دفتر', img: '📓' }
       ] 
     },
     { 
@@ -579,29 +579,29 @@ export class DataService {
         { word: 'Onion', ar_word: 'بصلة', img: '🧅', imagePath: 'onion.png' },
         { word: 'Octopus', ar_word: 'أخطبوط', img: '🐙', imagePath: 'octopus.png' },
         { word: 'Ocean', ar_word: 'محيط', img: '🌊', imagePath: 'ocean.png' },
-        { word: 'Otter', ar_word: 'ثعلب الماء', img: '🦦', imagePath: 'otter.png' }
+        { word: 'Otter', ar_word: 'ثعلب الماء', img: '🦦' }
       ] 
     },
     { 
       letter: 'P', ar_letter: 'بي', 
       words: [
         { word: 'Pig', ar_word: 'خنزير', img: '🐷', imagePath: 'pig.png' },
-        { word: 'Pen', ar_word: 'قلم', img: '🖊️', imagePath: 'pen.png' },
+        { word: 'Pen', ar_word: 'قلم', img: '🖊️' },
         { word: 'Panda', ar_word: 'باندا', img: '🐼', imagePath: 'panda.png' },
         { word: 'Pizza', ar_word: 'بيتزا', img: '🍕', imagePath: 'pizza.png' },
         { word: 'Penguin', ar_word: 'بطريق', img: '🐧', imagePath: 'penguin.png' },
-        { word: 'Piano', ar_word: 'بيانو', img: '🎹', imagePath: 'piano.png' }
+        { word: 'Piano', ar_word: 'بيانو', img: '🎹' }
       ] 
     },
     { 
       letter: 'Q', ar_letter: 'كيو', 
       words: [
         { word: 'Queen', ar_word: 'ملكة', img: '👑', imagePath: 'queen.png' },
-        { word: 'Question', ar_word: 'سؤال', img: '❓', imagePath: 'question.png' },
+        { word: 'Question', ar_word: 'سؤال', img: '❓' },
         { word: 'Quilt', ar_word: 'لحاف', img: '🛌', imagePath: 'quilt.png' },
         { word: 'Quail', ar_word: 'طائر السمان', img: '🐦', imagePath: 'quail.png' },
         { word: 'Quarter', ar_word: 'ربع دولار', img: '🪙', imagePath: 'quarter.png' },
-        { word: 'Quiet', ar_word: 'هدوء', img: '🤫', imagePath: 'quiet.png' }
+        { word: 'Quiet', ar_word: 'هدوء', img: '🤫' }
       ] 
     },
     { 
@@ -612,7 +612,7 @@ export class DataService {
         { word: 'Rose', ar_word: 'وردة', img: '🌹', imagePath: 'rose.png' },
         { word: 'Robot', ar_word: 'روبوت', img: '🤖', imagePath: 'robot.png' },
         { word: 'Rocket', ar_word: 'صاروخ', img: '🚀', imagePath: 'rocket.png' },
-        { word: 'Rain', ar_word: 'مطر', img: '🌧️', imagePath: 'rain.png' }
+        { word: 'Rain', ar_word: 'مطر', img: '🌧️' }
       ] 
     },
     { 
@@ -623,7 +623,7 @@ export class DataService {
         { word: 'Snake', ar_word: 'ثعبان', img: '🐍', imagePath: 'snake.png' },
         { word: 'Spider', ar_word: 'عنكبوت', img: '🕷️', imagePath: 'spider.png' },
         { word: 'Strawberry', ar_word: 'فراولة', img: '🍓', imagePath: 'strawberry.png' },
-        { word: 'Shoes', ar_word: 'حذاء', img: '👟', imagePath: 'shoes.png' }
+        { word: 'Shoes', ar_word: 'حذاء', img: '👟' }
       ] 
     },
     { 
@@ -645,7 +645,7 @@ export class DataService {
         { word: 'Up', ar_word: 'أعلى', img: '⬆️', imagePath: 'up.png' },
         { word: 'UFO', ar_word: 'طبق طائر', img: '🛸', imagePath: 'ufo.png' },
         { word: 'Uniform', ar_word: 'زي موحد', img: '🥼', imagePath: 'uniform.png' },
-        { word: 'Unlock', ar_word: 'فتح', img: '🔓', imagePath: 'unlock.png' }
+        { word: 'Unlock', ar_word: 'فتح', img: '🔓' }
       ] 
     },
     { 
@@ -654,9 +654,9 @@ export class DataService {
         { word: 'Van', ar_word: 'شاحنة', img: '🚐', imagePath: 'van.png' },
         { word: 'Violin', ar_word: 'كمان', img: '🎻', imagePath: 'violin.png' },
         { word: 'Volcano', ar_word: 'بركان', img: '🌋', imagePath: 'volcano.png' },
-        { word: 'Vegetable', ar_word: 'خضار', img: '🥗', imagePath: 'vegetable.png' },
-        { word: 'Vampire', ar_word: 'مصاص دماء', img: '🧛', imagePath: 'vampire.png' },
-        { word: 'Video', ar_word: 'فيديو', img: '🎬', imagePath: 'video.png' }
+        { word: 'Vegetable', ar_word: 'خضار', img: '🥗' },
+        { word: 'Vampire', ar_word: 'مصاص دماء', img: '🧛' },
+        { word: 'Video', ar_word: 'فيديو', img: '🎬' }
       ] 
     },
     { 
@@ -665,7 +665,7 @@ export class DataService {
         { word: 'Watermelon', ar_word: 'بطيخ', img: '🍉', imagePath: 'watermelon.png' },
         { word: 'Wolf', ar_word: 'ذئب', img: '🐺', imagePath: 'wolf.png' },
         { word: 'Whale', ar_word: 'حوت', img: '🐳', imagePath: 'whale.png' },
-        { word: 'Watch', ar_word: 'ساعة', img: '⌚', imagePath: 'watch.png' },
+        { word: 'Watch', ar_word: 'ساعة', img: '⌚' },
         { word: 'Window', ar_word: 'نافذة', img: '🪟', imagePath: 'window.png' },
         { word: 'Wheel', ar_word: 'عجلة', img: '🛞', imagePath: 'wheel.png' }
       ] 
@@ -678,7 +678,7 @@ export class DataService {
         { word: 'Fox', ar_word: 'ثعلب (ينتهي بـ X)', img: '🦊', imagePath: 'fox.png' },
         { word: 'Box', ar_word: 'صندوق (ينتهي بـ X)', img: '📦', imagePath: 'box.png' },
         { word: 'Six', ar_word: 'ستة (ينتهي بـ X)', img: '6️⃣', imagePath: 'six.png' },
-        { word: 'Mix', ar_word: 'يخلط (ينتهي بـ X)', img: '🥣', imagePath: 'mix.png' }
+        { word: 'Mix', ar_word: 'يخلط (ينتهي بـ X)', img: '🥣' }
       ] 
     },
     { 
@@ -689,7 +689,7 @@ export class DataService {
         { word: 'Yo-yo', ar_word: 'لعبة اليويو', img: '🪀', imagePath: 'yoyo.png' },
         { word: 'Yogurt', ar_word: 'زبادي', img: '🍦', imagePath: 'yogurt.png' },
         { word: 'Yarn', ar_word: 'خيوط الغزل', img: '🧶', imagePath: 'yarn.png' },
-        { word: 'Yawn', ar_word: 'تثاؤب', img: '🥱', imagePath: 'yawn.png' }
+        { word: 'Yawn', ar_word: 'تثاؤب', img: '🥱' }
       ] 
     },
     { 
@@ -700,7 +700,7 @@ export class DataService {
         { word: 'Zero', ar_word: 'صفر', img: '0️⃣', imagePath: 'zero.png' },
         { word: 'Zipper', ar_word: 'سحاب', img: '🤐', imagePath: 'zipper.png' },
         { word: 'Zigzag', ar_word: 'متعرج', img: '〰️', imagePath: 'zigzag.png' },
-        { word: 'Zombie', ar_word: 'زومبي', img: '🧟', imagePath: 'zombie.png' }
+        { word: 'Zombie', ar_word: 'زومبي', img: '🧟' }
       ] 
     }
   ];

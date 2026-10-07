@@ -7,6 +7,7 @@ interface Animal {
   en: string;
   ar: string;
   img: string;
+  imagePath?: string;
   soundEffect?: string;
 }
 
@@ -70,7 +71,11 @@ interface TrainCar {
                          (drop)="onDrop($event, car.index)">
                         
                         @if (car.placedAnimal) {
-                            <div class="text-6xl animate-[bounceIn_0.5s_ease-out]">{{ car.placedAnimal.img }}</div>
+                            @if (car.placedAnimal.imagePath) {
+                                <img [src]="'assets/images/' + car.placedAnimal.imagePath" class="w-16 h-16 object-contain animate-[bounceIn_0.5s_ease-out]" />
+                            } @else {
+                                <div class="text-6xl animate-[bounceIn_0.5s_ease-out]">{{ car.placedAnimal.img }}</div>
+                            }
                         } @else {
                             <div class="text-gray-600/50 text-4xl font-black">{{ car.index + 1 }}</div>
                             <div class="text-xs text-gray-700 font-bold mt-1 text-center opacity-60">
@@ -94,14 +99,18 @@ interface TrainCar {
             <div class="h-40 bg-white/60 backdrop-blur-md rounded-t-3xl border-t-4 border-white flex justify-evenly items-center px-4 w-full z-30">
                 @for (animal of options(); track animal.en) {
                     @if (!isPlaced(animal)) {
-                        <div class="text-6xl cursor-grab active:cursor-grabbing hover:scale-110 transition-transform filter drop-shadow-md"
+                        <div class="cursor-grab active:cursor-grabbing hover:scale-110 transition-transform filter drop-shadow-md flex items-center justify-center w-20 h-20"
                              draggable="true"
                              (dragstart)="onDragStart($event, animal)"
                              (click)="playAnimalSound(animal)">
-                            @if(animal.imagePath){<img [src]=\assets/images/+animal.imagePath\ class=\w-16 h-16 object-contain pointer-events-none\/>}@else{{{ animal.img }}}
+                            @if (animal.imagePath) {
+                                <img [src]="'assets/images/' + animal.imagePath" class="w-16 h-16 object-contain pointer-events-none" />
+                            } @else {
+                                <span class="text-6xl">{{ animal.img }}</span>
+                            }
                         </div>
                     } @else {
-                        <div class="text-6xl opacity-0 pointer-events-none">@if(animal.imagePath){<img [src]=\assets/images/+animal.imagePath\ class=\w-16 h-16 object-contain pointer-events-none\/>}@else{{{ animal.img }}}</div>
+                        <div class="w-20 h-20 opacity-0 pointer-events-none"></div>
                     }
                 }
             </div>

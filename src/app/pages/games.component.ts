@@ -8,10 +8,10 @@ import { AppleGameComponent } from './apple-game.component';
 import { MathGameComponent } from './math-game.component';
 import { PuzzleGameComponent } from './puzzle-game.component';
 
-interface DragItem { word: string; img: string; }
+interface DragItem { word: string; img: string; imagePath?: string; }
 interface DropZone { letter: string; matchWord: string; currentItem: DragItem | null; }
 
-interface MemoryCard { id: number; letter: string; word: string; img: string; type: 'letter' | 'img'; isFlipped: boolean; isMatched: boolean; }
+interface MemoryCard { id: number; letter: string; word: string; img: string; imagePath?: string; type: 'letter' | 'img'; isFlipped: boolean; isMatched: boolean; }
 
 @Component({
   selector: 'app-games',
@@ -150,27 +150,31 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
           </div>
         }
       } @else if (mode() === 'quiz') {
-        <p class="text-gray-600 font-bold mb-6 text-center">استمع للكلمة واضغط على الصورة الصحيحة!</p>
+        <p class="text-gray-600 font-bold mb-6 text-center text-lg">Listen to the word and tap the correct picture!</p>
         
         @if (quizWon()) {
-          <div class="text-center py-10 bg-rose-50 rounded-3xl border-4 border-rose-300 mb-6">
+          <div class="text-center py-10 bg-rose-50 rounded-3xl border-4 border-rose-300 mb-6 font-[Bubblegum]">
             <div class="text-8xl mb-4 animate-bounce">🎯</div>
-            <h3 class="text-4xl font-black text-rose-700 mb-2">ممتاز يا بطل!</h3>
-            <p class="text-xl text-rose-600 font-bold mb-6">إجابة صحيحة! كسبت +5 نجوم! ⭐</p>
+            <h3 class="text-4xl font-black text-rose-700 mb-2">Awesome Job! 🎉</h3>
+            <p class="text-xl text-rose-600 font-bold mb-6">Correct answer! You earned +5 stars! ⭐</p>
             <button (click)="initQuizGame()" class="bg-rose-500 text-white px-8 py-3 rounded-full font-black text-2xl hover:bg-rose-600 shadow-xl hover:scale-105 transition-transform">
-              العب مرة أخرى 🔄
+              Play Again 🔄
             </button>
           </div>
         } @else if (quizQuestion()) {
           <div class="flex flex-col items-center">
-            <button (click)="playQuizWord()" class="bg-blue-500 text-white px-8 py-4 rounded-full font-black text-2xl mb-8 shadow-xl hover:scale-110 transition-transform animate-pulse flex items-center gap-3">
-              <span>🔊</span> أين صورة: {{ quizQuestion()!.targetWord }}؟
+            <button (click)="playQuizWord()" class="bg-blue-500 text-white px-8 py-4 rounded-full font-black text-2xl mb-8 shadow-xl hover:scale-110 transition-transform animate-pulse flex items-center gap-3 font-[Bubblegum]">
+              <span>🔊</span> Find: {{ quizQuestion()!.targetWord.toUpperCase() }}
             </button>
             
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 w-full">
               @for (opt of quizQuestion()!.options; track opt.word) {
-                <button (click)="checkQuizAnswer(opt.word)" class="bg-white p-6 rounded-3xl border-4 border-gray-200 shadow-md hover:border-rose-400 hover:scale-105 transition-all text-7xl md:text-8xl flex justify-center items-center h-40">
-                  {{ opt.img }}
+                <button (click)="checkQuizAnswer(opt.word)" class="bg-white p-6 rounded-3xl border-4 border-gray-200 shadow-md hover:border-rose-400 hover:scale-105 transition-all flex justify-center items-center h-44">
+                  @if (opt.imagePath) {
+                    <img [src]="'assets/images/' + opt.imagePath" class="w-28 h-28 object-contain pointer-events-none drop-shadow-md" />
+                  } @else {
+                    <span class="text-7xl md:text-8xl">{{ opt.img }}</span>
+                  }
                 </button>
               }
             </div>
@@ -178,7 +182,7 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
         }
       } @else if (mode() === 'journey') {
         <!-- لعبة رحلة الحروف -->
-        <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center justify-center select-none" dir="rtl">
+        <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center justify-center select-none" dir="ltr">
             <!-- الخلفية -->
             <div class="absolute inset-0 -z-10 flex flex-col">
                 <div class="journey-sky flex-1 relative overflow-hidden">
@@ -193,10 +197,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                 <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/60 backdrop-blur-sm">
                     <div class="bg-white p-10 rounded-[3rem] shadow-2xl max-w-lg w-full border-[10px] border-blue-400 transform transition hover:scale-105">
                         <div class="text-9xl mb-4 animate-bounce">🔤</div>
-                        <h2 class="text-5xl font-black text-blue-600 mb-4">بطل الحروف</h2>
-                        <p class="text-gray-600 mb-8 font-bold text-2xl">26 مرحلة لاكتشاف الكلمات والصور.. جاهز؟</p>
-                        <button (click)="startJourney()" class="w-full py-6 bg-yellow-400 hover:bg-yellow-500 text-blue-900 text-4xl font-black rounded-3xl shadow-[0_10px_0_#f57f17] active:translate-y-2 active:shadow-none transition-all">
-                            ابدأ اللعب!
+                        <h2 class="text-5xl font-black text-blue-600 mb-4 font-[Bubblegum]">Alphabet Master</h2>
+                        <p class="text-gray-600 mb-8 font-bold text-2xl">26 levels of letters & words. Ready?</p>
+                        <button (click)="startJourney()" class="w-full py-6 bg-yellow-400 hover:bg-yellow-500 text-blue-900 text-4xl font-black rounded-3xl shadow-[0_10px_0_#f57f17] active:translate-y-2 active:shadow-none transition-all font-[Bubblegum]">
+                            Start Journey!
                         </button>
                     </div>
                 </div>
@@ -204,13 +208,13 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
 
             <!-- شاشة النهاية -->
             @else if (journeyState() === 'finale') {
-                <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-blue-400 to-green-400 text-white p-4">
+                <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-blue-400 to-green-400 text-white p-4 font-[Bubblegum]">
                     <div class="text-center">
                         <div class="text-[8rem] mb-8 animate-bounce">🏆</div>
-                        <h1 class="text-6xl font-black mb-4 drop-shadow-2xl">أنت عبقري!</h1>
-                        <p class="text-3xl font-bold mb-12">لقد أكملت جميع الحروف الـ 26 بنجاح!</p>
+                        <h1 class="text-6xl font-black mb-4 drop-shadow-2xl">You're a Genius! 🎉</h1>
+                        <p class="text-3xl font-bold mb-12">You finished all 26 letters successfully!</p>
                         <button (click)="resetJourney()" class="px-12 py-6 bg-white text-blue-600 text-3xl font-black rounded-full shadow-[0_10px_0_#ccc] active:translate-y-2 active:shadow-none transition-all">
-                            العب مرة أخرى
+                            Play Again
                         </button>
                     </div>
                 </div>
@@ -220,8 +224,8 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
             @else {
                 <!-- شريط التقدم -->
                 <div class="absolute top-4 left-0 w-full flex flex-col items-center z-20">
-                    <h2 class="text-white text-2xl font-black drop-shadow-md" style="text-shadow: 2px 2px 0 #333;">
-                        مرحلة {{ journeyLevelIndex() + 1 }} / 26
+                    <h2 class="text-white text-2xl font-black drop-shadow-md font-[Bubblegum]" style="text-shadow: 2px 2px 0 #333;">
+                        Level {{ journeyLevelIndex() + 1 }} / 26
                     </h2>
                     <div class="journey-progress-container w-3/4 max-w-sm h-5 mt-2">
                         <div class="journey-progress-fill h-full" [style.width.%]="(journeyLevelIndex() / 26) * 100"></div>
@@ -231,11 +235,11 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                 @if (journeyTarget(); as target) {
                     <!-- بطاقة الحرف -->
                     <div class="journey-target-card mt-12 z-10">
-                        <span class="text-7xl font-black text-blue-600 drop-shadow-sm" style="text-shadow: 4px 4px 0 #bbdefb;">{{ target.letter }}</span>
+                        <span class="text-7xl font-black text-blue-600 drop-shadow-sm font-[Bubblegum]" style="text-shadow: 4px 4px 0 #bbdefb;">{{ target.letter }}</span>
                     </div>
 
-                    <h3 class="text-white text-3xl font-black mt-6 drop-shadow-md text-center px-4 z-10" style="text-shadow: 2px 2px 0 #1976d2;">
-                        أين الصورة التي تبدأ بالحرف؟
+                    <h3 class="text-white text-3xl font-black mt-6 drop-shadow-md text-center px-4 z-10 font-[Bubblegum]" style="text-shadow: 2px 2px 0 #1976d2;">
+                        Which picture starts with this letter?
                     </h3>
 
                     <!-- خيارات الصور -->
@@ -245,8 +249,12 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                                     [disabled]="journeyState() === 'win'"
                                     [class.journey-shake]="wrongJourneyIndex === i"
                                     [class.journey-correct]="journeyState() === 'win' && opt.isCorrect"
-                                    class="journey-option-btn">
-                                {{ opt.img }}
+                                    class="journey-option-btn flex items-center justify-center">
+                                @if (opt.imagePath) {
+                                  <img [src]="'assets/images/' + opt.imagePath" class="w-24 h-24 object-contain pointer-events-none drop-shadow-md" />
+                                } @else {
+                                  <span class="text-6xl">{{ opt.img }}</span>
+                                }
                             </button>
                         }
                     </div>
@@ -255,9 +263,12 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                     @if (journeyState() === 'win') {
                         <div class="absolute inset-0 z-40 flex flex-col items-center justify-center">
                             <div class="text-center bg-white/90 backdrop-blur-md px-10 py-6 rounded-[3rem] shadow-2xl border-[8px] border-green-400 animate-[bounceIn_0.5s_ease-out]">
-                                <div class="text-7xl mb-2">{{ target.img }}</div>
-                                <h2 class="text-5xl font-black text-green-600 mb-1 uppercase drop-shadow-sm">{{ target.word }}</h2>
-                                <h3 class="text-3xl font-bold text-gray-700">{{ target.ar }}</h3>
+                                @if (target.imagePath) {
+                                  <img [src]="'assets/images/' + target.imagePath" class="w-32 h-32 object-contain mx-auto mb-2 drop-shadow-md" />
+                                } @else {
+                                  <div class="text-7xl mb-2">{{ target.img }}</div>
+                                }
+                                <h2 class="text-5xl font-black text-green-600 mb-1 uppercase drop-shadow-sm font-[Bubblegum]">{{ target.word }}</h2>
                             </div>
                         </div>
                     }
@@ -281,10 +292,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                         <div class="text-8xl mb-2 flex justify-center gap-2 animate-bounce">
                             <span>👤</span><span>👤</span>
                         </div>
-                        <h2 class="text-4xl font-black text-orange-600 mb-2">تحدي الظلال</h2>
-                        <p class="text-gray-600 mb-6 font-bold text-xl">اسحب كل شكل وضعه فوق الظل المطابق له!</p>
-                        <button (click)="startShadowGame()" class="w-full py-4 bg-green-500 hover:bg-green-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#2e7d32] active:translate-y-2 active:shadow-none transition-all">
-                            هيا نلعب!
+                        <h2 class="text-4xl font-black text-orange-600 mb-2 font-[Bubblegum]">Shadow Match</h2>
+                        <p class="text-gray-600 mb-6 font-bold text-xl">Drag each item onto its matching shadow!</p>
+                        <button (click)="startShadowGame()" class="w-full py-4 bg-green-500 hover:bg-green-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#2e7d32] active:translate-y-2 active:shadow-none transition-all font-[Bubblegum]">
+                            Let's Play!
                         </button>
                     </div>
                 </div>
@@ -294,9 +305,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
             @else if (shadowState() === 'win') {
                 <div class="absolute inset-0 z-50 flex flex-col items-center justify-center bg-gradient-to-b from-green-400 to-blue-500 text-white p-4">
                     <div class="text-[8rem] mb-4 animate-bounce">🏆</div>
-                    <h1 class="text-6xl font-black mb-4 drop-shadow-xl text-center">أنت عبقري!</h1>
-                    <button (click)="resetShadowGame()" class="mt-8 px-10 py-5 bg-white text-blue-600 text-3xl font-black rounded-full shadow-[0_8px_0_#ccc] active:translate-y-2 active:shadow-none transition-all">
-                        العب مرة أخرى
+                    <h1 class="text-6xl font-black mb-4 drop-shadow-xl text-center font-[Bubblegum]">Champion! 🎉</h1>
+                    <p class="text-2xl font-bold mb-6 text-center">You found all the matching shadows!</p>
+                    <button (click)="resetShadowGame()" class="mt-4 px-10 py-5 bg-white text-blue-600 text-3xl font-black rounded-full shadow-[0_8px_0_#ccc] active:translate-y-2 active:shadow-none transition-all font-[Bubblegum]">
+                        Play Again
                     </button>
                 </div>
             }
@@ -305,9 +317,9 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
             @else {
                 <!-- شريط العناوين -->
                 <div class="absolute top-4 w-full flex flex-col items-center z-30 pointer-events-none">
-                    <h1 class="text-white text-3xl font-black drop-shadow-md mb-2" style="text-shadow: 2px 2px 0 #e65100;">طابق الأشكال الـ 3!</h1>
+                    <h1 class="text-white text-3xl font-black drop-shadow-md mb-2 font-[Bubblegum]" style="text-shadow: 2px 2px 0 #e65100;">Match all 3 shadows!</h1>
                     <div class="w-48 h-4 bg-black/10 rounded-full overflow-hidden border-2 border-white">
-                        <div class="h-full bg-green-500 transition-all duration-500" [style.width.%]="(shadowLevelIndex() / 8) * 100"></div>
+                        <div class="h-full bg-green-500 transition-all duration-500" [style.width.%]="(shadowLevelIndex() / 6) * 100"></div>
                     </div>
                 </div>
 
@@ -316,10 +328,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                     <div class="h-[40%] flex justify-evenly items-center relative z-20 w-full" dir="ltr">
                         @for (item of shadowItems(); track item.id; let i = $index) {
                             @if (!item.matched) {
-                                <div class="shadowgame-item"
+                                <div class="shadowgame-item flex items-center justify-center"
                                      [class.shadowgame-idle-float]="shadowDraggingIndex() !== i"
                                      [class.shadowgame-snapping-back]="shadowWrongIndex === i"
-                                     [style.transform]="shadowDraggingIndex() === i ? 'translate(' + dragDx() + 'px, ' + dragDy() + 'px) scale(1.1)' : 'translate(0px, 0px)'"
+                                     [style.transform]="shadowDraggingIndex() === i ? 'translate(' + dragDx() + 'px, ' + dragDy() + 'px) scale(1.15)' : 'translate(0px, 0px)'"
                                      [style.zIndex]="shadowDraggingIndex() === i ? 1000 : 100"
                                      [style.transition]="shadowDraggingIndex() === i ? 'none' : ''"
                                      (mousedown)="onShadowDragStart($event, i)"
@@ -328,10 +340,14 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                                      (window:touchmove)="onShadowDragMove($event)"
                                      (window:mouseup)="onShadowDragEnd($event)"
                                      (window:touchend)="onShadowDragEnd($event)">
-                                    {{ item.emoji }}
+                                    @if (item.imagePath) {
+                                        <img [src]="'assets/images/' + item.imagePath" class="w-20 h-20 object-contain pointer-events-none drop-shadow-md select-none" />
+                                    } @else {
+                                        {{ item.emoji }}
+                                    }
                                 </div>
                             } @else {
-                                <div class="shadowgame-item opacity-0 pointer-events-none">{{ item.emoji }}</div>
+                                <div class="shadowgame-item opacity-0 pointer-events-none"></div>
                             }
                         }
                     </div>
@@ -339,16 +355,23 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; ty
                     <!-- النصف السفلي: الظلال -->
                     <div class="shadowgame-shadows-area h-[40%] flex justify-evenly items-center w-full" dir="ltr">
                         @for (slot of shadowSlots(); track slot.id; let j = $index) {
-                            <div class="shadowgame-slot"
+                            <div class="shadowgame-slot flex items-center justify-center"
                                  id="shadow-slot-{{ j }}"
                                  [class.shadowgame-slot-hover]="shadowHoverIndex() === j"
                                  [class.border-transparent]="slot.matched"
                                  [class.bg-transparent]="slot.matched">
-                                <span class="shadowgame-emoji"
-                                      [class.shadowgame-correct-match]="slot.matched"
-                                      [style.filter]="slot.matched ? 'brightness(1) opacity(1)' : 'brightness(0) opacity(0.6)'">
-                                    {{ slot.emoji }}
-                                </span>
+                                @if (slot.imagePath) {
+                                    <img [src]="'assets/images/' + slot.imagePath"
+                                         class="w-20 h-20 object-contain pointer-events-none transition-all duration-500 select-none"
+                                         [class.shadowgame-correct-match]="slot.matched"
+                                         [style.filter]="slot.matched ? 'none' : 'brightness(0) opacity(0.5)'" />
+                                } @else {
+                                    <span class="shadowgame-emoji"
+                                          [class.shadowgame-correct-match]="slot.matched"
+                                          [style.filter]="slot.matched ? 'brightness(1) opacity(1)' : 'brightness(0) opacity(0.6)'">
+                                        {{ slot.emoji }}
+                                    </span>
+                                }
                             </div>
                         }
                     </div>
@@ -391,21 +414,21 @@ export class GamesComponent {
   isProcessingFlip = false;
 
   // Quiz Game State
-  quizQuestion = signal<{targetWord: string, targetImg: string, options: {word: string, img: string}[]} | null>(null);
+  quizQuestion = signal<{targetWord: string, targetImg: string, options: {word: string, img: string, imagePath?: string}[]} | null>(null);
   quizWon = signal(false);
 
   // Journey Game State
   journeyState = signal<'start' | 'playing' | 'win' | 'finale'>('start');
   journeyLevelIndex = signal(0);
-  journeyTarget = signal<{letter: string, word: string, img: string, ar: string} | null>(null);
-  journeyOptions = signal<{word: string, img: string, ar: string, isCorrect: boolean}[]>([]);
+  journeyTarget = signal<{letter: string, word: string, img: string, imagePath?: string, ar: string} | null>(null);
+  journeyOptions = signal<{word: string, img: string, imagePath?: string, ar: string, isCorrect: boolean}[]>([]);
   wrongJourneyIndex = -1;
 
   // Shadow Game State
   shadowState = signal<'start' | 'playing' | 'win'>('start');
   shadowLevelIndex = signal(0);
-  shadowItems = signal<{id: string, emoji: string, matched: boolean}[]>([]);
-  shadowSlots = signal<{id: string, emoji: string, matched: boolean}[]>([]);
+  shadowItems = signal<{id: string, emoji: string, imagePath?: string, matched: boolean}[]>([]);
+  shadowSlots = signal<{id: string, emoji: string, imagePath?: string, matched: boolean}[]>([]);
   shadowDraggingIndex = signal<number>(-1);
   shadowHoverIndex = signal<number>(-1);
   dragDx = signal(0);
@@ -413,15 +436,37 @@ export class GamesComponent {
   shadowWrongIndex = -1;
   private shadowStartX = 0;
   private shadowStartY = 0;
-  private shadowLevels = [
-      ['🦋', '🐞', '🐝'],
-      ['🚗', '✈️', '🚀'],
-      ['🐶', '🐱', '🐰'],
-      ['🍎', '🍌', '🍉'],
-      ['⚽', '🏀', '🎾'],
-      ['🌳', '🌵', '🌴'],
-      ['🐟', '🐙', '🦀'],
-      ['👑', '💍', '💎']
+  private shadowLevels: { id: string, emoji: string, imagePath: string }[][] = [
+      [
+        { id: 'butterfly', emoji: '🦋', imagePath: 'butterfly.png' },
+        { id: 'ladybug', emoji: '🐞', imagePath: 'ladybug.png' },
+        { id: 'bee', emoji: '🐝', imagePath: 'bee.png' }
+      ],
+      [
+        { id: 'car', emoji: '🚗', imagePath: 'car.png' },
+        { id: 'airplane', emoji: '✈️', imagePath: 'airplane.png' },
+        { id: 'rocket', emoji: '🚀', imagePath: 'rocket.png' }
+      ],
+      [
+        { id: 'dog', emoji: '🐶', imagePath: 'dog.png' },
+        { id: 'cat', emoji: '🐱', imagePath: 'cat.png' },
+        { id: 'rabbit', emoji: '🐰', imagePath: 'rabbit.png' }
+      ],
+      [
+        { id: 'apple', emoji: '🍎', imagePath: 'apple.png' },
+        { id: 'banana', emoji: '🍌', imagePath: 'banana.png' },
+        { id: 'watermelon', emoji: '🍉', imagePath: 'watermelon.png' }
+      ],
+      [
+        { id: 'lion', emoji: '🦁', imagePath: 'lion.png' },
+        { id: 'elephant', emoji: '🐘', imagePath: 'elephant.png' },
+        { id: 'giraffe', emoji: '🦒', imagePath: 'giraffe.png' }
+      ],
+      [
+        { id: 'fish', emoji: '🐟', imagePath: 'fish.png' },
+        { id: 'octopus', emoji: '🐙', imagePath: 'octopus.png' },
+        { id: 'whale', emoji: '🐳', imagePath: 'whale.png' }
+      ]
   ];
 
   constructor() {
@@ -553,7 +598,7 @@ export class GamesComponent {
           
           if (this.memoryCards().every(c => c.isMatched)) {
             setTimeout(() => {
-              this.audio.speak('أحسنت! ذاكرتك رائعة!', 'ar-EG');
+              this.audio.speak('Well done! Great memory!', 'en-US');
               this.memoryWon.set(true);
               this.data.addStars(15);
             }, 500);
@@ -610,12 +655,12 @@ export class GamesComponent {
     if (word === q.targetWord) {
       // Success
       this.audio.playSoundEffect('bell');
-      this.audio.speak('ممتاز! إجابة صحيحة!', 'ar-EG');
+      this.audio.speak('Awesome! Correct answer!', 'en-US');
       this.quizWon.set(true);
       this.data.addStars(5);
     } else {
       // Wrong
-      this.audio.speak('حاول مرة أخرى', 'ar-EG');
+      this.audio.speak('Try again!', 'en-US');
     }
   }
 
@@ -650,6 +695,7 @@ export class GamesComponent {
       letter: letterData.letter,
       word: targetWord.word,
       img: targetWord.img,
+      imagePath: targetWord.imagePath,
       ar: (targetWord as any).ar_word || 'ممتاز'
     });
 
@@ -716,15 +762,15 @@ export class GamesComponent {
       this.shadowState.set('win');
       this.audio.playSoundEffect('bell');
       this.data.addStars(40);
-      this.audio.speak('أنت عبقري', 'ar-EG');
+      this.audio.speak('Awesome! You mastered the shadows!', 'en-US');
       return;
     }
 
     this.shadowState.set('playing');
     const items = [...this.shadowLevels[idx]];
     
-    let tops = items.sort(() => 0.5 - Math.random()).map(e => ({ id: e, emoji: e, matched: false }));
-    let bottoms = items.sort(() => 0.5 - Math.random()).map(e => ({ id: e, emoji: e, matched: false }));
+    let tops = [...items].sort(() => 0.5 - Math.random()).map(e => ({ id: e.id, emoji: e.emoji, imagePath: e.imagePath, matched: false }));
+    let bottoms = [...items].sort(() => 0.5 - Math.random()).map(e => ({ id: e.id, emoji: e.emoji, imagePath: e.imagePath, matched: false }));
     
     this.shadowItems.set(tops);
     this.shadowSlots.set(bottoms);

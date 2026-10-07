@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-export interface WordItem { word: string; ar_word: string; img: string; realImg?: string; sound?: string; category?: string; }
+export interface WordItem { word: string; ar_word: string; img: string; realImg?: string; imagePath?: string; sound?: string; category?: string; }
 export interface AlphabetItem { letter: string; ar_letter: string; words: WordItem[]; gifUrl?: string; }
 export interface Sticker { id: string; name: string; img: string; cost: number; unlocked: boolean; }
 export interface Song { title: string; ar_title: string; lyrics: string; icon: string; audioText: string; }
@@ -11,7 +11,7 @@ export interface ExtraCategory {
   id: string;
   title: string;
   icon: string;
-  items: { en: string; ar: string; img: string; realImg?: string; soundEffect?: string }[];
+  items: { en: string; ar: string; img: string; realImg?: string; imagePath?: string; soundEffect?: string }[];
 }
 
 @Injectable({
