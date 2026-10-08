@@ -5,11 +5,26 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { DataService } from '../services/data.service';
 import { AudioService, AlphabetItem, WordItem } from '../services/audio.service';
 
-interface LessonQuizQuestion {
+export type QuestionType = 'listening' | 'missing-letter' | 'true-false' | 'matching';
+
+export interface LessonQuizQuestion {
+  type: QuestionType;
   prompt: string;
   targetWord: WordItem;
-  options: WordItem[];
-  userAnswer?: WordItem;
+  // For 'listening' or 'matching':
+  options?: WordItem[];
+  userAnswerWord?: WordItem;
+  // For 'missing-letter':
+  letterOptions?: string[];
+  correctLetter?: string;
+  userAnswerLetter?: string;
+  displayWordPattern?: string; // e.g., "_ P P L E"
+  // For 'true-false':
+  shownWord?: string;
+  isMatchCorrect?: boolean;
+  userAnswerBool?: boolean;
+  // Result
+  isAnswered?: boolean;
   isCorrect?: boolean;
 }
 
@@ -26,14 +41,14 @@ interface LessonQuizQuestion {
         <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
           <div class="text-right">
             <span class="inline-block bg-yellow-400 text-yellow-950 font-black px-4 py-1.5 rounded-full text-sm mb-3 shadow">
-              🎓 منهج التعلم المتسلسل التفاعلي
+              🎓 كورس إتقان الحروف والكلمات (نظام إبراهيم عادل)
             </span>
             <h1 class="text-3xl md:text-5xl font-black mb-2 flex items-center gap-3">
-              <span>مسار إتقان الإنجليزية للأطفال</span>
+              <span>مسار التعلّم والاختبارات التفاعلية</span>
               <span class="text-4xl">🚀</span>
             </h1>
             <p class="text-indigo-100 text-base md:text-lg font-bold max-w-2xl">
-              شاهد فيديو الدرس، تعلّم الكلمات الست، ثم اجتز الاختبار بنجاح لفتح الحرف التالي وكسب النجوم!
+              في كل درس: شاهد الفيديو 📺، استمع للكلمات الست، ثم اجتز الكويز الشامل المكون من 6 أسئلة متنوعة لفتح الحرف التالي!
             </p>
           </div>
 
@@ -59,7 +74,7 @@ interface LessonQuizQuestion {
               <span>خريطة الحروف والدروس (A ➡️ Z):</span>
             </h2>
             <span class="text-xs md:text-sm font-black text-indigo-600 bg-indigo-50 px-3 py-1.5 rounded-xl border border-indigo-200">
-              🔒 كل درس يفتح بعد حل اختبار الدرس السابق
+              🔒 كل درس يفتح بعد اجتياز كويز الدرس السابق
             </span>
           </div>
 
@@ -96,7 +111,7 @@ interface LessonQuizQuestion {
                 </div>
 
                 <div class="text-xs font-bold text-gray-500 bg-gray-50 rounded-xl py-1 border border-gray-200">
-                  {{ item.words.length }} كلمات وفيديو 📺
+                  {{ item.words.length }} كلمات وكويز 🎯
                 </div>
               </div>
             }
@@ -129,12 +144,12 @@ interface LessonQuizQuestion {
             <button (click)="activeTab.set('watch')"
                     class="px-6 py-3 rounded-2xl font-black text-base transition-all shadow"
                     [ngClass]="activeTab() === 'watch' ? 'bg-indigo-600 text-white scale-105' : 'bg-indigo-50 text-indigo-700 hover:bg-indigo-100'">
-              📺 1. مشاهدة الفيديو والمفردات
+              📺 1. مشاهدة الفيديو والـ 6 كلمات
             </button>
             <button (click)="openQuizTab()"
                     class="px-6 py-3 rounded-2xl font-black text-base transition-all shadow"
                     [ngClass]="activeTab() === 'quiz' ? 'bg-amber-500 text-white scale-105' : 'bg-amber-50 text-amber-800 hover:bg-amber-100'">
-              🎯 2. اختبار اجتياز الدرس ({{ quizScore() }} / {{ currentQuiz().length }})
+              🎯 2. كويز الـ 6 أسئلة للدرس ({{ quizScore() }} / {{ currentQuiz().length }})
             </button>
           </div>
 
@@ -188,71 +203,194 @@ interface LessonQuizQuestion {
               <!-- زر الانتقال للاختبار -->
               <div class="text-center pt-4">
                 <button (click)="openQuizTab()" class="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white px-8 py-3.5 rounded-full font-black text-xl shadow-xl hover:scale-105 transition-all">
-                  جاهز للاختبار؟ اضغط هنا لحل كويز الدرس! 🚀
+                  جاهز للاختبار؟ اضغط هنا لحل الـ 6 أسئلة! 🚀
                 </button>
               </div>
             </div>
           }
 
-          <!-- المحتوى الثاني: كويز اجتياز الدرس (نظام إبراهيم عادل) -->
+          <!-- المحتوى الثاني: كويز اجتياز الدرس الشامل ذو الـ 6 أسئلة -->
           @if (activeTab() === 'quiz') {
             <div class="max-w-2xl mx-auto">
               
               @if (!quizCompleted()) {
                 <div class="bg-amber-50/60 rounded-3xl p-6 border-3 border-amber-200 text-center shadow-inner">
+                  
+                  <!-- شريط التقدم في الكويز -->
                   <div class="flex items-center justify-between text-xs font-black text-amber-900 mb-4 pb-2 border-b border-amber-200">
-                    <span>السؤال {{ currentQuestionIndex() + 1 }} من {{ currentQuiz().length }}</span>
-                    <span>النقاط: {{ quizScore() }} ⭐</span>
+                    <span class="bg-amber-200 px-3 py-1 rounded-full">السؤال {{ currentQuestionIndex() + 1 }} من {{ currentQuiz().length }}</span>
+                    <span class="text-sm font-black text-amber-950 flex items-center gap-1">
+                      ⭐ النتيجة الحالية: {{ quizScore() }} / {{ currentQuiz().length }}
+                    </span>
                   </div>
 
                   @if (currentQuestion(); as q) {
-                    <h3 class="text-2xl font-black text-amber-950 mb-4">
-                      {{ q.prompt }}
-                    </h3>
-
-                    <!-- زر سماع الكلمة -->
-                    <button (click)="audio.playAudioFile('assets/audio/words/' + q.targetWord.word.toLowerCase() + '.mp3', q.targetWord.word)"
-                            class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2.5 rounded-full font-black text-base shadow mb-6 inline-flex items-center gap-2">
-                      <span>🔊 اسمع الكلمة</span>
-                    </button>
-
-                    <!-- خيارات الإجابة المصورة -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
-                      @for (opt of q.options; track opt.word) {
-                        <button (click)="selectAnswer(opt)"
-                                [disabled]="q.userAnswer !== undefined"
-                                class="p-4 rounded-2xl border-3 font-black text-lg transition-all flex flex-col items-center justify-center gap-2 shadow-sm"
-                                [ngClass]="{
-                                  'bg-white border-amber-300 hover:border-amber-500 hover:scale-105': !q.userAnswer,
-                                  'bg-green-100 border-green-500 text-green-900': q.userAnswer && opt.word === q.targetWord.word,
-                                  'bg-red-100 border-red-400 text-red-900 opacity-60': q.userAnswer && q.userAnswer.word === opt.word && opt.word !== q.targetWord.word,
-                                  'opacity-50': q.userAnswer && opt.word !== q.targetWord.word && q.userAnswer.word !== opt.word
-                                }">
-                          <div class="w-14 h-14 flex items-center justify-center bg-white rounded-xl shadow-inner">
-                            @if (opt.imagePath) {
-                              <img [src]="'assets/images/' + opt.imagePath" class="w-10 h-10 object-contain" alt="" />
-                            } @else {
-                              <span class="text-3xl">{{ opt.img }}</span>
-                            }
-                          </div>
-                          <span>{{ opt.word }}</span>
-                          <span class="text-xs text-gray-500">({{ opt.ar_word }})</span>
-                        </button>
+                    
+                    <!-- شارة نوع السؤال -->
+                    <div class="mb-3">
+                      @if (q.type === 'listening') {
+                        <span class="bg-blue-100 text-blue-900 font-black px-3 py-1 rounded-full text-xs">👂 مهارة الاستماع والمطابقة</span>
+                      } @else if (q.type === 'missing-letter') {
+                        <span class="bg-purple-100 text-purple-900 font-black px-3 py-1 rounded-full text-xs">🔤 مهارة الحرف الناقص</span>
+                      } @else if (q.type === 'true-false') {
+                        <span class="bg-emerald-100 text-emerald-900 font-black px-3 py-1 rounded-full text-xs">✅ تحدي صح أو خطأ</span>
+                      } @else if (q.type === 'matching') {
+                        <span class="bg-orange-100 text-orange-900 font-black px-3 py-1 rounded-full text-xs">🎯 مهارة تمييز الكلمة</span>
                       }
                     </div>
 
-                    @if (q.userAnswer) {
-                      <div class="mt-4">
-                        @if (q.isCorrect) {
-                          <div class="text-green-600 font-black text-lg mb-3">🎉 إجابة ممتازة وصحيحة! أحسنت!</div>
-                        } @else {
-                          <div class="text-rose-600 font-black text-lg mb-3">❌ إجابة خاطئة، الكلمة الصحيحة هي: {{ q.targetWord.word }}</div>
+                    <h3 class="text-xl md:text-2xl font-black text-amber-950 mb-4">
+                      {{ q.prompt }}
+                    </h3>
+
+                    <!-- 1. نوع الاستماع: Listening -->
+                    @if (q.type === 'listening') {
+                      <div class="mb-6">
+                        <button (click)="audio.playAudioFile('assets/audio/words/' + q.targetWord.word.toLowerCase() + '.mp3', q.targetWord.word)"
+                                class="bg-indigo-600 hover:bg-indigo-700 text-white px-7 py-3 rounded-full font-black text-lg shadow-md inline-flex items-center gap-2 hover:scale-105 transition-all">
+                          <span>🔊 اضغط للاستماع للكلمة</span>
+                        </button>
+                      </div>
+
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                        @for (opt of q.options; track opt.word) {
+                          <button (click)="answerListening(opt)"
+                                  [disabled]="q.isAnswered"
+                                  class="p-4 rounded-2xl border-3 font-black text-lg transition-all flex flex-col items-center justify-center gap-2 shadow-sm"
+                                  [ngClass]="{
+                                    'bg-white border-amber-300 hover:border-amber-500 hover:scale-105': !q.isAnswered,
+                                    'bg-green-100 border-green-500 text-green-900': q.isAnswered && opt.word === q.targetWord.word,
+                                    'bg-red-100 border-red-400 text-red-900 opacity-60': q.isAnswered && q.userAnswerWord?.word === opt.word && opt.word !== q.targetWord.word,
+                                    'opacity-50': q.isAnswered && opt.word !== q.targetWord.word && q.userAnswerWord?.word !== opt.word
+                                  }">
+                            <div class="w-14 h-14 flex items-center justify-center bg-white rounded-xl shadow-inner">
+                              @if (opt.imagePath) {
+                                <img [src]="'assets/images/' + opt.imagePath" class="w-10 h-10 object-contain" alt="" />
+                              } @else {
+                                <span class="text-3xl">{{ opt.img }}</span>
+                              }
+                            </div>
+                            <span>{{ opt.word }}</span>
+                            <span class="text-xs text-gray-500">({{ opt.ar_word }})</span>
+                          </button>
                         }
-                        <button (click)="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-2.5 rounded-full font-black text-base shadow">
+                      </div>
+                    }
+
+                    <!-- 2. نوع الحرف الناقص: Missing Letter -->
+                    @if (q.type === 'missing-letter') {
+                      <div class="bg-white p-6 rounded-3xl border-2 border-amber-200 mb-6 max-w-sm mx-auto shadow-sm flex flex-col items-center">
+                        <div class="w-20 h-20 flex items-center justify-center mb-3 bg-amber-50 rounded-2xl shadow-inner">
+                          @if (q.targetWord.imagePath) {
+                            <img [src]="'assets/images/' + q.targetWord.imagePath" class="w-14 h-14 object-contain" alt="" />
+                          } @else {
+                            <span class="text-4xl">{{ q.targetWord.img }}</span>
+                          }
+                        </div>
+                        <div class="text-3xl font-black text-amber-900 tracking-widest font-[Bubblegum] mb-1">
+                          {{ q.displayWordPattern }}
+                        </div>
+                        <div class="text-sm font-bold text-gray-500">({{ q.targetWord.ar_word }})</div>
+                      </div>
+
+                      <div class="flex justify-center gap-4 mb-6">
+                        @for (letter of q.letterOptions; track letter) {
+                          <button (click)="answerMissingLetter(letter)"
+                                  [disabled]="q.isAnswered"
+                                  class="w-16 h-16 rounded-2xl border-4 font-black text-2xl shadow-md transition-all flex items-center justify-center font-[Bubblegum]"
+                                  [ngClass]="{
+                                    'bg-white border-amber-300 hover:border-amber-500 hover:scale-110 text-indigo-700': !q.isAnswered,
+                                    'bg-green-500 text-white border-green-600 scale-110': q.isAnswered && letter === q.correctLetter,
+                                    'bg-red-400 text-white border-red-500 opacity-60': q.isAnswered && q.userAnswerLetter === letter && letter !== q.correctLetter,
+                                    'opacity-40': q.isAnswered && letter !== q.correctLetter && q.userAnswerLetter !== letter
+                                  }">
+                            {{ letter }}
+                          </button>
+                        }
+                      </div>
+                    }
+
+                    <!-- 3. نوع صح أو خطأ: True or False -->
+                    @if (q.type === 'true-false') {
+                      <div class="bg-white p-6 rounded-3xl border-2 border-amber-200 mb-6 max-w-sm mx-auto shadow-sm flex flex-col items-center">
+                        <div class="w-20 h-20 flex items-center justify-center mb-3 bg-amber-50 rounded-2xl shadow-inner">
+                          @if (q.targetWord.imagePath) {
+                            <img [src]="'assets/images/' + q.targetWord.imagePath" class="w-14 h-14 object-contain" alt="" />
+                          } @else {
+                            <span class="text-4xl">{{ q.targetWord.img }}</span>
+                          }
+                        </div>
+                        <div class="text-xs text-gray-400 font-bold mb-1">الكلمة المكتوبة:</div>
+                        <div class="text-2xl font-black text-indigo-900 font-[Bubblegum] mb-1">{{ q.shownWord }}</div>
+                      </div>
+
+                      <div class="flex justify-center gap-4 mb-6">
+                        <button (click)="answerTrueFalse(true)"
+                                [disabled]="q.isAnswered"
+                                class="px-8 py-3.5 rounded-2xl border-3 font-black text-lg shadow-md transition-all flex items-center gap-2"
+                                [ngClass]="{
+                                  'bg-white border-green-400 text-green-700 hover:bg-green-50 hover:scale-105': !q.isAnswered,
+                                  'bg-green-500 text-white': q.isAnswered && q.isMatchCorrect,
+                                  'bg-red-400 text-white': q.isAnswered && q.userAnswerBool === true && !q.isMatchCorrect,
+                                  'opacity-50': q.isAnswered && !q.isMatchCorrect && q.userAnswerBool !== true
+                                }">
+                          <span>✅ نعم، مطابقة (True)</span>
+                        </button>
+                        <button (click)="answerTrueFalse(false)"
+                                [disabled]="q.isAnswered"
+                                class="px-8 py-3.5 rounded-2xl border-3 font-black text-lg shadow-md transition-all flex items-center gap-2"
+                                [ngClass]="{
+                                  'bg-white border-red-400 text-red-700 hover:bg-red-50 hover:scale-105': !q.isAnswered,
+                                  'bg-green-500 text-white': q.isAnswered && !q.isMatchCorrect,
+                                  'bg-red-400 text-white': q.isAnswered && q.userAnswerBool === false && q.isMatchCorrect,
+                                  'opacity-50': q.isAnswered && q.isMatchCorrect && q.userAnswerBool !== false
+                                }">
+                          <span>❌ لا، غير مطابقة (False)</span>
+                        </button>
+                      </div>
+                    }
+
+                    <!-- 4. نوع التمييز البصري: Matching -->
+                    @if (q.type === 'matching') {
+                      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-6">
+                        @for (opt of q.options; track opt.word) {
+                          <button (click)="answerMatching(opt)"
+                                  [disabled]="q.isAnswered"
+                                  class="p-4 rounded-2xl border-3 font-black text-lg transition-all flex flex-col items-center justify-center gap-2 shadow-sm"
+                                  [ngClass]="{
+                                    'bg-white border-amber-300 hover:border-amber-500 hover:scale-105': !q.isAnswered,
+                                    'bg-green-100 border-green-500 text-green-900': q.isAnswered && opt.word === q.targetWord.word,
+                                    'bg-red-100 border-red-400 text-red-900 opacity-60': q.isAnswered && q.userAnswerWord?.word === opt.word && opt.word !== q.targetWord.word,
+                                    'opacity-50': q.isAnswered && opt.word !== q.targetWord.word && q.userAnswerWord?.word !== opt.word
+                                  }">
+                            <div class="w-14 h-14 flex items-center justify-center bg-white rounded-xl shadow-inner">
+                              @if (opt.imagePath) {
+                                <img [src]="'assets/images/' + opt.imagePath" class="w-10 h-10 object-contain" alt="" />
+                              } @else {
+                                <span class="text-3xl">{{ opt.img }}</span>
+                              }
+                            </div>
+                            <span>{{ opt.word }}</span>
+                            <span class="text-xs text-gray-500">({{ opt.ar_word }})</span>
+                          </button>
+                        }
+                      </div>
+                    }
+
+                    <!-- التغذية الراجعة بعد الإجابة وزر الانتقال -->
+                    @if (q.isAnswered) {
+                      <div class="mt-4 pt-4 border-t border-amber-200">
+                        @if (q.isCorrect) {
+                          <div class="text-green-600 font-black text-lg mb-3">🎉 إجابة صحيحة يا بطل! أحسنت! (+1 ⭐)</div>
+                        } @else {
+                          <div class="text-rose-600 font-black text-lg mb-3">❌ إجابة غير صحيحة، الإجابة الصحيحة هي: {{ q.targetWord.word }}</div>
+                        }
+                        <button (click)="nextQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-2.5 rounded-full font-black text-base shadow hover:scale-105 transition-all">
                           السؤال التالي ⬅️
                         </button>
                       </div>
                     }
+
                   }
                 </div>
               } @else {
@@ -353,7 +491,7 @@ export class LessonsComponent {
   quizPassed = computed(() => {
     const total = this.currentQuiz().length;
     if (total === 0) return false;
-    return this.quizScore() >= Math.ceil(total * 0.65); // 65% passing threshold
+    return this.quizScore() >= 4; // Passing threshold: at least 4 out of 6
   });
 
   isLessonUnlocked(letter: string): boolean {
@@ -387,24 +525,86 @@ export class LessonsComponent {
     this.activeTab.set('quiz');
   }
 
+  /**
+   * Build exactly 6 questions matching the 6 lesson words, using ONLY words from this lesson!
+   */
   buildQuiz(item: AlphabetItem) {
+    const words = item.words; // Exactly 6 words
+    const L = item.letter.toUpperCase();
     const questions: LessonQuizQuestion[] = [];
-    const words = item.words;
-    
-    // Create 3 to 4 varied questions per lesson
-    words.slice(0, 4).forEach((targetWord) => {
-      // Pick 2 random distractor words from other letters
-      const otherWords = this.data.alphabetData
-        .filter(a => a.letter !== item.letter)
-        .flatMap(a => a.words);
-      const shuffledOthers = [...otherWords].sort(() => 0.5 - Math.random());
-      const options = [targetWord, shuffledOthers[0], shuffledOthers[1]].sort(() => 0.5 - Math.random());
 
-      questions.push({
-        prompt: `أين هي صورة كلمة (${targetWord.word})؟`,
-        targetWord,
-        options
-      });
+    // Helper to get 2 random distractors exclusively from the other 5 words of the same lesson
+    const getDistractors = (target: WordItem) => {
+      const rest = words.filter(w => w.word !== target.word);
+      const shuffled = [...rest].sort(() => 0.5 - Math.random());
+      return [target, shuffled[0], shuffled[1]].sort(() => 0.5 - Math.random());
+    };
+
+    // Question 1: Listening (Word 0)
+    questions.push({
+      type: 'listening',
+      prompt: `استمع للصوت ثم اضغط على الصورة المطابقة:`,
+      targetWord: words[0],
+      options: getDistractors(words[0]),
+      isAnswered: false
+    });
+
+    // Question 2: Missing Letter (Word 1)
+    const w1 = words[1];
+    const pattern = `_ ` + w1.word.slice(1).toUpperCase().split('').join(' ');
+    // Distractor letters (e.g. next letters or common vowels)
+    const letterChoices = [L, 'B', 'C'].sort(() => 0.5 - Math.random());
+    questions.push({
+      type: 'missing-letter',
+      prompt: `ما هو الحرف الأول الناقص لتكتمل الكلمة؟`,
+      targetWord: w1,
+      letterOptions: letterChoices,
+      correctLetter: L,
+      displayWordPattern: pattern,
+      isAnswered: false
+    });
+
+    // Question 3: True or False (Word 2)
+    // 50% chance match is correct or mismatch with another word from the same lesson
+    const isMatch = Math.random() > 0.5;
+    const shownWord = isMatch ? words[2].word : words[3].word;
+    questions.push({
+      type: 'true-false',
+      prompt: `هل الكلمة المكتوبة مطابقة للصورة المعروضة؟`,
+      targetWord: words[2],
+      shownWord: shownWord,
+      isMatchCorrect: isMatch,
+      isAnswered: false
+    });
+
+    // Question 4: Listening (Word 3)
+    questions.push({
+      type: 'listening',
+      prompt: `استمع للصوت ثم اختر الصورة الصحيحة:`,
+      targetWord: words[3],
+      options: getDistractors(words[3]),
+      isAnswered: false
+    });
+
+    // Question 5: Visual Matching (Word 4)
+    questions.push({
+      type: 'matching',
+      prompt: `أين هي صورة كلمة (${words[4].word})؟`,
+      targetWord: words[4],
+      options: getDistractors(words[4]),
+      isAnswered: false
+    });
+
+    // Question 6: True or False (Word 5)
+    const isMatch6 = Math.random() > 0.5;
+    const shownWord6 = isMatch6 ? words[5].word : words[0].word;
+    questions.push({
+      type: 'true-false',
+      prompt: `هل هذه الصورة تمثل كلمة (${shownWord6})؟`,
+      targetWord: words[5],
+      shownWord: shownWord6,
+      isMatchCorrect: isMatch6,
+      isAnswered: false
     });
 
     this.currentQuiz.set(questions);
@@ -413,17 +613,45 @@ export class LessonsComponent {
     this.quizCompleted.set(false);
   }
 
-  selectAnswer(selected: WordItem) {
+  // Answer handlers
+  answerListening(selected: WordItem) {
     const q = this.currentQuestion();
-    if (!q || q.userAnswer !== undefined) return;
-
-    q.userAnswer = selected;
+    if (!q || q.isAnswered) return;
+    q.userAnswerWord = selected;
+    q.isAnswered = true;
     q.isCorrect = selected.word === q.targetWord.word;
-
     if (q.isCorrect) {
       this.quizScore.update(s => s + 1);
       this.audio.playAudioFile('assets/audio/words/' + selected.word.toLowerCase() + '.mp3', selected.word);
     }
+  }
+
+  answerMissingLetter(letter: string) {
+    const q = this.currentQuestion();
+    if (!q || q.isAnswered) return;
+    q.userAnswerLetter = letter;
+    q.isAnswered = true;
+    q.isCorrect = letter === q.correctLetter;
+    if (q.isCorrect) {
+      this.quizScore.update(s => s + 1);
+      this.audio.playAudioFile('assets/audio/words/' + q.targetWord.word.toLowerCase() + '.mp3', q.targetWord.word);
+    }
+  }
+
+  answerTrueFalse(answer: boolean) {
+    const q = this.currentQuestion();
+    if (!q || q.isAnswered) return;
+    q.userAnswerBool = answer;
+    q.isAnswered = true;
+    q.isCorrect = answer === q.isMatchCorrect;
+    if (q.isCorrect) {
+      this.quizScore.update(s => s + 1);
+      this.audio.playAudioFile('assets/audio/words/' + q.targetWord.word.toLowerCase() + '.mp3', q.targetWord.word);
+    }
+  }
+
+  answerMatching(selected: WordItem) {
+    this.answerListening(selected);
   }
 
   nextQuestion() {
@@ -434,7 +662,7 @@ export class LessonsComponent {
       if (this.quizPassed()) {
         const lesson = this.currentLesson();
         if (lesson) {
-          // Unlock this lesson in progress
+          // Unlock next lesson in progress
           this.data.passedLessons.update(s => new Set(s).add(lesson.letter));
           // Reward stars
           this.data.addStars(5);
