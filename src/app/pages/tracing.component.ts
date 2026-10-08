@@ -34,10 +34,10 @@ import { StrokeGuideComponent } from '../components/stroke-guide.component';
             </div>
 
             <div class="flex gap-2 w-full mb-2">
-              <button (click)="audio.speak(data.tracingText(), 'en-US')" class="bg-amber-500 text-white px-3 py-3 rounded-xl font-black hover:bg-amber-600 shadow-md flex-1 text-base">
+              <button (click)="playLetterName(data.tracingText())" class="bg-amber-500 text-white px-3 py-3 rounded-xl font-black hover:bg-amber-600 shadow-md flex-1 text-base">
                 🔊 اسم الحرف
               </button>
-              <button (click)="audio.playPhonics(data.tracingText())" class="bg-pink-500 text-white px-3 py-3 rounded-xl font-black hover:bg-pink-600 shadow-md flex-1 text-base">
+              <button (click)="playPhonics(data.tracingText())" class="bg-pink-500 text-white px-3 py-3 rounded-xl font-black hover:bg-pink-600 shadow-md flex-1 text-base">
                 🗣️ صوت الحرف
               </button>
             </div>
@@ -123,12 +123,17 @@ export class TracingComponent implements AfterViewInit {
   setTracingText(text: string) {
     this.data.tracingText.set(text);
     this.clearTracingCanvas();
-    const wordObj = this.getAssociatedWord();
-    if (wordObj && text.length === 1) {
-      this.audio.speak(text + ' for ' + wordObj.word, 'en-US');
-    } else {
-      this.audio.speak(text, 'en-US');
-    }
+    // No automatic audio playback when selecting letter, only when clicking the buttons
+  }
+
+  playLetterName(letter: string) {
+    const l = letter.toLowerCase();
+    const audio = new Audio(`assets/audio/words/${l}.mp3`);
+    audio.play().catch(() => this.audio.speak(letter, 'en-US'));
+  }
+
+  playPhonics(letter: string) {
+    this.audio.playPhonics(letter);
   }
 
   setPenColor(color: string) {
