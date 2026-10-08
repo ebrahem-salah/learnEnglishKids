@@ -128,8 +128,7 @@ export class TracingComponent implements AfterViewInit {
 
   playLetterName(letter: string) {
     const l = letter.toLowerCase();
-    const audio = new Audio(`assets/audio/words/${l}.mp3`);
-    audio.play().catch(() => this.audio.speak(letter, 'en-US'));
+    this.audio.playAudioFile(`assets/audio/words/${l}.mp3`, letter);
   }
 
   playPhonics(letter: string) {

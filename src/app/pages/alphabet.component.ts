@@ -153,31 +153,22 @@ export class AlphabetComponent {
     this.selectLetter(this.data.alphabetData[i]);
   }
 
-  // Play local letter name file: "Letter A"
+  // Play local letter name file: "A", "B", "C"...
   playLetterName(item: AlphabetItem) {
     const letter = item.letter.toLowerCase();
-    const audio = new Audio(`assets/audio/words/${letter}.mp3`);
-    audio.play().catch(() => this.audio.speak(`Letter ${item.letter}`, 'en-US'));
+    this.audio.playAudioFile(`assets/audio/words/${letter}.mp3`, item.letter);
   }
 
   // Play local phonics sound file: "æ" or "buh"
   playPhonicsSound(item: AlphabetItem) {
     const letter = item.letter.toLowerCase();
-    const audio = new Audio(`assets/audio/words/phonics_${letter}.mp3`);
-    audio.play().catch(() => this.audio.playPhonics(letter));
+    this.audio.playAudioFile(`assets/audio/words/phonics_${letter}.mp3`, letter);
   }
 
   // Play full educational phrase: "A is for Apple. Apple."
   playLetterFull(item: AlphabetItem) {
     const letter = item.letter.toLowerCase();
-    const audio = new Audio(`assets/audio/words/letter_${letter}_full.mp3`);
-    audio.play().catch(() => {
-      this.audio.sequence('L' + item.letter, [
-        [item.letter, 'en-US'],
-        [item.letter + ' is for ' + item.words[0].word, 'en-US'],
-        [item.words[0].word, 'en-US']
-      ]);
-    });
+    this.audio.playAudioFile(`assets/audio/words/letter_${letter}_full.mp3`, `${item.letter} is for ${item.words[0].word}`);
   }
 
   // Keep old playLetter for backward compatibility

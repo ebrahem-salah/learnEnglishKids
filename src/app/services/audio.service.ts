@@ -160,17 +160,29 @@ export class AudioService {
     setTimeout(() => this.slow.set(prev), 2000);
   }
 
-  playPhonics(letter: string) {
-    const phonicsMap: Record<string, string> = {
-      'a': 'ah', 'b': 'buh', 'c': 'kuh', 'd': 'duh', 'e': 'eh', 'f': 'fuh', 'g': 'guh', 'h': 'huh', 'i': 'ih', 'j': 'juh',
-      'k': 'kuh', 'l': 'll', 'm': 'mm', 'n': 'nn', 'o': 'oh', 'p': 'puh', 'q': 'quh', 'r': 'rr', 's': 'ssss', 't': 'tuh',
-      'u': 'uh', 'v': 'vuh', 'w': 'wuh', 'x': 'ks', 'y': 'yuh', 'z': 'zzzz'
+  playAudioFile(src: string, fallbackText?: string) {
+    this.unlockAudio();
+    if (this.activeAudio) {
+      this.activeAudio.pause();
+      this.activeAudio.currentTime = 0;
+      this.activeAudio = null;
+    }
+    if ('speechSynthesis' in window) {
+      speechSynthesis.cancel();
+    }
+    const audio = new Audio(src);
+    this.activeAudio = audio;
+    audio.onended = () => { if (this.activeAudio === audio) this.activeAudio = null; };
+    audio.onerror = () => {
+      if (this.activeAudio === audio) this.activeAudio = null;
+      if (fallbackText) this.speak(fallbackText, 'en-US');
     };
+    audio.play().catch(audio.onerror);
+  }
+
+  playPhonics(letter: string) {
     const key = `phonics_${letter.toLowerCase()}`;
-    const sound = phonicsMap[letter.toLowerCase()] || letter;
-    // Attempt local phonics file first
-    const audio = new Audio(`assets/audio/words/${key}.mp3`);
-    audio.play().catch(() => this.speak(sound, 'en-US'));
+    this.playAudioFile(`assets/audio/words/${key}.mp3`, letter);
   }
 
   beep(freqs: number[], type: OscillatorType = 'sine') {
