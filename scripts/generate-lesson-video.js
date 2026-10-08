@@ -43,6 +43,8 @@ const slides = [
     duration: 5.5, // 14.5s -> 20.0s (A, A, Apple / تفاحة)
     title: 'Apple',
     subtitle: 'تفاحة',
+    pronunciationAr: 'أَبِـلْ',
+    phoneticEn: 'Ap • ple',
     arTitle: 'A is for Apple',
     img: appleBase64,
     bigLetter: 'A',
@@ -54,6 +56,8 @@ const slides = [
     duration: 5.5, // 20.0s -> 25.5s (A, A, Ant / نملة)
     title: 'Ant',
     subtitle: 'نملة',
+    pronunciationAr: 'أَنْـتْ',
+    phoneticEn: 'Ant',
     arTitle: 'A is for Ant',
     img: antBase64,
     bigLetter: 'A',
@@ -65,6 +69,8 @@ const slides = [
     duration: 6.0, // 25.5s -> 31.5s (A, A, Alligator / تمساح)
     title: 'Alligator',
     subtitle: 'تمساح',
+    pronunciationAr: 'أَلِـيجَيْـتَـرْ',
+    phoneticEn: 'Al • li • ga • tor',
     arTitle: 'A is for Alligator',
     img: alligatorBase64,
     bigLetter: 'A',
@@ -76,6 +82,8 @@ const slides = [
     duration: 5.5, // 31.5s -> 37.0s (A, A, Airplane / طائرة)
     title: 'Airplane',
     subtitle: 'طائرة',
+    pronunciationAr: 'إِيـرْبْـلَيْـنْ',
+    phoneticEn: 'Air • plane',
     arTitle: 'A is for Airplane',
     img: airplaneBase64,
     bigLetter: 'A',
@@ -87,6 +95,8 @@ const slides = [
     duration: 5.5, // 37.0s -> 42.5s (A, A, Arrow / سهم)
     title: 'Arrow',
     subtitle: 'سهم',
+    pronunciationAr: 'أَرُو',
+    phoneticEn: 'Ar • row',
     arTitle: 'A is for Arrow',
     img: arrowBase64,
     bigLetter: 'A',
@@ -98,6 +108,8 @@ const slides = [
     duration: 6.0, // 42.5s -> 48.5s (A, A, Arm / ذراع)
     title: 'Arm',
     subtitle: 'ذراع',
+    pronunciationAr: 'آرْمْ',
+    phoneticEn: 'Arm',
     arTitle: 'A is for Arm',
     img: armBase64,
     bigLetter: 'A',
@@ -165,13 +177,27 @@ function generateSlideHtml(slide) {
           ${slide.title}
         </h1>
 
-        <div class="text-5xl font-black text-yellow-200 drop-shadow flex items-center gap-4">
-          <span>المعنى:</span>
-          <span class="text-white">${slide.subtitle}</span>
+        <!-- طريقة النطق: عربي وإنجليزي -->
+        <div class="bg-white/25 backdrop-blur-md px-6 py-3 rounded-2xl border-2 border-white/40 flex items-center justify-between gap-6 shadow-lg">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🗣️</span>
+            <span class="text-xl font-bold text-white/90">النطق بالعربي:</span>
+            <span class="text-3xl font-black text-yellow-300 font-kids tracking-wider">${slide.pronunciationAr}</span>
+          </div>
+          <div class="w-px h-8 bg-white/30"></div>
+          <div class="flex items-center gap-2 font-kids">
+            <span class="text-xl font-bold text-white/90">Phonics:</span>
+            <span class="text-2xl font-black text-cyan-200 tracking-widest">${slide.phoneticEn}</span>
+          </div>
         </div>
 
-        <div class="bg-black/20 backdrop-blur-sm p-4 rounded-2xl text-2xl font-bold border border-white/20 text-white/90">
-          🗣️ استمع وكرر: <span class="font-kids text-yellow-300 font-black text-3xl">A, A, ${slide.title}</span>
+        <div class="text-4xl font-black text-yellow-100 drop-shadow flex items-center gap-4">
+          <span>المعنى:</span>
+          <span class="text-white underline underline-offset-8">${slide.subtitle}</span>
+        </div>
+
+        <div class="bg-black/25 backdrop-blur-sm px-6 py-3.5 rounded-2xl text-2xl font-bold border border-white/20 text-white/90">
+          📢 استمع وكرر: <span class="font-kids text-yellow-300 font-black text-3xl">A, A, ${slide.title}</span>
         </div>
       </div>
     ` : `

@@ -54,6 +54,66 @@ function getBase64Image(filePath) {
   return `data:image/${ext};base64,${data}`;
 }
 
+// خريطة نطق الكلمات الشائعة (عربي وإنجليزي مقسّم مقاطع)
+const PRONUNCIATION_MAP = {
+  'Apple': { ar: 'أَبِـلْ', phonetics: 'Ap • ple' },
+  'Ant': { ar: 'أَنْـتْ', phonetics: 'Ant' },
+  'Arm': { ar: 'آرْمْ', phonetics: 'Arm' },
+  'Alligator': { ar: 'أَلِـيجَيْـتَـرْ', phonetics: 'Al • li • ga • tor' },
+  'Arrow': { ar: 'أَرُو', phonetics: 'Ar • row' },
+  'Axe': { ar: 'أَكْـسْ', phonetics: 'Axe' },
+  'Airplane': { ar: 'إِيـرْبْـلَيْـنْ', phonetics: 'Air • plane' },
+  'Ball': { ar: 'بُـولْ', phonetics: 'Ball' },
+  'Bear': { ar: 'بِـيرْ', phonetics: 'Bear' },
+  'Book': { ar: 'بُـوكْ', phonetics: 'Book' },
+  'Banana': { ar: 'بَـنَـانَـا', phonetics: 'Ba • na • na' },
+  'Bird': { ar: 'بِـيـرْدْ', phonetics: 'Bird' },
+  'Bus': { ar: 'بَـاصْ', phonetics: 'Bus' },
+  'Cat': { ar: 'كَـاتْ', phonetics: 'Cat' },
+  'Car': { ar: 'كَـارْ', phonetics: 'Car' },
+  'Cow': { ar: 'كَـاوْ', phonetics: 'Cow' },
+  'Cake': { ar: 'كَـيْـكْ', phonetics: 'Cake' },
+  'Camel': { ar: 'كَـامِـلْ', phonetics: 'Ca • mel' },
+  'Crown': { ar: 'كْـرَاوْنْ', phonetics: 'Crown' },
+  'Dog': { ar: 'دُوجْ', phonetics: 'Dog' },
+  'Duck': { ar: 'دَاكْ', phonetics: 'Duck' },
+  'Door': { ar: 'دُورْ', phonetics: 'Door' },
+  'Dolphin': { ar: 'دُولْـفِـينْ', phonetics: 'Dol • phin' },
+  'Drum': { ar: 'دْرَامْ', phonetics: 'Drum' },
+  'Dress': { ar: 'دْرِيـسْ', phonetics: 'Dress' },
+  'Elephant': { ar: 'إِلِـيـفَـنْـتْ', phonetics: 'El • e • phant' },
+  'Egg': { ar: 'إِيـجْ', phonetics: 'Egg' },
+  'Eye': { ar: 'آيْ', phonetics: 'Eye' },
+  'Ear': { ar: 'إِيـرْ', phonetics: 'Ear' },
+  'Fish': { ar: 'فِـيـشْ', phonetics: 'Fish' },
+  'Frog': { ar: 'فْـرُوجْ', phonetics: 'Frog' },
+  'Flower': { ar: 'فْـلَاوَرْ', phonetics: 'Flow • er' },
+  'Fox': { ar: 'فُـوكْـسْ', phonetics: 'Fox' },
+  'Giraffe': { ar: 'جِـيـرَافْ', phonetics: 'Gi • raffe' },
+  'Gift': { ar: 'جِـيـفْـتْ', phonetics: 'Gift' },
+  'Grapes': { ar: 'جْـرَيْـبْـسْ', phonetics: 'Grapes' },
+  'Horse': { ar: 'هُـورْسْ', phonetics: 'Horse' },
+  'Hat': { ar: 'هَـاتْ', phonetics: 'Hat' },
+  'Hand': { ar: 'هَـانْـدْ', phonetics: 'Hand' },
+  'Ice Cream': { ar: 'آيْـسْ كْـرِيـمْ', phonetics: 'Ice • cream' },
+  'Juice': { ar: 'جُـوسْ', phonetics: 'Juice' },
+  'Kite': { ar: 'كَـايْـتْ', phonetics: 'Kite' },
+  'Lion': { ar: 'لَايُـونْ', phonetics: 'Li • on' },
+  'Monkey': { ar: 'مَـانْـكِـي', phonetics: 'Mon • key' },
+  'Moon': { ar: 'مُـونْ', phonetics: 'Moon' },
+  'Orange': { ar: 'أُورَنْـجْ', phonetics: 'Or • ange' },
+  'Pizza': { ar: 'بِـيـتْـزَا', phonetics: 'Piz • za' },
+  'Queen': { ar: 'كْـوِيـنْ', phonetics: 'Queen' },
+  'Rabbit': { ar: 'رَابِـتْ', phonetics: 'Rab • bit' },
+  'Sun': { ar: 'سَـانْ', phonetics: 'Sun' },
+  'Star': { ar: 'سْـتَـارْ', phonetics: 'Star' },
+  'Tree': { ar: 'تْـرِي', phonetics: 'Tree' },
+  'Umbrella': { ar: 'أَمْـبْـرِيـلَا', phonetics: 'Um • brel • la' },
+  'Van': { ar: 'فَـانْ', phonetics: 'Van' },
+  'Watermelon': { ar: 'وَاتَـرْمِـيـلُـونْ', phonetics: 'Wa • ter • mel • on' },
+  'Zebra': { ar: 'زِيـبْـرَا', phonetics: 'Ze • bra' }
+};
+
 // قوالب ألوان جذابة للأطفال
 const COLOR_THEMES = [
   'from-amber-400 via-orange-400 to-pink-500',
@@ -122,12 +182,27 @@ function generateSlideHtml(slide, logoBase64) {
           ${slide.title}
         </h1>
 
-        <div class="text-5xl font-black text-white/95 drop-shadow">
-          المعنى: <span class="text-yellow-300 underline underline-offset-8">${slide.ar_word}</span>
+        <!-- طريقة النطق: عربي + إنجليزي مقسّم -->
+        <div class="bg-white/25 backdrop-blur-md px-6 py-3 rounded-2xl border-2 border-white/40 flex items-center justify-between gap-6 shadow-lg">
+          <div class="flex items-center gap-2">
+            <span class="text-2xl">🗣️</span>
+            <span class="text-xl font-bold text-white/90">النطق بالعربي:</span>
+            <span class="text-3xl font-black text-yellow-300 font-kids tracking-wider">${slide.pronunciationAr}</span>
+          </div>
+          <div class="w-px h-8 bg-white/30"></div>
+          <div class="flex items-center gap-2 font-kids">
+            <span class="text-xl font-bold text-white/90">Phonics:</span>
+            <span class="text-2xl font-black text-cyan-200 tracking-widest">${slide.phoneticEn}</span>
+          </div>
         </div>
 
-        <div class="bg-black/20 backdrop-blur-sm px-6 py-4 rounded-2xl border border-white/20 text-2xl font-bold text-white/90">
-          استمع وكرر: <span class="text-yellow-300 font-kids text-3xl tracking-wide">${slide.letter}, ${slide.letter}, ${slide.title}</span> 🗣️
+        <div class="text-4xl font-black text-yellow-100 drop-shadow flex items-center gap-4">
+          <span>المعنى:</span>
+          <span class="text-white underline underline-offset-8">${slide.ar_word}</span>
+        </div>
+
+        <div class="bg-black/25 backdrop-blur-sm px-6 py-3.5 rounded-2xl text-2xl font-bold border border-white/20 text-white/90">
+          📢 استمع وكرر: <span class="text-yellow-300 font-kids text-3xl font-black tracking-wide">${slide.letter}, ${slide.letter}, ${slide.title}</span>
         </div>
       </div>
     ` : `
@@ -265,12 +340,15 @@ async function main() {
       const fullImgPath = path.join(projectRoot, 'public', 'assets', 'images', w.imagePath);
       imgBase64 = getBase64Image(fullImgPath);
     }
+    const pronInfo = PRONUNCIATION_MAP[w.word] || { ar: w.ar_word, phonetics: w.word };
     slides.push({
       id: idx + 1,
       duration: wordDuration,
       letter: letter,
       title: w.word,
       ar_word: w.ar_word,
+      pronunciationAr: pronInfo.ar,
+      phoneticEn: pronInfo.phonetics,
       img: imgBase64,
       bgGradient: COLOR_THEMES[(idx + 1) % COLOR_THEMES.length]
     });
