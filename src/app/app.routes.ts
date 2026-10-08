@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { AlphabetComponent } from './pages/alphabet.component';
+import { LessonsComponent } from './pages/lessons.component';
 import { TracingComponent } from './pages/tracing.component';
 import { PhrasesComponent } from './pages/phrases.component';
 import { StoriesComponent } from './pages/stories.component';
@@ -13,6 +14,7 @@ import { CertificatesComponent } from './pages/certificates.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'alphabet', pathMatch: 'full' },
+  { path: 'lessons', component: LessonsComponent },
   { path: 'alphabet', component: AlphabetComponent },
   { path: 'tracing', component: TracingComponent },
   { path: 'phrases', component: PhrasesComponent },

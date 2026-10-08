@@ -8,6 +8,7 @@ declare const confetti: any;
 })
 export class DataService {
   learned = signal<Set<string>>(new Set());
+  passedLessons = signal<Set<string>>(new Set(['A'])); // First lesson A is unlocked by default
   stars = signal(10);
   failed = signal<Set<string>>(new Set());
 
@@ -20,6 +21,7 @@ export class DataService {
     try {
       const s = JSON.parse(localStorage.getItem('abc-kids-progress') || '{}');
       this.learned.set(new Set(s.learned || []));
+      this.passedLessons.set(new Set(s.passedLessons && s.passedLessons.length > 0 ? s.passedLessons : ['A']));
       this.stars.set(s.stars !== undefined ? s.stars : 10);
       this.childName.set(s.childName || '');
       this.streak.set(s.streak || 0);
@@ -728,7 +730,8 @@ export class DataService {
     try {
       const unlockedStickers = this.stickersData().filter(s => s.unlocked).map(s => s.id);
       localStorage.setItem('abc-kids-progress', JSON.stringify({ 
-        learned: [...this.learned()], 
+        learned: [...this.learned()],
+        passedLessons: [...this.passedLessons()],
         stars: this.stars(), 
         unlockedStickers,
         childName: this.childName(),

@@ -146,6 +146,11 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
 
             <!-- قائمة التبديل الشاملة عبر Angular Router Pages -->
             <nav class="flex flex-wrap justify-center gap-2 md:gap-3 px-4">
+              <a routerLink="/lessons" routerLinkActive="bg-gradient-to-r from-purple-600 to-indigo-600 text-white scale-110 shadow-xl border-yellow-400" class="bg-gradient-to-r from-purple-100 to-indigo-100 text-purple-900 hover:from-purple-200 hover:to-indigo-200 px-5 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-purple-300 flex items-center gap-1.5 shadow">
+                <span>🎓 مسار الدروس (فيديو + كويز)</span>
+                <span class="bg-yellow-400 text-yellow-950 text-xs px-2 py-0.5 rounded-full font-black">جديد 🔥</span>
+              </a>
+
               <a routerLink="/alphabet" routerLinkActive="bg-blue-600 text-white scale-105 shadow-lg" class="bg-blue-100 text-blue-800 hover:bg-blue-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-blue-300">
                 🔤 الحروف والكلمات
               </a>
