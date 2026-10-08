@@ -157,9 +157,32 @@ export interface LessonQuizQuestion {
           @if (activeTab() === 'watch') {
             <div class="space-y-8">
               
-              <!-- إطار فيديو يوتيوب الذكي -->
+              <!-- أزرار الاستماع للإسكربت الصوتي (بدون تكرار ومع التكرار) -->
+              <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-4 max-w-3xl mx-auto text-center shadow-sm">
+                <div class="text-xs font-black text-indigo-900 mb-1">🎧 نماذج الإسكربت الصوتي لدروس الفيديو:</div>
+                <div class="flex flex-col sm:flex-row justify-center gap-3 mt-3">
+                  <button (click)="audio.playAudioFile('assets/audio/words/sample_video_lesson_a_repeat.mp3')"
+                          class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-5 py-2.5 rounded-full font-black text-xs shadow-md inline-flex items-center justify-center gap-1.5 hover:scale-105 transition-all">
+                    <span>🔁 1. نموذج بالتكرار الإيقاعي: "A, ah, Apple.. A, ah, Apple" (المقترح)</span>
+                  </button>
+                  <button (click)="audio.playAudioFile('assets/audio/words/sample_video_lesson_a.mp3')"
+                          class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-5 py-2.5 rounded-full font-black text-xs shadow-md inline-flex items-center justify-center gap-1.5 hover:scale-105 transition-all">
+                    <span>▶️ 2. نموذج النطق المفرد السريع</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- إطار الفيديو الذكي (فيديو الحرف المنتج محلياً باللوجو أو فيديو يوتيوب) -->
               <div class="max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-xl border-4 border-indigo-200 bg-black aspect-video relative">
-                @if (videoUrl()) {
+                @if (lesson.letter === 'A') {
+                  <video controls
+                         autoplay
+                         class="w-full h-full object-contain bg-slate-900"
+                         poster="assets/images/apple.png">
+                    <source src="assets/video/lesson_a.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو المباشر.
+                  </video>
+                } @else if (videoUrl()) {
                   <iframe [src]="videoUrl()"
                           class="w-full h-full border-0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
