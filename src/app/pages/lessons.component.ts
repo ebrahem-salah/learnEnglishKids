@@ -182,6 +182,14 @@ export interface LessonQuizQuestion {
                     <source src="assets/video/lesson_a.mp4" type="video/mp4">
                     متصفحك لا يدعم تشغيل الفيديو المباشر.
                   </video>
+                } @else if (lesson.letter === 'B') {
+                  <video controls
+                         autoplay
+                         class="w-full h-full object-contain bg-slate-900"
+                         poster="assets/images/bear.png">
+                    <source src="assets/video/lesson_b.mp4" type="video/mp4">
+                    متصفحك لا يدعم تشغيل الفيديو المباشر.
+                  </video>
                 } @else if (videoUrl()) {
                   <iframe [src]="videoUrl()"
                           class="w-full h-full border-0"
