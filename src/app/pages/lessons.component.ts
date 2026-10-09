@@ -457,7 +457,7 @@ export class LessonsComponent {
   // Video YouTube map (safe educational videos for each letter)
   readonly youtubeVideos: Record<string, string> = {
     'A': 'KKA39r5C-bU',
-    'B': 'WP1blVh1ZQM',
+    'B': 'l3QETi0wzZg',
     'C': 'q9oFqU6x_cM',
     'D': 'yN3u0n2zP2I',
     'E': 'n9Tf2u44Nuo',
