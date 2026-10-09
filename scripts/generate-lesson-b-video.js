@@ -194,7 +194,7 @@ function generateSlideHtml(slide) {
         </div>
         <div class="bg-white/20 backdrop-blur-md px-12 py-5 rounded-3xl border-2 border-white/40 shadow-xl text-center">
           <div class="text-4xl font-black text-yellow-200 mb-2">صوت الحرف في الكلمات:</div>
-          <div class="text-6xl font-black font-kids text-white">The sound of B is: <span class="text-yellow-300 underline">/b/</span></div>
+          <div class="text-6xl font-black font-kids text-white">صوت الحرف <span class="text-yellow-300">ب</span></div>
         </div>
       </div>
     `}
@@ -206,7 +206,7 @@ function generateSlideHtml(slide) {
       <span>كورس التأسيس الشامل للأطفال والكبار • مسار الدروس التفاعلية</span>
     </div>
     <div class="font-kids tracking-wider text-xl text-yellow-300">
-      www.learnwithyounis.com
+      learnwithyounis.vercel.app
     </div>
   </footer>
 </body>
