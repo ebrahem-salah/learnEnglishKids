@@ -445,18 +445,18 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'B', ar_letter: 'بي', 
+      letter: 'B', ar_letter: 'ب', 
       words: [
         { word: 'Ball', ar_word: 'كرة', img: '⚽', realImg: 'https://images.unsplash.com/photo-1614632537190-23e4146777db?w=300&auto=format&fit=crop', imagePath: 'ball.png' },
         { word: 'Bear', ar_word: 'دب', img: '🐻', imagePath: 'bear.png' },
         { word: 'Book', ar_word: 'كتاب', img: '📖', imagePath: 'book.png' },
         { word: 'Banana', ar_word: 'موزة', img: '🍌', imagePath: 'banana.png' },
         { word: 'Bird', ar_word: 'طائر', img: '🐦', imagePath: 'bird.png' },
-        { word: 'Bus', ar_word: 'حافلة', img: '🚌', imagePath: 'bus.png' }
+        { word: 'Bus', ar_word: 'أوتوبيس', img: '🚌', imagePath: 'bus.png' }
       ] 
     },
     { 
-      letter: 'C', ar_letter: 'سي', 
+      letter: 'C', ar_letter: 'ك', 
       words: [
         { word: 'Cat', ar_word: 'قطة', img: '🐈', realImg: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&auto=format&fit=crop', imagePath: 'cat.png' },
         { word: 'Car', ar_word: 'سيارة', img: '🚗', imagePath: 'car.png' },
@@ -467,7 +467,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'D', ar_letter: 'دي', 
+      letter: 'D', ar_letter: 'د', 
       words: [
         { word: 'Dog', ar_word: 'كلب', img: '🐕', realImg: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=300&auto=format&fit=crop', imagePath: 'dog.png' },
         { word: 'Duck', ar_word: 'بطة', img: '🦆', imagePath: 'duck.png' },
@@ -478,7 +478,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'E', ar_letter: 'إي', 
+      letter: 'E', ar_letter: 'إه', 
       words: [
         { word: 'Elephant', ar_word: 'فيل', img: '🐘', realImg: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=300&auto=format&fit=crop', imagePath: 'elephant.png' },
         { word: 'Egg', ar_word: 'بيضة', img: '🥚', imagePath: 'egg.png' },
@@ -489,7 +489,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'F', ar_letter: 'إف', 
+      letter: 'F', ar_letter: 'ف', 
       words: [
         { word: 'Fish', ar_word: 'سمكة', img: '🐟' },
         { word: 'Frog', ar_word: 'ضفدع', img: '🐸', imagePath: 'frog.png' },
@@ -500,7 +500,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'G', ar_letter: 'جي', 
+      letter: 'G', ar_letter: 'ج', 
       words: [
         { word: 'Goat', ar_word: 'ماعز', img: '🐐', imagePath: 'goat.png' },
         { word: 'Giraffe', ar_word: 'زرافة', img: '🦒', imagePath: 'giraffe.png' },
@@ -511,14 +511,14 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'H', ar_letter: 'إتش', 
+      letter: 'H', ar_letter: 'هـ', 
       words: [
         { word: 'Hat', ar_word: 'قبعة', img: '🎩', imagePath: 'hat.png' },
         { word: 'Horse', ar_word: 'حصان', img: '🐎', imagePath: 'horse.png' },
         { word: 'Hand', ar_word: 'يد', img: '✋' },
         { word: 'House', ar_word: 'منزل', img: '🏠', imagePath: 'house.png' },
         { word: 'Heart', ar_word: 'قلب', img: '❤️', imagePath: 'heart.png' },
-        { word: 'Helicopter', ar_word: 'مروحية', img: '🚁', imagePath: 'helicopter.png' }
+        { word: 'Helicopter', ar_word: 'هليكوبتر', img: '🚁', imagePath: 'helicopter.png' }
       ] 
     },
     { 
@@ -533,18 +533,18 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'J', ar_letter: 'جيه', 
+      letter: 'J', ar_letter: 'ج', 
       words: [
         { word: 'Juice', ar_word: 'عصير', img: '🧃', imagePath: 'juice.png' },
-        { word: 'Jacket', ar_word: 'سترة', img: '🧥', imagePath: 'jacket.png' },
+        { word: 'Jacket', ar_word: 'جاكيت', img: '🧥', imagePath: 'jacket.png' },
         { word: 'Jellyfish', ar_word: 'قنديل البحر', img: '🪼', imagePath: 'jellyfish.png' },
         { word: 'Jeep', ar_word: 'سيارة جيب', img: '🚙', imagePath: 'jeep.png' },
         { word: 'Jam', ar_word: 'مربى', img: '🍯', imagePath: 'jam.png' },
-        { word: 'Jump', ar_word: 'قفز', img: '🤸' }
+        { word: 'Jump', ar_word: 'يقفز', img: '🤸' }
       ] 
     },
     { 
-      letter: 'K', ar_letter: 'كيه', 
+      letter: 'K', ar_letter: 'ك', 
       words: [
         { word: 'Kite', ar_word: 'طائرة ورقية', img: '🪁', imagePath: 'kite.png' },
         { word: 'Key', ar_word: 'مفتاح', img: '🔑', imagePath: 'key.png' },

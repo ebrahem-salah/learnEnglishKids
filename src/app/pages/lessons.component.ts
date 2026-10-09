@@ -174,23 +174,7 @@ export interface LessonQuizQuestion {
 
               <!-- إطار الفيديو الذكي (فيديو الحرف المنتج محلياً باللوجو أو فيديو يوتيوب) -->
               <div class="max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-xl border-4 border-indigo-200 bg-black aspect-video relative">
-                @if (lesson.letter === 'A') {
-                  <video controls
-                         autoplay
-                         class="w-full h-full object-contain bg-slate-900"
-                         poster="assets/images/apple.png">
-                    <source src="assets/video/lesson_a.mp4" type="video/mp4">
-                    متصفحك لا يدعم تشغيل الفيديو المباشر.
-                  </video>
-                } @else if (lesson.letter === 'B') {
-                  <video controls
-                         autoplay
-                         class="w-full h-full object-contain bg-slate-900"
-                         poster="assets/images/bear.png">
-                    <source src="assets/video/lesson_b.mp4" type="video/mp4">
-                    متصفحك لا يدعم تشغيل الفيديو المباشر.
-                  </video>
-                } @else if (videoUrl()) {
+                @if (videoUrl()) {
                   <iframe [src]="videoUrl()"
                           class="w-full h-full border-0"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -472,7 +456,7 @@ export class LessonsComponent {
 
   // Video YouTube map (safe educational videos for each letter)
   readonly youtubeVideos: Record<string, string> = {
-    'A': 'ezmsrB59mj8',
+    'A': 'KKA39r5C-bU',
     'B': 'WP1blVh1ZQM',
     'C': 'q9oFqU6x_cM',
     'D': 'yN3u0n2zP2I',
@@ -503,8 +487,9 @@ export class LessonsComponent {
   videoUrl = computed<SafeResourceUrl | null>(() => {
     const lesson = this.currentLesson();
     if (!lesson) return null;
-    const id = this.youtubeVideos[lesson.letter] || this.youtubeVideos['A'];
-    return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1`);
+    const id = this.youtubeVideos[lesson.letter];
+    if(!id) return null;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(`https://www.youtube-nocookie.com/embed/${id}?rel=0&modestbranding=1&controls=1&showinfo=0&iv_load_policy=3&disablekb=1&fs=0`);
   });
 
   // Quiz state
