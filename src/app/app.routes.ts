@@ -11,6 +11,7 @@ import { GamesComponent } from './pages/games.component';
 import { SpeechCoachComponent } from './pages/speech-coach.component';
 import { JuniorConversationsComponent } from './pages/junior-conversations.component';
 import { CertificatesComponent } from './pages/certificates.component';
+import { PetComponent } from './pages/pet.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'alphabet', pathMatch: 'full' },
@@ -26,5 +27,6 @@ export const routes: Routes = [
   { path: 'categories', component: CategoriesComponent },
   { path: 'games', component: GamesComponent },
   { path: 'stickers', component: StickersComponent },
+  { path: 'pet', component: PetComponent },
   { path: '**', redirectTo: 'alphabet' }
 ];

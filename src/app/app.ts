@@ -195,6 +195,10 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
                 🛒 متجر المكافآت
               </a>
 
+              <a routerLink="/pet" routerLinkActive="bg-green-600 text-white scale-105 shadow-lg" class="bg-green-100 text-green-800 hover:bg-green-200 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2 border-green-300">
+                🐣 حيواني وهديتي 🎁
+              </a>
+
               <button (click)="audio.slow.set(!audio.slow())" class="bg-white border-2 border-blue-400 text-blue-700 px-4 py-2 rounded-full font-black hover:bg-blue-50 transition-all shadow-sm text-sm">
                 {{ audio.slow() ? '🐢 نطق بطيء (مفعّل)' : '🐇 نطق عادي' }}
               </button>

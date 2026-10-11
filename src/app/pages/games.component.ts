@@ -11,6 +11,17 @@ import { SpellingGameComponent } from './spelling-game.component';
 import { SortingGameComponent } from './sorting-game.component';
 import { AnimalSoundGameComponent } from './animal-sound-game.component';
 import { PatternMemoryGameComponent } from './pattern-memory-game.component';
+import { LetterRainGameComponent } from './letter-rain-game.component';
+import { WhackGameComponent } from './whack-game.component';
+import { RaceGameComponent } from './race-game.component';
+import { MonsterGameComponent } from './monster-game.component';
+import { TreasureGameComponent } from './treasure-game.component';
+import { ListenPickGameComponent } from './listen-pick-game.component';
+import { FishGameComponent } from './fish-game.component';
+import { ColorLetterGameComponent } from './color-letter-game.component';
+import { MixColorsGameComponent } from './mix-colors-game.component';
+
+type GameId = 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle' | 'spelling' | 'sorting' | 'sound' | 'pattern' | 'rain' | 'whack' | 'race' | 'monster' | 'treasure' | 'listen' | 'fish' | 'colorletter' | 'mixcolors';
 
 interface DragItem { word: string; img: string; imagePath?: string; }
 interface DropZone { letter: string; matchWord: string; currentItem: DragItem | null; }
@@ -30,7 +41,16 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; im
     SpellingGameComponent,
     SortingGameComponent,
     AnimalSoundGameComponent,
-    PatternMemoryGameComponent
+    PatternMemoryGameComponent,
+    LetterRainGameComponent,
+    WhackGameComponent,
+    RaceGameComponent,
+    MonsterGameComponent,
+    TreasureGameComponent,
+    ListenPickGameComponent,
+    FishGameComponent,
+    ColorLetterGameComponent,
+    MixColorsGameComponent
   ],
   template: `
     @if (mode() === 'menu') {
@@ -434,6 +454,24 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; im
           <app-animal-sound-game></app-animal-sound-game>
       } @else if (mode() === 'pattern') {
           <app-pattern-memory-game></app-pattern-memory-game>
+      } @else if (mode() === 'rain') {
+          <app-letter-rain-game></app-letter-rain-game>
+      } @else if (mode() === 'whack') {
+          <app-whack-game></app-whack-game>
+      } @else if (mode() === 'race') {
+          <app-race-game></app-race-game>
+      } @else if (mode() === 'monster') {
+          <app-monster-game></app-monster-game>
+      } @else if (mode() === 'treasure') {
+          <app-treasure-game></app-treasure-game>
+      } @else if (mode() === 'listen') {
+          <app-listen-pick-game></app-listen-pick-game>
+      } @else if (mode() === 'fish') {
+          <app-fish-game></app-fish-game>
+      } @else if (mode() === 'colorletter') {
+          <app-color-letter-game></app-color-letter-game>
+      } @else if (mode() === 'mixcolors') {
+          <app-mix-colors-game></app-mix-colors-game>
       }
       </div>
     }
@@ -443,7 +481,7 @@ export class GamesComponent {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  mode = signal<'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle' | 'spelling' | 'sorting' | 'sound' | 'pattern'>('menu');
+  mode = signal<'menu' | GameId>('menu');
 
   // Match Game State
   dropZones = signal<DropZone[]>([]);
@@ -514,7 +552,7 @@ export class GamesComponent {
       ]
   ];
 
-  gameList: { id: 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle' | 'spelling' | 'sorting' | 'sound' | 'pattern', title: string, desc: string, icon: string, image?: string, bg: string, border: string, textColor: string, btnBg: string }[] = [
+  gameList: { id: GameId, title: string, desc: string, icon: string, image?: string, bg: string, border: string, textColor: string, btnBg: string }[] = [
     {
       id: 'spelling',
       title: 'Word Builder',
@@ -675,6 +713,96 @@ export class GamesComponent {
       border: 'border-pink-300',
       textColor: 'text-pink-700',
       btnBg: 'bg-pink-500 hover:bg-pink-600'
+    },
+    {
+      id: 'rain',
+      title: 'Letter Rain',
+      desc: 'Tap the falling words that start with the magic letter',
+      icon: '🌧️',
+      bg: 'bg-sky-100',
+      border: 'border-sky-400',
+      textColor: 'text-sky-800',
+      btnBg: 'bg-sky-500 hover:bg-sky-600'
+    },
+    {
+      id: 'whack',
+      title: 'Whack a Word',
+      desc: 'Hit the picture you hear before it hides!',
+      icon: '🔨',
+      bg: 'bg-lime-100',
+      border: 'border-lime-500',
+      textColor: 'text-lime-800',
+      btnBg: 'bg-lime-600 hover:bg-lime-700'
+    },
+    {
+      id: 'race',
+      title: 'Car Race',
+      desc: 'Answer fast and beat the blue car to the finish line',
+      icon: '🏎️',
+      bg: 'bg-red-100',
+      border: 'border-red-400',
+      textColor: 'text-red-700',
+      btnBg: 'bg-red-500 hover:bg-red-600'
+    },
+    {
+      id: 'monster',
+      title: 'Feed the Monster',
+      desc: 'Feed the hungry monster the right words and watch it grow',
+      icon: '🐸',
+      bg: 'bg-purple-100',
+      border: 'border-purple-400',
+      textColor: 'text-purple-800',
+      btnBg: 'bg-purple-500 hover:bg-purple-600'
+    },
+    {
+      id: 'treasure',
+      title: 'Treasure Hunt',
+      desc: 'Listen to the names and find the hidden pictures',
+      icon: '🗺️',
+      bg: 'bg-amber-100',
+      border: 'border-amber-400',
+      textColor: 'text-amber-800',
+      btnBg: 'bg-amber-500 hover:bg-amber-600'
+    },
+    {
+      id: 'listen',
+      title: 'Listen & Pick',
+      desc: 'Hear the word, then pick the right picture',
+      icon: '👂',
+      bg: 'bg-indigo-100',
+      border: 'border-indigo-400',
+      textColor: 'text-indigo-800',
+      btnBg: 'bg-indigo-500 hover:bg-indigo-600'
+    },
+    {
+      id: 'fish',
+      title: 'Save the Fish',
+      desc: 'Spell the word to bring the fish back to shore',
+      icon: '🐟',
+      bg: 'bg-cyan-100',
+      border: 'border-cyan-400',
+      textColor: 'text-cyan-800',
+      btnBg: 'bg-cyan-500 hover:bg-cyan-600'
+    },
+    {
+      id: 'colorletter',
+      title: 'Color the Letter',
+      desc: 'Paint big letters with your finger',
+      icon: '🖍️',
+      bg: 'bg-rose-100',
+      border: 'border-rose-400',
+      textColor: 'text-rose-700',
+      btnBg: 'bg-rose-500 hover:bg-rose-600'
+    },
+    {
+      id: 'mixcolors',
+      title: 'Mix the Colors',
+      desc: 'Mix paints to make new colors',
+      icon: '🎨',
+      bg: 'bg-fuchsia-100',
+      border: 'border-fuchsia-400',
+      textColor: 'text-fuchsia-800',
+      btnBg: 'bg-fuchsia-500 hover:bg-fuchsia-600'
     }
   ];
 
@@ -690,7 +818,7 @@ export class GamesComponent {
 
   constructor() {}
 
-  setMode(m: 'menu' | 'match' | 'memory' | 'quiz' | 'journey' | 'shadow' | 'balloon' | 'train' | 'shape' | 'apple' | 'math' | 'puzzle' | 'spelling' | 'sorting' | 'sound' | 'pattern') {
+  setMode(m: 'menu' | GameId) {
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
     else if (m === 'memory') this.initMemoryGame();
