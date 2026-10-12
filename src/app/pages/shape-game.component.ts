@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -9,7 +10,7 @@ interface AppShape { en: string; ar: string; path: string; }
   selector: 'app-shape-game',
   standalone: true,
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-amber-50" dir="ltr">
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-amber-50" dir="ltr">
         
         <div class="absolute top-4 w-full flex justify-between items-center px-8 z-30 pointer-events-none">
             <div class="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full font-black text-xl text-amber-700 shadow-md">
@@ -27,9 +28,9 @@ interface AppShape { en: string; ar: string; path: string; }
                     <div class="text-8xl mb-2 flex justify-center gap-2 animate-bounce">
                         <span style="color:#ef4444">🎨</span>
                     </div>
-                    <h2 class="text-4xl font-black text-amber-600 mb-2 font-[Bubblegum]">Shape Colors</h2>
+                    <h2 class="text-4xl font-black text-amber-600 mb-2 font-[Fredoka]">Shape Colors</h2>
                     <p class="text-gray-600 mb-6 font-bold text-xl">Listen and color the shape!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-amber-500 hover:bg-amber-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#d97706] active:translate-y-2 active:shadow-none transition-all">
+                    <button (click)="startGame()" class="w-full py-4 font-[Fredoka] bg-amber-500 hover:bg-amber-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#d97706] active:translate-y-2 active:shadow-none transition-all">
                         Start Game!
                     </button>
                 </div>
@@ -38,7 +39,7 @@ interface AppShape { en: string; ar: string; path: string; }
             <div class="w-full h-full flex flex-col items-center justify-between pb-8 pt-20">
                 <!-- Instruction text -->
                 <div class="text-center mb-4">
-                    <h2 class="text-4xl font-black text-gray-800 tracking-wide uppercase font-[Bubblegum]">{{ targetColor()?.en }}</h2>
+                    <h2 class="text-4xl font-black text-gray-800 tracking-wide uppercase font-[Fredoka]">{{ targetColor()?.en }}</h2>
                 </div>
 
                 <!-- Shape Canvas -->
@@ -80,7 +81,10 @@ interface AppShape { en: string; ar: string; path: string; }
     </div>
   `
 })
-export class ShapeGameComponent {
+export class ShapeGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -138,7 +142,7 @@ export class ShapeGameComponent {
     roundPalette = roundPalette.sort(() => 0.5 - Math.random());
     this.palette.set(roundPalette);
 
-    setTimeout(() => this.repeatInstruction(), 400);
+    this.timers.after(() => this.repeatInstruction(), 400);
   }
 
   applyColor(color: AppColor) {
@@ -154,9 +158,9 @@ export class ShapeGameComponent {
           this.score.update(s => s + 1);
           this.data.addStars(2);
           
-          setTimeout(() => this.audio.speak(this.targetShape()!.en, 'en-US'), 500);
+          this.timers.after(() => this.audio.speak(this.targetShape()!.en, 'en-US'), 500);
 
-          setTimeout(() => {
+          this.timers.after(() => {
               this.nextRound();
           }, 2500);
       } else {
@@ -164,7 +168,7 @@ export class ShapeGameComponent {
           this.audio.playSoundEffect('error');
           // Give brief feedback by flashing color then reverting
           this.currentFill.set(color.hex);
-          setTimeout(() => {
+          this.timers.after(() => {
               if (!this.isColored()) this.currentFill.set('#ffffff');
           }, 400);
       }

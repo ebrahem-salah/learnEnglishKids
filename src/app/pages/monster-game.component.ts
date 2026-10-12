@@ -18,7 +18,7 @@ const FEEDS_PER_STAGE = 4;
     @keyframes nope { 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-purple-200 to-pink-100 flex flex-col items-center"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-purple-200 to-pink-100 flex flex-col items-center"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <div class="w-full px-4 pt-3 flex justify-between items-center">

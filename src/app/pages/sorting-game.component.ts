@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -15,7 +16,7 @@ interface SortItem {
   selector: 'app-sorting-game',
   standalone: true,
   template: `
-    <div class="relative w-full min-h-[580px] bg-gradient-to-b from-emerald-50 via-teal-50 to-green-100 rounded-3xl p-6 flex flex-col justify-between select-none border-4 border-emerald-300 font-[Bubblegum]" dir="ltr">
+    <div class="relative w-full min-h-[78vh] min-h-[580px] max-h-[920px] bg-gradient-to-b from-emerald-50 via-teal-50 to-green-100 rounded-3xl p-6 flex flex-col justify-between select-none border-4 border-emerald-300 font-[Fredoka]" dir="ltr">
       <!-- Top Header -->
       <div class="flex justify-between items-center bg-white/90 backdrop-blur px-6 py-3 rounded-2xl shadow-sm border-2 border-emerald-200">
         <div class="text-xl md:text-2xl font-black text-emerald-800 flex items-center gap-2">
@@ -107,7 +108,10 @@ interface SortItem {
     </div>
   `
 })
-export class SortingGameComponent {
+export class SortingGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -175,7 +179,7 @@ export class SortingGameComponent {
       this.audio.playSoundEffect('ding');
       this.audio.speak('Good job! ' + cur.name, 'en-US');
       this.score.update(s => s + 5);
-      setTimeout(() => this.nextItem(), 600);
+      this.timers.after(() => this.nextItem(), 600);
     } else {
       this.audio.playSoundEffect('buzz');
       this.audio.speak('Oops! Try another basket', 'en-US');

@@ -3,6 +3,9 @@ import { RouterOutlet, RouterLink, RouterLinkActive, Router, NavigationEnd } fro
 import { NgTemplateOutlet } from '@angular/common';
 import { DataService } from './services/data.service';
 import { AudioService, WordItem } from './services/audio.service';
+import { ProfileService } from './services/profile.service';
+import { PwaBarComponent } from './pages/pwa-bar.component';
+import { UiScaleService } from './services/ui-scale.service';
 
 interface Quiz { idx: number; score: number; answered: string | null; done: boolean; word: WordItem; answer: string; options: string[]; type: 'letter' | 'word'; }
 interface MemoryCard { id: number; letter: string; img: string; word: string; flipped: boolean; matched: boolean; }
@@ -10,7 +13,7 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgTemplateOutlet],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, NgTemplateOutlet, PwaBarComponent],
   template: `
     <ng-template #pic let-e let-hd="hd" let-cls="cls">
       @if (hd) {
@@ -85,7 +88,11 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
                 </div>
               </div>
               @if (data.childName()) {
-                <div class="md:mr-auto bg-white px-4 py-1.5 rounded-full border border-pink-200 shadow-sm flex items-center gap-2">
+                <a routerLink="/profiles" class="md:mr-auto bg-white px-3 py-1.5 rounded-full border border-sky-200 shadow-sm flex items-center gap-2 hover:bg-sky-50" aria-label="تبديل الطفل">
+                  <span class="text-2xl">{{ profiles.active().avatar }}</span>
+                  <span class="font-black text-sky-700 text-sm">{{ data.childName() }} ⇄</span>
+                </a>
+                <div class="bg-white px-4 py-1.5 rounded-full border border-pink-200 shadow-sm flex items-center gap-2">
                   <span class="font-black text-pink-600 text-sm">أيام متتالية:</span>
                   <span class="font-black text-orange-500 text-lg">{{ data.streak() }} 🔥</span>
                 </div>
@@ -199,6 +206,22 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
                 🐣 حيواني وهديتي 🎁
               </a>
 
+              <a routerLink="/arabic" routerLinkActive="scale-105 shadow-lg ring-4 ring-white" class="bg-emerald-100 text-emerald-800 hover:bg-emerald-200 border-emerald-300 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2">
+                🇪🇬 تعلّم العربية
+              </a>
+
+              <a routerLink="/missions" routerLinkActive="scale-105 shadow-lg ring-4 ring-white" class="bg-orange-100 text-orange-800 hover:bg-orange-200 border-orange-300 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2">
+                🎯 مهامي وأوسمتي
+              </a>
+
+              <a routerLink="/worksheets" routerLinkActive="scale-105 shadow-lg ring-4 ring-white" class="bg-amber-100 text-amber-800 hover:bg-amber-200 border-amber-300 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2">
+                🖨️ أوراق عمل
+              </a>
+
+              <a routerLink="/parent" routerLinkActive="scale-105 shadow-lg ring-4 ring-white" class="bg-slate-100 text-slate-700 hover:bg-slate-200 border-slate-300 px-4 py-2 rounded-full font-black transition-all text-sm md:text-base border-2">
+                👨‍👩‍👧 الأهل
+              </a>
+
               <button (click)="audio.slow.set(!audio.slow())" class="bg-white border-2 border-blue-400 text-blue-700 px-4 py-2 rounded-full font-black hover:bg-blue-50 transition-all shadow-sm text-sm">
                 {{ audio.slow() ? '🐢 نطق بطيء (مفعّل)' : '🐇 نطق عادي' }}
               </button>
@@ -209,6 +232,7 @@ interface MemoryCard { id: number; letter: string; img: string; word: string; fl
         <!-- الشاشة الرئيسية المنفصلة التي يتم عرض الصفحات بداخلها -->
         <main>
           <router-outlet></router-outlet>
+    <app-pwa-bar />
         </main>
 
         <!-- النافذة المنبثقة للاختبارات -->
@@ -320,6 +344,8 @@ export class App {
   data = inject(DataService);
   audio = inject(AudioService);
   router = inject(Router);
+  profiles = inject(ProfileService);
+  private uiScale = inject(UiScaleService);   // applies the saved text size at start
 
   isHome = signal<boolean>(true);
 

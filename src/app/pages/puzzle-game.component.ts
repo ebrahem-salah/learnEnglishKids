@@ -1,6 +1,8 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
+import { shuffle } from './game-utils';
 
 interface PuzzlePiece {
   id: number;
@@ -17,7 +19,7 @@ interface PuzzleSlot {
   selector: 'app-puzzle-game',
   standalone: true,
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-gradient-to-b from-indigo-200 to-purple-100" dir="ltr">
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-gradient-to-b from-indigo-200 to-purple-100" dir="ltr">
         
         <div class="absolute top-4 w-full flex justify-between items-center px-8 z-30 pointer-events-none">
             <div class="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full font-black text-xl text-indigo-700 shadow-md">
@@ -33,9 +35,9 @@ interface PuzzleSlot {
             <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/40 backdrop-blur-sm">
                 <div class="bg-white p-8 rounded-[3rem] shadow-2xl max-w-sm w-full border-[8px] border-indigo-400">
                     <div class="text-8xl mb-2 animate-bounce">🧩</div>
-                    <h2 class="text-4xl font-black text-indigo-600 mb-2 font-[Bubblegum]">Jigsaw Puzzle</h2>
+                    <h2 class="text-4xl font-black text-indigo-600 mb-2 font-[Fredoka]">Jigsaw Puzzle</h2>
                     <p class="text-gray-600 mb-6 font-bold text-xl">Drag the pieces to complete the picture!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-indigo-500 hover:bg-indigo-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#4338ca] active:translate-y-2 active:shadow-none transition-all">
+                    <button (click)="startGame()" class="w-full py-4 font-[Fredoka] bg-indigo-500 hover:bg-indigo-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#4338ca] active:translate-y-2 active:shadow-none transition-all">
                         Start Game!
                     </button>
                 </div>
@@ -54,12 +56,15 @@ interface PuzzleSlot {
                              [class.bg-green-100]="dragHoverSlot === slot.id"
                              (dragover)="onDragOver($event, slot.id)"
                              (dragleave)="onDragLeave($event)"
-                             (drop)="onDrop($event, slot.id)">
+                             (drop)="onDrop($event, slot.id)"
+                             (click)="onSlotClick(slot.id)">
                              
                             @if (getPieceInSlot(slot.id); as piece) {
                                 <div class="w-full h-full cursor-grab active:cursor-grabbing bg-no-repeat bg-[length:200%_200%] rounded-lg shadow-md"
                                      draggable="true"
                                      (dragstart)="onDragStart($event, piece)"
+                                     (click)="selectPiece(piece); $event.stopPropagation()"
+                                     [class.ring-4]="selectedPiece?.id === piece.id" [class.ring-yellow-400]="selectedPiece?.id === piece.id"
                                      style="background-image: url('assets/images/dog.jpg');"
                                      [style.backgroundPosition]="piece.bgPosition">
                                 </div>
@@ -69,11 +74,14 @@ interface PuzzleSlot {
                 </div>
 
                 <!-- Pieces Pool -->
-                <div class="w-full md:w-48 bg-white/70 backdrop-blur-sm border-4 border-white p-4 rounded-3xl shadow-xl flex flex-wrap justify-center gap-2 min-h-[300px]">
+                <div class="w-full md:w-48 bg-white/70 backdrop-blur-sm border-4 border-white p-4 rounded-3xl shadow-xl flex flex-wrap justify-center gap-2 min-h-[300px]" (click)="returnSelectedToPool()">
+                    <p class="w-full text-center text-sm font-black text-indigo-700">Tap a piece, then tap its place 👆</p>
                     @for (piece of getPiecesInPool(); track piece.id) {
                         <div class="w-20 h-20 cursor-grab active:cursor-grabbing bg-no-repeat bg-[length:200%_200%] rounded-lg shadow-lg hover:scale-105 transition-transform border-2 border-white"
                              draggable="true"
                              (dragstart)="onDragStart($event, piece)"
+                             (click)="selectPiece(piece); $event.stopPropagation()"
+                             [class.ring-4]="selectedPiece?.id === piece.id" [class.ring-yellow-400]="selectedPiece?.id === piece.id"
                              style="background-image: url('assets/images/dog.jpg');"
                              [style.backgroundPosition]="piece.bgPosition">
                         </div>
@@ -85,8 +93,8 @@ interface PuzzleSlot {
                 <div class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
                     <div class="text-center animate-[bounceIn_0.5s_ease-out]">
                         <div class="w-64 h-64 mx-auto border-[10px] border-white shadow-2xl rounded-2xl bg-no-repeat bg-cover mb-6 rotate-3" style="background-image: url('assets/images/dog.jpg')"></div>
-                        <h2 class="text-6xl font-black text-green-400 mb-4 font-[Bubblegum] drop-shadow-lg">Beautiful! 🎉</h2>
-                        <button (click)="startGame()" class="px-8 py-3 bg-green-500 text-white font-bold text-2xl font-[Bubblegum] rounded-full shadow-[0_6px_0_#16a34a] hover:bg-green-600 active:translate-y-2 active:shadow-none transition-all">
+                        <h2 class="text-6xl font-black text-green-400 mb-4 font-[Fredoka] drop-shadow-lg">Beautiful! 🎉</h2>
+                        <button (click)="startGame()" class="px-8 py-3 bg-green-500 text-white font-bold text-2xl font-[Fredoka] rounded-full shadow-[0_6px_0_#16a34a] hover:bg-green-600 active:translate-y-2 active:shadow-none transition-all">
                             Play Again
                         </button>
                     </div>
@@ -96,7 +104,10 @@ interface PuzzleSlot {
     </div>
   `
 })
-export class PuzzleGameComponent {
+export class PuzzleGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -108,6 +119,7 @@ export class PuzzleGameComponent {
   
   dragHoverSlot: number | null = null;
   draggedPiece: PuzzlePiece | null = null;
+  selectedPiece: PuzzlePiece | null = null;   // tap-to-place (works on touch screens)
 
   startGame() {
     this.score.set(0);
@@ -126,7 +138,8 @@ export class PuzzleGameComponent {
     }));
 
     // Shuffle pieces
-    initialPieces.sort(() => 0.5 - Math.random());
+    initialPieces = shuffle(initialPieces);
+    this.selectedPiece = null;
     this.pieces.set(initialPieces);
 
     const initialSlots: PuzzleSlot[] = [
@@ -165,8 +178,29 @@ export class PuzzleGameComponent {
       this.dragHoverSlot = null;
       
       if (!this.draggedPiece) return;
+      this.placePiece(this.draggedPiece, slotId);
+      this.draggedPiece = null;
+  }
 
-      const pieceToMove = this.draggedPiece;
+  selectPiece(piece: PuzzlePiece) {
+      this.selectedPiece = this.selectedPiece?.id === piece.id ? null : piece;
+      this.audio.playSoundEffect('pop');
+  }
+
+  onSlotClick(slotId: number) {
+      if (!this.selectedPiece) return;
+      this.placePiece(this.selectedPiece, slotId);
+      this.selectedPiece = null;
+  }
+
+  returnSelectedToPool() {
+      const sel = this.selectedPiece;
+      if (!sel || sel.currentSlot === null) return;
+      this.pieces.update(all => all.map(p => (p.id === sel.id ? { ...p, currentSlot: null } : p)));
+      this.selectedPiece = null;
+  }
+
+  private placePiece(pieceToMove: PuzzlePiece, slotId: number) {
       const existingPiece = this.getPieceInSlot(slotId);
 
       this.pieces.update(allPieces => {
@@ -184,7 +218,6 @@ export class PuzzleGameComponent {
 
       this.audio.playSoundEffect('click');
       this.checkWin();
-      this.draggedPiece = null;
   }
 
   checkWin() {
@@ -194,7 +227,7 @@ export class PuzzleGameComponent {
       });
 
       if (isWin) {
-          setTimeout(() => {
+          this.timers.after(() => {
               this.gameState.set('win');
               this.audio.playSoundEffect('bell');
               this.score.update(s => s + 10);

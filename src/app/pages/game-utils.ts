@@ -53,14 +53,15 @@ export class Timers {
 export function wordPool(data: DataService): GameWord[] {
   const seen = new Set<string>();
   const out: GameWord[] = [];
-  for (const a of data.alphabetData) {
-    for (const w of a.words) {
-      const key = w.word.toLowerCase();
-      if (!w.img || seen.has(key)) continue;
-      seen.add(key);
-      out.push({ word: w.word, ar: w.ar_word, emoji: w.img, letter: w.word[0].toUpperCase() });
-    }
-  }
+  const add = (word: string, ar: string, emoji: string) => {
+    const key = word.toLowerCase();
+    if (!emoji || seen.has(key) || !/^[A-Za-z]/.test(word)) return;
+    seen.add(key);
+    out.push({ word, ar, emoji, letter: word[0].toUpperCase() });
+  };
+  for (const a of data.alphabetData) for (const w of a.words) add(w.word, w.ar_word, w.img);
+  // extra categories (family, jobs, weather...) give the games many more words
+  for (const c of data.extraCategories) for (const i of c.items) add(i.en, i.ar, i.img);
   return out;
 }
 

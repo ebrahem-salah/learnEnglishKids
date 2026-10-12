@@ -26,7 +26,7 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-5">
       @for (item of data.alphabetData; track item.letter; let i = $index) {
         <div (click)="selectLetter(item)"
-          class="bg-white rounded-3xl p-5 flex flex-col items-center cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all border-b-8 group relative overflow-hidden font-[Bubblegum]"
+          class="bg-white rounded-3xl p-5 flex flex-col items-center cursor-pointer shadow-md hover:shadow-2xl hover:-translate-y-2 transition-all border-b-8 group relative overflow-hidden font-[Fredoka]"
           [class]="data.learned().has(item.letter) ? 'border-green-400 bg-green-50/30' : 'border-blue-200 hover:border-blue-400'">
           
           @if (data.learned().has(item.letter)) {
@@ -58,14 +58,14 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
             <div class="flex items-center justify-center gap-6 md:gap-12">
               <button (click)="step(-1)" class="w-14 h-14 rounded-full bg-white shadow-lg text-3xl font-black hover:bg-blue-100 text-blue-600 hover:scale-110 transition-all border border-blue-200">‹</button>
               <div>
-                <div class="text-7xl md:text-9xl font-black text-blue-600 tracking-tight drop-shadow font-[Bubblegum]">
+                <div class="text-7xl md:text-9xl font-black text-blue-600 tracking-tight drop-shadow font-[Fredoka]">
                   {{ selected.letter }}<span class="text-5xl md:text-7xl text-pink-500">{{ selected.letter.toLowerCase() }}</span>
                 </div>
                 <div class="text-xl font-bold text-gray-500 mt-2">Letter Sound: <span class="text-purple-600 font-extrabold uppercase">{{ selected.letter }}</span></div>
               </div>
               <button (click)="step(1)" class="w-14 h-14 rounded-full bg-white shadow-lg text-3xl font-black hover:bg-blue-100 text-blue-600 hover:scale-110 transition-all border border-blue-200">›</button>
             </div>
-            <div class="mt-4 flex justify-center gap-2 flex-wrap font-[Bubblegum]">
+            <div class="mt-4 flex justify-center gap-2 flex-wrap font-[Fredoka]">
               <!-- Button 1: Letter Name (e.g. "Letter A") -->
               <button (click)="playLetterName(selected)"
                 class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-5 py-3 rounded-full text-base font-black hover:from-blue-600 hover:to-indigo-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
@@ -88,7 +88,7 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
             </div>
           </div>
 
-          <div class="mb-4 text-2xl font-black text-gray-800 border-b-4 border-blue-100 pb-2 flex items-center justify-between font-[Bubblegum]">
+          <div class="mb-4 text-2xl font-black text-gray-800 border-b-4 border-blue-100 pb-2 flex items-center justify-between font-[Fredoka]">
             <span>📖 Words starting with {{ selected.letter }}:</span>
             <span class="text-sm font-bold text-gray-500">Tap to listen & spell!</span>
           </div>
@@ -98,9 +98,9 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
                 <div class="h-28 flex items-center justify-center mb-3 bg-white/70 rounded-2xl border border-green-100 shadow-inner overflow-hidden">
                   <ng-container *ngTemplateOutlet="pic; context: { $implicit: w.img, hd: w.realImg, img: w.imagePath, cls: 'w-24 h-24 drop-shadow-md hover:scale-110 transition-transform' }" />
                 </div>
-                <div class="text-3xl font-black text-green-700 mb-1 tracking-wide font-[Bubblegum]">{{ w.word }}</div>
+                <div class="text-3xl font-black text-green-700 mb-1 tracking-wide font-[Fredoka]">{{ w.word }}</div>
                 <div class="text-xl font-extrabold text-gray-600 mb-4">{{ w.ar_word }}</div>
-                <div class="flex flex-col gap-2 mt-auto font-[Bubblegum]">
+                <div class="flex flex-col gap-2 mt-auto font-[Fredoka]">
                   <div class="flex gap-2">
                     <button (click)="playWord(w)" class="flex-1 bg-green-500 text-white py-2.5 rounded-2xl font-black hover:bg-green-600 transition-all shadow border border-green-600 text-base">
                       🔊 Listen

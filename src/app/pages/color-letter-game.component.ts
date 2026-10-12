@@ -1,7 +1,8 @@
-import { AfterViewInit, Component, ElementRef, OnDestroy, inject, signal, viewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, computed, inject, input, signal, viewChild } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 import { ALPHABET, Timers, wordPool } from './game-utils';
+import { ARABIC_LETTERS } from './arabic-content';
 
 const SIZE = 320;
 const GUIDE = [229, 231, 235]; // #e5e7eb
@@ -17,7 +18,7 @@ const PALETTE = ['#ef4444', '#f97316', '#facc15', '#22c55e', '#3b82f6', '#a855f7
       <!-- Letter picker -->
       <div class="w-full overflow-x-auto">
         <div class="flex gap-2 w-max px-1 pb-1">
-          @for (l of letters; track l) {
+          @for (l of letters(); track l) {
             <button (click)="pickLetter(l)"
                     class="w-11 h-11 rounded-xl font-black text-xl border-4 shadow-sm"
                     [class]="l === letter() ? 'bg-rose-500 text-white border-rose-700' : done().has(l) ? 'bg-green-200 text-green-800 border-green-400' : 'bg-white text-rose-600 border-rose-200'">
@@ -29,7 +30,8 @@ const PALETTE = ['#ef4444', '#f97316', '#facc15', '#22c55e', '#3b82f6', '#a855f7
 
       <div class="font-black text-xl text-rose-700 flex items-center gap-2">
         <span class="text-4xl">{{ emoji() }}</span>
-        {{ letter() }} is for {{ wordText() }}
+        @if (lang() === 'ar') { <span dir="rtl" style="font-family: Cairo, Tahoma, Arial">{{ letter() }} : {{ wordText() }}</span> }
+        @else { {{ letter() }} is for {{ wordText() }} }
         <button (click)="say()" class="text-2xl" aria-label="Hear it">🔊</button>
       </div>
 
@@ -71,7 +73,9 @@ export class ColorLetterGameComponent implements AfterViewInit, OnDestroy {
   private examples = new Map<string, { word: string; emoji: string }>();
 
   readonly size = SIZE;
-  readonly letters = ALPHABET;
+  /** 'en' = A-Z, 'ar' = the 28 Arabic letters */
+  lang = input<'en' | 'ar'>('en');
+  letters = computed(() => (this.lang() === 'ar' ? ARABIC_LETTERS.map(l => l.glyph) : ALPHABET));
   readonly palette = PALETTE;
 
   letter = signal('A');
@@ -86,7 +90,8 @@ export class ColorLetterGameComponent implements AfterViewInit, OnDestroy {
     for (const w of wordPool(this.data)) {
       if (!this.examples.has(w.letter)) this.examples.set(w.letter, { word: w.word, emoji: w.emoji });
     }
-    this.pickLetter('A');
+    for (const l of ARABIC_LETTERS) this.examples.set(l.glyph, { word: l.exampleWord, emoji: l.emoji });
+    this.pickLetter(this.letters()[0]);
   }
 
   pickLetter(l: string) {
@@ -94,17 +99,28 @@ export class ColorLetterGameComponent implements AfterViewInit, OnDestroy {
     const ex = this.examples.get(l);
     this.emoji.set(ex?.emoji ?? '⭐');
     this.wordText.set(ex?.word ?? l);
-    this.audio.speak(l, 'en-US');
+    this.speakLetter(l);
     this.draw();
   }
 
   next() {
-    const i = ALPHABET.indexOf(this.letter());
-    this.pickLetter(ALPHABET[(i + 1) % ALPHABET.length]);
+    const list = this.letters();
+    const i = list.indexOf(this.letter());
+    this.pickLetter(list[(i + 1) % list.length]);
+  }
+
+  private arLetter() { return ARABIC_LETTERS.find(l => l.glyph === this.letter()); }
+
+  private speakLetter(l: string) {
+    const a = ARABIC_LETTERS.find(x => x.glyph === l);
+    if (this.lang() === 'ar' && a) this.audio.speakArabic(a.id, a.letterName);
+    else this.audio.speak(l, 'en-US');
   }
 
   say() {
-    this.audio.speak(`${this.letter()}. ${this.wordText()}`, 'en-US');
+    const a = this.arLetter();
+    if (this.lang() === 'ar' && a) this.audio.speakArabic(a.id + ' word', a.exampleWord);
+    else this.audio.speak(`${this.letter()}. ${this.wordText()}`, 'en-US');
   }
 
   /** Draws the grey guide letter; paint is clipped to it via source-atop. */
@@ -115,7 +131,9 @@ export class ColorLetterGameComponent implements AfterViewInit, OnDestroy {
     ctx.globalCompositeOperation = 'source-over';
     ctx.clearRect(0, 0, SIZE, SIZE);
     ctx.fillStyle = `rgb(${GUIDE.join(',')})`;
-    ctx.font = `900 ${SIZE * 0.86}px Arial, Helvetica, sans-serif`;
+    ctx.font = this.lang() === 'ar'
+      ? `800 ${SIZE * 0.78}px Cairo, Tahoma, Arial, sans-serif`
+      : `900 ${SIZE * 0.86}px Arial, Helvetica, sans-serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'alphabetic';
     const m = ctx.measureText(this.letter());
@@ -178,7 +196,7 @@ export class ColorLetterGameComponent implements AfterViewInit, OnDestroy {
       this.complete.set(true);
       this.done.update(s => new Set(s).add(this.letter()));
       this.audio.playSoundEffect('ding');
-      this.audio.speak(`${this.letter()} for ${this.wordText()}`, 'en-US');
+      if (this.lang() === 'ar') this.say(); else this.audio.speak(`${this.letter()} for ${this.wordText()}`, 'en-US');
       if (!this.rewarded.has(this.letter())) {
         this.rewarded.add(this.letter());
         this.data.addStars(1);

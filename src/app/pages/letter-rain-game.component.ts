@@ -15,7 +15,7 @@ interface RainItem extends GameWord { id: number; x: number; dur: number; }
     @keyframes rain-fall { from { transform: translateY(-100px); } to { transform: translateY(640px); } }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-sky-300 to-sky-100"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-sky-300 to-sky-100"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <div class="absolute top-3 inset-x-3 z-30 flex justify-between items-center gap-2 pointer-events-none">

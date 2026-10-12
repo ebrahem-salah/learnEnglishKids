@@ -8,7 +8,7 @@ import { DatePipe } from '@angular/common';
   standalone: true,
   imports: [DatePipe],
   template: `
-    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-amber-300 max-w-5xl mx-auto font-[Bubblegum]" dir="ltr">
+    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-amber-300 max-w-5xl mx-auto font-[Fredoka]" dir="ltr">
       <!-- Top Title -->
       <div class="text-center mb-8">
         <div class="text-6xl mb-2 animate-bounce">🏆</div>

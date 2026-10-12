@@ -1,6 +1,7 @@
 import { Component, OnDestroy, inject, signal } from '@angular/core';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
+import { StatsService } from '../services/stats.service';
 import { GameCardComponent } from './game-card.component';
 import { GameWord, Timers, pick, shuffle, wordPool } from './game-utils';
 
@@ -17,7 +18,7 @@ const ROUNDS = 10;
     @keyframes ripple { 0% { box-shadow: 0 0 0 0 rgba(99,102,241,.5); } 100% { box-shadow: 0 0 0 28px rgba(99,102,241,0); } }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-indigo-100 to-violet-200 flex flex-col items-center"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-indigo-100 to-violet-200 flex flex-col items-center"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <div class="w-full px-4 pt-3 flex justify-between items-center">
@@ -55,6 +56,7 @@ const ROUNDS = 10;
 export class ListenPickGameComponent implements OnDestroy {
   private data = inject(DataService);
   private audio = inject(AudioService);
+  private stats = inject(StatsService);
   private timers = new Timers();
   private pool: GameWord[] = [];
   private used = new Set<string>();
@@ -109,6 +111,7 @@ export class ListenPickGameComponent implements OnDestroy {
       this.timers.after(() => this.advance(), 1200);
     } else {
       this.audio.playSoundEffect('buzz');
+      this.stats.miss(a.word);
       this.shake.set(o.word);
       this.timers.after(() => this.shake.set(null), 450);
       this.timers.after(() => this.say(), 600);
@@ -120,6 +123,7 @@ export class ListenPickGameComponent implements OnDestroy {
       this.state.set('over');
       const stars = Math.ceil(this.score() / 3);
       if (stars > 0) this.data.addStars(stars);
+      this.stats.result('listen', this.score(), ROUNDS);
       this.audio.playCelebration();
     } else {
       this.round.update(r => r + 1);

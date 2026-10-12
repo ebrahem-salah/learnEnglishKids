@@ -15,7 +15,7 @@ interface Hole { word: GameWord | null; uid: number; hit: boolean; }
     @keyframes peek { from { transform: translateY(60px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-lime-200 to-green-400 flex flex-col items-center"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-lime-200 to-green-400 flex flex-col items-center"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <div class="w-full flex justify-between items-center px-4 pt-3 z-30">

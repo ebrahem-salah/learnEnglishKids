@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -17,7 +18,7 @@ interface ConversationScenario {
   selector: 'app-junior-conversations',
   standalone: true,
   template: `
-    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-teal-300 max-w-5xl mx-auto font-[Bubblegum]" dir="ltr">
+    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-teal-300 max-w-5xl mx-auto font-[Fredoka]" dir="ltr">
       <!-- Section Header -->
       <div class="text-center mb-8">
         <div class="inline-flex items-center gap-2 bg-teal-100 text-teal-800 px-4 py-1.5 rounded-full font-black text-sm mb-3">
@@ -114,7 +115,10 @@ interface ConversationScenario {
     </div>
   `
 })
-export class JuniorConversationsComponent {
+export class JuniorConversationsComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -236,7 +240,7 @@ export class JuniorConversationsComponent {
     for (const line of list) {
       await new Promise<void>(resolve => {
         this.audio.speak(line.text, 'en-US');
-        setTimeout(resolve, 2400);
+        this.timers.after(resolve, 2400);
       });
     }
   }

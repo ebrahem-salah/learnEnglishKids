@@ -4,7 +4,10 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "node scripts/generate-offline-manifest.mjs && ng build",
+    "offline-manifest": "node scripts/generate-offline-manifest.mjs",
+    "images": "node scripts/optimize-images.mjs",
+    "audio": "node scripts/generate-audio.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

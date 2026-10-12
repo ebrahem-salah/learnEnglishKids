@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -20,7 +21,7 @@ interface TrainCar {
   selector: 'app-train-game',
   standalone: true,
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col justify-end select-none bg-gradient-to-b from-blue-200 to-green-100" dir="ltr">
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden shadow-inner flex flex-col justify-end select-none bg-gradient-to-b from-blue-200 to-green-100" dir="ltr">
         
         <!-- Score & Replay Audio -->
         <div class="absolute top-4 w-full flex justify-between items-center px-8 z-30 pointer-events-none">
@@ -37,9 +38,9 @@ interface TrainCar {
             <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/40 backdrop-blur-sm">
                 <div class="bg-white p-8 rounded-[3rem] shadow-2xl max-w-sm w-full border-[8px] border-green-400">
                     <div class="text-8xl mb-2 animate-bounce">🚂</div>
-                    <h2 class="text-4xl font-black text-green-600 mb-2 font-[Bubblegum]">Animal Train</h2>
+                    <h2 class="text-4xl font-black text-green-600 mb-2 font-[Fredoka]">Animal Train</h2>
                     <p class="text-gray-600 mb-6 font-bold text-xl">Listen and place the animals in the train!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-green-500 hover:bg-green-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#16a34a] active:translate-y-2 active:shadow-none transition-all">
+                    <button (click)="startGame()" class="w-full py-4 font-[Fredoka] bg-green-500 hover:bg-green-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#16a34a] active:translate-y-2 active:shadow-none transition-all">
                         Start Game!
                     </button>
                 </div>
@@ -116,7 +117,10 @@ interface TrainCar {
     </div>
   `
 })
-export class TrainGameComponent {
+export class TrainGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -161,16 +165,16 @@ export class TrainGameComponent {
     const roundOptions = [...targets, ...distractors].sort(() => 0.5 - Math.random());
     this.options.set(roundOptions);
 
-    setTimeout(() => this.playSequenceAudio(), 500);
+    this.timers.after(() => this.playSequenceAudio(), 500);
   }
 
   playSequenceAudio() {
       const targets = this.cars().map(c => c.targetAnimal.en);
       if (targets.length === 3) {
           this.audio.playSoundEffect('bell');
-          setTimeout(() => this.audio.speak(targets[0], 'en-US'), 500);
-          setTimeout(() => this.audio.speak(targets[1], 'en-US'), 1500);
-          setTimeout(() => this.audio.speak(targets[2], 'en-US'), 2500);
+          this.timers.after(() => this.audio.speak(targets[0], 'en-US'), 500);
+          this.timers.after(() => this.audio.speak(targets[1], 'en-US'), 1500);
+          this.timers.after(() => this.audio.speak(targets[2], 'en-US'), 2500);
       }
   }
 
@@ -226,10 +230,10 @@ export class TrainGameComponent {
           this.data.addStars(5);
           
           // Move train off screen
-          setTimeout(() => {
+          this.timers.after(() => {
               this.trainMoving.set(true);
               // Choo choo sound could be added here
-              setTimeout(() => this.nextRound(), 3500);
+              this.timers.after(() => this.nextRound(), 3500);
           }, 1000);
       }
   }

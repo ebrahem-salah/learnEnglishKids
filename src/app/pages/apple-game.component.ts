@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -13,7 +14,7 @@ interface Apple {
   selector: 'app-apple-game',
   standalone: true,
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col justify-end select-none bg-gradient-to-b from-sky-200 to-sky-100" dir="ltr">
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden shadow-inner flex flex-col justify-end select-none bg-gradient-to-b from-sky-200 to-sky-100" dir="ltr">
         
         <div class="absolute top-4 w-full flex justify-between items-center px-8 z-30 pointer-events-none">
             <div class="bg-white/80 backdrop-blur-sm px-6 py-2 rounded-full font-black text-xl text-red-700 shadow-md">
@@ -31,9 +32,9 @@ interface Apple {
                     <div class="text-8xl mb-2 flex justify-center animate-bounce">
                         🍎
                     </div>
-                    <h2 class="text-4xl font-black text-red-600 mb-2 font-[Bubblegum]">Math Basket</h2>
+                    <h2 class="text-4xl font-black text-red-600 mb-2 font-[Fredoka]">Math Basket</h2>
                     <p class="text-gray-600 mb-6 font-bold text-xl">Listen and put the apples in the basket!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-red-500 hover:bg-red-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#b91c1c] active:translate-y-2 active:shadow-none transition-all">
+                    <button (click)="startGame()" class="w-full py-4 font-[Fredoka] bg-red-500 hover:bg-red-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#b91c1c] active:translate-y-2 active:shadow-none transition-all">
                         Start Game!
                     </button>
                 </div>
@@ -85,7 +86,10 @@ interface Apple {
     </div>
   `
 })
-export class AppleGameComponent {
+export class AppleGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -121,7 +125,7 @@ export class AppleGameComponent {
     }
     this.apples.set(newApples);
 
-    setTimeout(() => this.repeatInstruction(), 500);
+    this.timers.after(() => this.repeatInstruction(), 500);
   }
 
   dropApple(apple: Apple) {
@@ -141,7 +145,7 @@ export class AppleGameComponent {
           this.score.update(s => s + 1);
           this.data.addStars(2);
           
-          setTimeout(() => this.nextRound(), 2000);
+          this.timers.after(() => this.nextRound(), 2000);
       } else {
           // Wrong
           this.audio.playSoundEffect('error');

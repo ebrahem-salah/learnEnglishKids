@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -11,7 +12,7 @@ interface AnimalSoundQuestion {
   selector: 'app-animal-sound-game',
   standalone: true,
   template: `
-    <div class="relative w-full min-h-[580px] bg-gradient-to-b from-sky-100 via-indigo-50 to-purple-100 rounded-3xl p-6 flex flex-col justify-between select-none border-4 border-indigo-300 font-[Bubblegum]" dir="ltr">
+    <div class="relative w-full min-h-[78vh] min-h-[580px] max-h-[920px] bg-gradient-to-b from-sky-100 via-indigo-50 to-purple-100 rounded-3xl p-6 flex flex-col justify-between select-none border-4 border-indigo-300 font-[Fredoka]" dir="ltr">
       <!-- Top Header -->
       <div class="flex justify-between items-center bg-white/90 backdrop-blur px-6 py-3 rounded-2xl shadow-sm border-2 border-indigo-200">
         <div class="text-xl md:text-2xl font-black text-indigo-800 flex items-center gap-2">
@@ -79,7 +80,10 @@ interface AnimalSoundQuestion {
     </div>
   `
 })
-export class AnimalSoundGameComponent {
+export class AnimalSoundGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -194,7 +198,7 @@ export class AnimalSoundGameComponent {
       this.audio.playSoundEffect('ding');
       this.audio.speak('Awesome! It is the ' + opt.name, 'en-US');
       this.score.update(s => s + 5);
-      setTimeout(() => {
+      this.timers.after(() => {
         this.currentIndex++;
         this.loadQuestion();
       }, 1200);

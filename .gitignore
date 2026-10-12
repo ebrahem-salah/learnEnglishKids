@@ -46,3 +46,5 @@ Thumbs.db
 *.zip
 temp_frames*
 *.mp4
+files/
+optional-tailwind-build/

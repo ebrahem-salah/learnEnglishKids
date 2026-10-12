@@ -1,0 +1,25 @@
+# Netlify / Cloudflare Pages. Hashed bundles are cached for a year; files that must update are never cached.
+/index.html
+  Cache-Control: no-cache
+/ngsw.json
+  Cache-Control: no-cache
+/ngsw-worker.js
+  Cache-Control: no-cache
+/manifest.webmanifest
+  Cache-Control: no-cache
+/offline-manifest.json
+  Cache-Control: no-cache
+/main-*
+  Cache-Control: public, max-age=31536000, immutable
+/chunk-*
+  Cache-Control: public, max-age=31536000, immutable
+/polyfills-*
+  Cache-Control: public, max-age=31536000, immutable
+/styles-*
+  Cache-Control: public, max-age=31536000, immutable
+/assets/*
+  Cache-Control: public, max-age=86400
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: microphone=(self), camera=(), geolocation=()

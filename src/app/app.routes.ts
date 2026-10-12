@@ -1,32 +1,25 @@
 import { Routes } from '@angular/router';
-import { AlphabetComponent } from './pages/alphabet.component';
-import { LessonsComponent } from './pages/lessons.component';
-import { TracingComponent } from './pages/tracing.component';
-import { PhrasesComponent } from './pages/phrases.component';
-import { StoriesComponent } from './pages/stories.component';
-import { NumbersComponent } from './pages/numbers.component';
-import { CategoriesComponent } from './pages/categories.component';
-import { StickersComponent } from './pages/stickers.component';
-import { GamesComponent } from './pages/games.component';
-import { SpeechCoachComponent } from './pages/speech-coach.component';
-import { JuniorConversationsComponent } from './pages/junior-conversations.component';
-import { CertificatesComponent } from './pages/certificates.component';
-import { PetComponent } from './pages/pet.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'alphabet', pathMatch: 'full' },
-  { path: 'lessons', component: LessonsComponent },
-  { path: 'alphabet', component: AlphabetComponent },
-  { path: 'tracing', component: TracingComponent },
-  { path: 'phrases', component: PhrasesComponent },
-  { path: 'junior', component: JuniorConversationsComponent },
-  { path: 'speech', component: SpeechCoachComponent },
-  { path: 'certificates', component: CertificatesComponent },
-  { path: 'stories', component: StoriesComponent },
-  { path: 'numbers', component: NumbersComponent },
-  { path: 'categories', component: CategoriesComponent },
-  { path: 'games', component: GamesComponent },
-  { path: 'stickers', component: StickersComponent },
-  { path: 'pet', component: PetComponent },
+  { path: 'lessons', loadComponent: () => import('./pages/lessons.component').then(m => m.LessonsComponent) },
+  { path: 'alphabet', loadComponent: () => import('./pages/alphabet.component').then(m => m.AlphabetComponent) },
+  { path: 'tracing', loadComponent: () => import('./pages/tracing.component').then(m => m.TracingComponent) },
+  { path: 'phrases', loadComponent: () => import('./pages/phrases.component').then(m => m.PhrasesComponent) },
+  { path: 'junior', loadComponent: () => import('./pages/junior-conversations.component').then(m => m.JuniorConversationsComponent) },
+  { path: 'speech', loadComponent: () => import('./pages/speech-coach.component').then(m => m.SpeechCoachComponent) },
+  { path: 'certificates', loadComponent: () => import('./pages/certificates.component').then(m => m.CertificatesComponent) },
+  { path: 'stories', loadComponent: () => import('./pages/stories.component').then(m => m.StoriesComponent) },
+  { path: 'numbers', loadComponent: () => import('./pages/numbers.component').then(m => m.NumbersComponent) },
+  { path: 'categories', loadComponent: () => import('./pages/categories.component').then(m => m.CategoriesComponent) },
+  { path: 'games', loadComponent: () => import('./pages/games.component').then(m => m.GamesComponent) },
+  { path: 'stickers', loadComponent: () => import('./pages/stickers.component').then(m => m.StickersComponent) },
+  { path: 'pet', loadComponent: () => import('./pages/pet.component').then(m => m.PetComponent) },
+  { path: 'parent', loadComponent: () => import('./pages/parent.component').then(m => m.ParentComponent) },
+  { path: 'profiles', loadComponent: () => import('./pages/profiles.component').then(m => m.ProfilesComponent) },
+  { path: 'missions', loadComponent: () => import('./pages/missions.component').then(m => m.MissionsComponent) },
+  { path: 'worksheets', loadComponent: () => import('./pages/worksheets.component').then(m => m.WorksheetsComponent) },
+  { path: 'arabic', loadComponent: () => import('./pages/arabic.component').then(m => m.ArabicComponent) },
+  { path: 'privacy', loadComponent: () => import('./pages/privacy.component').then(m => m.PrivacyComponent) },
   { path: '**', redirectTo: 'alphabet' }
 ];

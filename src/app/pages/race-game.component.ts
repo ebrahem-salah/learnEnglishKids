@@ -14,7 +14,7 @@ import { ALPHABET, GameWord, Timers, pick, shuffle, wordPool } from './game-util
     .road { background: repeating-linear-gradient(90deg, transparent 0 40px, rgba(255,255,255,.55) 40px 70px); }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-sky-200 to-emerald-100 flex flex-col"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-sky-200 to-emerald-100 flex flex-col"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <!-- Track -->

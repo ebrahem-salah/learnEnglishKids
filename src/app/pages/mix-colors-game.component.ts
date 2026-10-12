@@ -36,7 +36,7 @@ const GOALS = ['Orange', 'Green', 'Purple', 'Pink', 'Light Blue'];
     @keyframes nope { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-fuchsia-100 to-sky-100 flex flex-col items-center"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-fuchsia-100 to-sky-100 flex flex-col items-center"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <div class="w-full px-4 pt-3 flex justify-between items-center">

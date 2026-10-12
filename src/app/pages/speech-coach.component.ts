@@ -14,7 +14,7 @@ interface SpeechChallenge {
   selector: 'app-speech-coach',
   standalone: true,
   template: `
-    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-rose-300 max-w-4xl mx-auto font-[Bubblegum]" dir="ltr">
+    <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border-4 border-rose-300 max-w-4xl mx-auto font-[Fredoka]" dir="ltr">
       <!-- Header -->
       <div class="text-center mb-8">
         <div class="text-6xl mb-2 animate-bounce">🎙️</div>

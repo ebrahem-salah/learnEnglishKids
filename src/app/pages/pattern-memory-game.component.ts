@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -18,7 +19,7 @@ interface ColorPad {
   selector: 'app-pattern-memory-game',
   standalone: true,
   template: `
-    <div class="relative w-full min-h-[580px] bg-gradient-to-b from-violet-100 via-purple-50 to-pink-100 rounded-3xl p-6 flex flex-col justify-between select-none border-4 border-purple-300 font-[Bubblegum]" dir="ltr">
+    <div class="relative w-full min-h-[78vh] min-h-[580px] max-h-[920px] bg-gradient-to-b from-violet-100 via-purple-50 to-pink-100 rounded-3xl p-6 flex flex-col justify-between select-none border-4 border-purple-300 font-[Fredoka]" dir="ltr">
       <!-- Top Header -->
       <div class="flex justify-between items-center bg-white/90 backdrop-blur px-6 py-3 rounded-2xl shadow-sm border-2 border-purple-200">
         <div class="text-xl md:text-2xl font-black text-purple-800 flex items-center gap-2">
@@ -84,7 +85,10 @@ interface ColorPad {
     </div>
   `
 })
-export class PatternMemoryGameComponent {
+export class PatternMemoryGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -153,12 +157,12 @@ export class PatternMemoryGameComponent {
 
   async playbackPattern() {
     this.isShowingPattern.set(true);
-    await new Promise(r => setTimeout(r, 600));
+    await new Promise(r => this.timers.after(() => r(undefined), 600));
 
     for (let i = 0; i < this.pattern.length; i++) {
       const col = this.pattern[i];
       await this.flashColor(col);
-      await new Promise(r => setTimeout(r, 300));
+      await new Promise(r => this.timers.after(() => r(undefined), 300));
     }
 
     this.isShowingPattern.set(false);
@@ -168,7 +172,7 @@ export class PatternMemoryGameComponent {
     return new Promise(resolve => {
       this.activeColor.set(color);
       this.audio.speak(color, 'en-US');
-      setTimeout(() => {
+      this.timers.after(() => {
         this.activeColor.set(null);
         resolve();
       }, 500);
@@ -181,7 +185,7 @@ export class PatternMemoryGameComponent {
     // Flash clicked pad
     this.activeColor.set(color);
     this.audio.speak(color, 'en-US');
-    setTimeout(() => this.activeColor.set(null), 250);
+    this.timers.after(() => this.activeColor.set(null), 250);
 
     if (color === this.pattern[this.playerStep]) {
       this.playerStep++;
@@ -191,7 +195,7 @@ export class PatternMemoryGameComponent {
         this.data.save();
         this.audio.playSoundEffect('ding');
         this.level.update(l => l + 1);
-        setTimeout(() => this.nextRound(), 1000);
+        this.timers.after(() => this.nextRound(), 1000);
       }
     } else {
       // Wrong sequence

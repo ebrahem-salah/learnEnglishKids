@@ -28,6 +28,13 @@ export class AudioService {
   private playToken = 0;
   private ctxAudio?: AudioContext;
   slow = signal(true);
+  /** Parents can mute everything from the parent dashboard. */
+  soundOn = signal(localStorage.getItem('abc-sound') !== 'off');
+  setSound(on: boolean) {
+    this.soundOn.set(on);
+    try { localStorage.setItem('abc-sound', on ? 'on' : 'off'); } catch { /* ignore */ }
+    if (!on && 'speechSynthesis' in window) speechSynthesis.cancel();
+  }
   playing = signal<string | null>(null);
 
   constructor() {
@@ -70,6 +77,7 @@ export class AudioService {
   activeAudio: HTMLAudioElement | null = null;
 
   say(text: string, lang: string): Promise<void> {
+    if (!this.soundOn()) return Promise.resolve();
     return new Promise(resolve => {
       this.unlockAudio();
       
@@ -83,7 +91,7 @@ export class AudioService {
       }
 
       const tl = lang.startsWith('ar') ? 'ar' : 'en';
-      const cleanWord = text.trim().toLowerCase().replace(/[^a-z0-9]/g, '_');
+      const cleanWord = text.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 45);
       const localUrl = `assets/audio/words/${cleanWord}.mp3`;
       const fallbackUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=${tl}`;
 
@@ -160,7 +168,8 @@ export class AudioService {
     setTimeout(() => this.slow.set(prev), 2000);
   }
 
-  playAudioFile(src: string, fallbackText?: string) {
+  playAudioFile(src: string, fallbackText?: string, fallbackLang = 'en-US') {
+    if (!this.soundOn()) return;
     this.unlockAudio();
     if (this.activeAudio) {
       this.activeAudio.pause();
@@ -175,9 +184,16 @@ export class AudioService {
     audio.onended = () => { if (this.activeAudio === audio) this.activeAudio = null; };
     audio.onerror = () => {
       if (this.activeAudio === audio) this.activeAudio = null;
-      if (fallbackText) this.speak(fallbackText, 'en-US');
+      if (fallbackText) this.speak(fallbackText, fallbackLang);
     };
     audio.play().catch(audio.onerror);
+  }
+
+  /** Arabic line: plays YOUR recording public/assets/audio/ar/<english-key>.mp3 if it exists,
+   *  otherwise falls back to browser / Google text-to-speech. (key = same name as the English mp3) */
+  speakArabic(enText: string, arText: string) {
+    const key = enText.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 45);
+    this.playAudioFile(`assets/audio/ar/${key}.mp3`, arText, 'ar-EG');
   }
 
   playPhonics(letter: string) {
@@ -186,6 +202,7 @@ export class AudioService {
   }
 
   beep(freqs: number[], type: OscillatorType = 'sine') {
+    if (!this.soundOn()) return;
     try {
       const c = (this.ctxAudio ??= new AudioContext());
       freqs.forEach((f, i) => {
@@ -203,6 +220,8 @@ export class AudioService {
   }
 
   playSoundEffect(type: string) {
+    if (!this.soundOn()) return;
+    if (type === 'error') type = 'buzz';
     try {
       const c = (this.ctxAudio ??= new AudioContext());
       let freqs: number[] = [400, 600];
@@ -215,6 +234,7 @@ export class AudioService {
       if (type === 'bark') freqs = [250, 450];
       if (type === 'vroom') freqs = [120, 180, 240];
       if (type === 'trumpet') freqs = [500, 750, 900];
+      if (type === 'click') freqs = [520];
 
       freqs.forEach((f, i) => {
         const o = c.createOscillator(), g = c.createGain();
@@ -232,6 +252,69 @@ export class AudioService {
   }
 
   isListening = signal<boolean>(false);
+
+
+  // ---------- speaking whole sentences ----------
+  /** The native plugin is optional: npm i @capacitor-community/speech-recognition && npx cap sync */
+  private nativeRecognizer(): any {
+    const cap = (window as any).Capacitor;
+    if (cap?.isNativePlatform?.()) {
+      try { return cap.registerPlugin('SpeechRecognition'); } catch { /* not installed */ }
+    }
+    return null;
+  }
+
+  canListen(): boolean {
+    return !!(this.nativeRecognizer() || (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition);
+  }
+
+  /** 0..1 = share of the expected words that were heard. */
+  private sentenceScore(expected: string, heard: string): number {
+    const norm = (t: string) => t.toLowerCase().replace(/[^a-z0-9\s']/g, ' ').split(/\s+/).filter(Boolean);
+    const exp = norm(expected);
+    const got = new Set(norm(heard));
+    return exp.length ? exp.filter(w => got.has(w)).length / exp.length : 0;
+  }
+
+  /** Listens once and compares with `expected`. Never shows alert(); returns an `error` code instead. */
+  async listenForSentence(expected: string, lang = 'en-US'): Promise<{ heard: string; score: number; ok: boolean; error?: 'unsupported' | 'denied' | 'network' | 'nospeech' }> {
+    const fail = (error: 'unsupported' | 'denied' | 'network' | 'nospeech') => ({ heard: '', score: 0, ok: false, error });
+    const best = (list: string[]) => {
+      let heard = list[0] || '', score = 0;
+      for (const h of list) { const sc = this.sentenceScore(expected, h); if (sc >= score) { score = sc; heard = h; } }
+      return { heard, score, ok: score >= 0.7 };
+    };
+
+    const native = this.nativeRecognizer();
+    if (native) {
+      try {
+        const perm = await native.requestPermissions();
+        if (perm?.speechRecognition && perm.speechRecognition !== 'granted') return fail('denied');
+        this.isListening.set(true);
+        this.playSoundEffect('bell');
+        const r = await native.start({ language: lang, maxResults: 3, partialResults: false, popup: false });
+        const matches: string[] = r?.matches ?? [];
+        return matches.length ? best(matches) : fail('nospeech');
+      } catch { return fail('nospeech'); } finally { this.isListening.set(false); }
+    }
+
+    const SR = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SR) return fail('unsupported');
+    return new Promise(resolve => {
+      const rec = new SR();
+      rec.lang = lang;
+      rec.interimResults = false;
+      rec.maxAlternatives = 3;
+      let done = false;
+      const finish = (v: any) => { if (!done) { done = true; this.isListening.set(false); resolve(v); } };
+      this.isListening.set(true);
+      this.playSoundEffect('bell');
+      rec.onresult = (e: any) => finish(best([...e.results[0]].map((a: any) => a.transcript as string)));
+      rec.onerror = (e: any) => finish(fail(e.error === 'not-allowed' || e.error === 'service-not-allowed' ? 'denied' : e.error === 'network' ? 'network' : 'nospeech'));
+      rec.onend = () => finish(fail('nospeech'));
+      try { rec.start(); } catch { finish(fail('nospeech')); }
+    });
+  }
 
   listenForWord(expectedWord: string): Promise<boolean> {
     return new Promise((resolve) => {

@@ -1,4 +1,5 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 import { NgClass } from '@angular/common';
@@ -8,7 +9,7 @@ import { NgClass } from '@angular/common';
   standalone: true,
   imports: [NgClass],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-gradient-to-b from-teal-200 to-teal-50" dir="ltr">
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden shadow-inner flex flex-col items-center select-none bg-gradient-to-b from-teal-200 to-teal-50" dir="ltr">
         
         <!-- Score & Audio -->
         <div class="absolute top-4 w-full flex justify-between items-center px-8 z-30 pointer-events-none">
@@ -25,9 +26,9 @@ import { NgClass } from '@angular/common';
             <div class="absolute inset-0 z-50 flex flex-col items-center justify-center text-center p-4 bg-black/40 backdrop-blur-sm">
                 <div class="bg-white p-8 rounded-[3rem] shadow-2xl max-w-sm w-full border-[8px] border-teal-400">
                     <div class="text-8xl mb-2 animate-bounce">🧮</div>
-                    <h2 class="text-4xl font-black text-teal-600 mb-2 font-[Bubblegum]">Smart Math</h2>
+                    <h2 class="text-4xl font-black text-teal-600 mb-2 font-[Fredoka]">Smart Math</h2>
                     <p class="text-gray-600 mb-6 font-bold text-xl">Add the numbers and choose the right answer!</p>
-                    <button (click)="startGame()" class="w-full py-4 font-[Bubblegum] bg-teal-500 hover:bg-teal-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#0f766e] active:translate-y-2 active:shadow-none transition-all">
+                    <button (click)="startGame()" class="w-full py-4 font-[Fredoka] bg-teal-500 hover:bg-teal-600 text-white text-3xl font-black rounded-2xl shadow-[0_8px_0_#0f766e] active:translate-y-2 active:shadow-none transition-all">
                         Start Game!
                     </button>
                 </div>
@@ -77,7 +78,10 @@ import { NgClass } from '@angular/common';
     </div>
   `
 })
-export class MathGameComponent {
+export class MathGameComponent implements OnDestroy {
+  private timers = new Timers();
+  ngOnDestroy() { this.timers.clearAll(); }
+
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -124,7 +128,7 @@ export class MathGameComponent {
     const opts = [sum, wrong1, wrong2].sort(() => 0.5 - Math.random());
     this.options.set(opts);
 
-    setTimeout(() => this.repeatInstruction(), 500);
+    this.timers.after(() => this.repeatInstruction(), 500);
   }
 
   checkAnswer(ans: number) {
@@ -139,11 +143,11 @@ export class MathGameComponent {
           
           this.audio.speak(ans.toString(), 'en-US');
           
-          setTimeout(() => this.nextRound(), 2000);
+          this.timers.after(() => this.nextRound(), 2000);
       } else {
           // Wrong
           this.audio.playSoundEffect('error');
-          setTimeout(() => {
+          this.timers.after(() => {
               if (!this.isCorrect()) this.selectedAnswer.set(null);
           }, 800);
       }

@@ -12,7 +12,11 @@
           "/index.html",
           "/manifest.webmanifest",
           "/*.css",
-          "/*.js"
+          "/*.js",
+          "/offline-manifest.json",
+          "/apple-touch-icon.png",
+          "/favicon-32x32.png",
+          "/icons/*.png"
         ]
       }
     },
@@ -24,6 +28,56 @@
         "files": [
           "/**/*.(svg|cur|jpg|jpeg|png|apng|webp|avif|gif|otf|ttf|woff|woff2)"
         ]
+      }
+    },
+    {
+      "name": "audio",
+      "installMode": "lazy",
+      "updateMode": "prefetch",
+      "resources": {
+        "files": [
+          "/assets/audio/**"
+        ]
+      }
+    }
+  ],
+  "dataGroups": [
+    {
+      "name": "cdn-libs",
+      "urls": [
+        "https://cdn.jsdelivr.net/**",
+        "https://cdn.tailwindcss.com/**"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 400,
+        "maxAge": "30d",
+        "cacheOpaqueResponses": true
+      }
+    },
+    {
+      "name": "google-fonts",
+      "urls": [
+        "https://fonts.googleapis.com/**",
+        "https://fonts.gstatic.com/**"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 40,
+        "maxAge": "365d",
+        "cacheOpaqueResponses": true
+      }
+    },
+    {
+      "name": "unsplash",
+      "urls": [
+        "https://images.unsplash.com/**"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 400,
+        "maxAge": "30d",
+        "cacheOpaqueResponses": true
       }
     }
   ]

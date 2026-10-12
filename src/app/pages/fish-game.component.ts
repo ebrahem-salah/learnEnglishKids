@@ -18,7 +18,7 @@ const MAX_WRONG = 5;
     @keyframes swim { 50% { transform: translateY(-8px) rotate(4deg); } }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-cyan-200 via-sky-300 to-blue-500 flex flex-col items-center"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-cyan-200 via-sky-300 to-blue-500 flex flex-col items-center"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <div class="w-full px-4 pt-3 flex justify-between items-center">

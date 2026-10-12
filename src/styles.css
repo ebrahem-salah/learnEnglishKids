@@ -216,3 +216,11 @@
     50% { transform: translateY(-350px) rotate(5deg); }
     100% { transform: translateY(-800px) rotate(-5deg); opacity: 0; }
 }
+
+/* ===== Bigger, friendlier UI =====
+   Tailwind sizes are rem-based, so scaling the root font-size
+   enlarges text, buttons, icons and spacing everywhere at once. */
+html { font-size: 112.5%; }
+@media (min-width: 1024px) { html { font-size: 125%; } }
+@media (min-width: 1536px) { html { font-size: 137.5%; } }
+button, a, [role="button"] { -webkit-tap-highlight-color: transparent; }

@@ -101,7 +101,7 @@ export interface LessonQuizQuestion {
                   }
                 </div>
 
-                <div class="text-5xl font-black mb-1 mt-2 font-[Bubblegum]"
+                <div class="text-5xl font-black mb-1 mt-2 font-[Fredoka]"
                      [ngClass]="unlocked ? 'text-indigo-600 group-hover:scale-110 transition-transform' : 'text-gray-400'">
                   {{ item.letter }}<span class="text-2xl text-pink-500 ml-1">{{ item.letter.toLowerCase() }}</span>
                 </div>
@@ -131,7 +131,7 @@ export interface LessonQuizQuestion {
             </button>
 
             <div class="flex items-center gap-3">
-              <span class="text-3xl font-black text-indigo-600 font-[Bubblegum]">Lesson {{ lesson.letter }}</span>
+              <span class="text-3xl font-black text-indigo-600 font-[Fredoka]">Lesson {{ lesson.letter }}</span>
               <button (click)="audio.playAudioFile('assets/audio/words/' + lesson.letter.toLowerCase() + '.mp3', lesson.letter)"
                       class="bg-indigo-100 hover:bg-indigo-200 text-indigo-800 p-2.5 rounded-full shadow-sm">
                 🔊
@@ -204,7 +204,7 @@ export interface LessonQuizQuestion {
                           <span class="text-3xl">{{ w.img }}</span>
                         }
                       </div>
-                      <div class="text-lg font-black text-indigo-950 font-[Bubblegum]">{{ w.word }}</div>
+                      <div class="text-lg font-black text-indigo-950 font-[Fredoka]">{{ w.word }}</div>
                       <div class="text-xs font-bold text-gray-500 mb-2">{{ w.ar_word }}</div>
                       <button (click)="audio.playAudioFile('assets/audio/words/' + w.word.toLowerCase() + '.mp3', w.word)"
                               class="mt-auto bg-indigo-500 hover:bg-indigo-600 text-white w-full py-1 rounded-xl text-xs font-black shadow-sm">
@@ -302,7 +302,7 @@ export interface LessonQuizQuestion {
                             <span class="text-4xl">{{ q.targetWord.img }}</span>
                           }
                         </div>
-                        <div class="text-3xl font-black text-amber-900 tracking-widest font-[Bubblegum] mb-1">
+                        <div class="text-3xl font-black text-amber-900 tracking-widest font-[Fredoka] mb-1">
                           {{ q.displayWordPattern }}
                         </div>
                         <div class="text-sm font-bold text-gray-500">({{ q.targetWord.ar_word }})</div>
@@ -312,7 +312,7 @@ export interface LessonQuizQuestion {
                         @for (letter of q.letterOptions; track letter) {
                           <button (click)="answerMissingLetter(letter)"
                                   [disabled]="q.isAnswered"
-                                  class="w-16 h-16 rounded-2xl border-4 font-black text-2xl shadow-md transition-all flex items-center justify-center font-[Bubblegum]"
+                                  class="w-16 h-16 rounded-2xl border-4 font-black text-2xl shadow-md transition-all flex items-center justify-center font-[Fredoka]"
                                   [ngClass]="{
                                     'bg-white border-amber-300 hover:border-amber-500 hover:scale-110 text-indigo-700': !q.isAnswered,
                                     'bg-green-500 text-white border-green-600 scale-110': q.isAnswered && letter === q.correctLetter,
@@ -336,7 +336,7 @@ export interface LessonQuizQuestion {
                           }
                         </div>
                         <div class="text-xs text-gray-400 font-bold mb-1">الكلمة المكتوبة:</div>
-                        <div class="text-2xl font-black text-indigo-900 font-[Bubblegum] mb-1">{{ q.shownWord }}</div>
+                        <div class="text-2xl font-black text-indigo-900 font-[Fredoka] mb-1">{{ q.shownWord }}</div>
                       </div>
 
                       <div class="flex justify-center gap-4 mb-6">

@@ -1,0 +1,2 @@
+# Netlify / Cloudflare Pages: every unknown path opens the app (Angular routes like /games)
+/*    /index.html   200

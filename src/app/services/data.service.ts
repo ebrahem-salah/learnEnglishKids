@@ -1,4 +1,5 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, signal, inject } from '@angular/core';
+import { StatsService } from './stats.service';
 import { AlphabetItem, Sticker, ExtraCategory, Song, Phrase, ShortStory } from './audio.service';
 
 declare const confetti: any;
@@ -11,6 +12,8 @@ export class DataService {
   passedLessons = signal<Set<string>>(new Set(['A'])); // First lesson A is unlocked by default
   stars = signal(10);
   failed = signal<Set<string>>(new Set());
+
+  private stats = inject(StatsService);
 
   // User Profile
   childName = signal<string>(localStorage.getItem('childName') || '');
@@ -62,6 +65,7 @@ export class DataService {
   }
 
   addStars(amount: number) {
+    if (amount > 0) this.stats.onStars(amount);
     this.stars.update(s => s + amount);
     this.save();
     if (amount > 0 && typeof confetti !== 'undefined') {
@@ -145,7 +149,31 @@ export class DataService {
     { en: 'I like to read books.', ar: 'أنا أحب قراءة الكتب.', context: 'الهوايات', icon: '📖' },
     { en: 'I love writing.', ar: 'أنا أحب الكتابة.', context: 'الهوايات', icon: '✍️' },
     { en: 'My favorite hobby is drawing.', ar: 'هوايتي المفضلة هي الرسم.', context: 'الهوايات', icon: '🎨' },
-    { en: 'Learning English is fun!', ar: 'تعلم الإنجليزية ممتع!', context: 'التعلم', icon: '🧠' }
+    { en: 'Learning English is fun!', ar: 'تعلم الإنجليزية ممتع!', context: 'التعلم', icon: '🧠' },
+    { en: 'What is your name?', ar: 'ما اسمك؟', context: 'التعارف', icon: '🙋' },
+    { en: 'Where are you from?', ar: 'من أين أنت؟', context: 'التعارف', icon: '🌍' },
+    { en: 'I am from Egypt.', ar: 'أنا من مصر.', context: 'التعارف', icon: '🇪🇬' },
+    { en: 'How is the weather today?', ar: 'كيف الطقس اليوم؟', context: 'الطقس', icon: '⛅' },
+    { en: 'It is sunny today.', ar: 'الجو مشمس اليوم.', context: 'الطقس', icon: '☀️' },
+    { en: 'I am happy today!', ar: 'أنا سعيد اليوم!', context: 'المشاعر', icon: '😊' },
+    { en: 'I feel sad.', ar: 'أشعر بالحزن.', context: 'المشاعر', icon: '😢' },
+    { en: 'I am tired.', ar: 'أنا متعب.', context: 'المشاعر', icon: '🥱' },
+    { en: 'I have a cat.', ar: 'عندي قطة.', context: 'الحيوانات', icon: '🐱' },
+    { en: 'This is my mother.', ar: 'هذه أمي.', context: 'العائلة', icon: '👩' },
+    { en: 'This is my father.', ar: 'هذا أبي.', context: 'العائلة', icon: '👨' },
+    { en: 'I have a little sister.', ar: 'عندي أخت صغيرة.', context: 'العائلة', icon: '👧' },
+    { en: 'What time is it?', ar: 'كم الساعة؟', context: 'الوقت', icon: '⏰' },
+    { en: 'It is time for school.', ar: 'حان وقت المدرسة.', context: 'الوقت', icon: '🏫' },
+    { en: 'I can swim.', ar: 'أستطيع السباحة.', context: 'القدرات', icon: '🏊' },
+    { en: 'Can you help me, please?', ar: 'هل يمكنك مساعدتي من فضلك؟', context: 'طلب المساعدة', icon: '🤝' },
+    { en: 'I do not understand.', ar: 'أنا لا أفهم.', context: 'في الفصل', icon: '🤔' },
+    { en: 'Please say it again.', ar: 'من فضلك أعد ذلك مرة أخرى.', context: 'في الفصل', icon: '🔁' },
+    { en: 'Can I borrow a pencil?', ar: 'هل أستطيع استعارة قلم؟', context: 'في الفصل', icon: '✏️' },
+    { en: 'I wash my hands before eating.', ar: 'أغسل يدي قبل الأكل.', context: 'عادات صحية', icon: '🧼' },
+    { en: 'I brush my teeth every day.', ar: 'أنظف أسناني كل يوم.', context: 'عادات صحية', icon: '🦷' },
+    { en: 'Happy birthday to you!', ar: 'عيد ميلاد سعيد!', context: 'المناسبات', icon: '🎂' },
+    { en: 'Thank you for the gift!', ar: 'شكراً على الهدية!', context: 'المناسبات', icon: '🎁' },
+    { en: 'Let us clean up!', ar: 'هيا ننظف!', context: 'البيت', icon: '🧹' }
   ];
 
   readonly storiesData: ShortStory[] = [
@@ -204,6 +232,58 @@ export class DataService {
         { en: 'They read exciting stories and drew colorful rainbows.', ar: 'قرأوا قصصاً مشوقة ورسموا قوس قزح بألوان زاهية.', img: '🌈', imagePath: 'rainbow.png' },
         { en: 'Sara shouted: I love learning and making new friends!', ar: 'هتفت سارة بفرح: أنا أحب التعلم وتكوين أصدقاء جدد!', img: '🎒', imagePath: 'gift.png' }
       ]
+    },
+    {
+      title: 'The Magic Rainbow',
+      ar_title: 'قوس قزح السحري',
+      icon: '🌈',
+      pages: [
+        { en: 'It rained all morning, and Mia felt sad.', ar: 'أمطرت طوال الصباح وشعرت ميا بالحزن.', img: '🌧️' },
+        { en: 'Then the sun came out from behind the clouds.', ar: 'ثم خرجت الشمس من خلف السحاب.', img: '☀️' },
+        { en: 'A big rainbow appeared in the sky!', ar: 'ظهر قوس قزح كبير في السماء!', img: '🌈' },
+        { en: 'Mia counted seven beautiful colors.', ar: 'عدّت ميا سبعة ألوان جميلة.', img: '🎨' },
+        { en: 'She painted the rainbow and gave it to her friends.', ar: 'رسمت قوس قزح وأهدته لأصدقائها.', img: '🖼️' },
+        { en: 'Mia smiled. Rainy days can be magic too!', ar: 'ابتسمت ميا. الأيام الممطرة قد تكون سحرية أيضاً!', img: '😊' }
+      ]
+    },
+    {
+      title: 'My Friend the Robot',
+      ar_title: 'صديقي الروبوت',
+      icon: '🤖',
+      pages: [
+        { en: 'Omar built a little robot in his room.', ar: 'بنى عمر روبوتاً صغيراً في غرفته.', img: '🔧' },
+        { en: 'The robot opened its eyes and said hello.', ar: 'فتح الروبوت عينيه وقال مرحباً.', img: '🤖' },
+        { en: 'They played football in the garden.', ar: 'لعبا كرة القدم في الحديقة.', img: '⚽' },
+        { en: 'The robot could not eat, but it loved to dance.', ar: 'لم يستطع الروبوت أن يأكل لكنه أحب الرقص.', img: '💃' },
+        { en: 'At night, Omar read a story to his new friend.', ar: 'في الليل قرأ عمر قصة لصديقه الجديد.', img: '📖' },
+        { en: 'Good night, my friend!', ar: 'تصبح على خير يا صديقي!', img: '🌙' }
+      ]
+    },
+    {
+      title: 'The Little Fish',
+      ar_title: 'السمكة الصغيرة',
+      icon: '🐟',
+      pages: [
+        { en: 'A little fish lived in a big blue sea.', ar: 'عاشت سمكة صغيرة في بحر أزرق كبير.', img: '🌊' },
+        { en: 'One day, she met a friendly turtle.', ar: 'في يوم من الأيام قابلت سلحفاة ودودة.', img: '🐢' },
+        { en: 'The turtle showed her a secret cave full of shells.', ar: 'أرتها السلحفاة كهفاً سرياً مليئاً بالأصداف.', img: '🐚' },
+        { en: 'A shark came, so the little fish hid inside a shell.', ar: 'جاء قرش، فاختبأت السمكة الصغيرة داخل صدفة.', img: '🦈' },
+        { en: 'The shark swam away, and the friends laughed.', ar: 'ابتعد القرش وضحك الصديقان.', img: '😄' },
+        { en: 'The little fish learned that good friends keep us safe.', ar: 'تعلمت السمكة أن الأصدقاء الطيبين يحمونا.', img: '💙' }
+      ]
+    },
+    {
+      title: 'The Sleepy Moon',
+      ar_title: 'القمر النعسان',
+      icon: '🌙',
+      pages: [
+        { en: 'The moon was very sleepy tonight.', ar: 'كان القمر نعساناً جداً هذه الليلة.', img: '🌙' },
+        { en: 'Stars whispered, Please stay awake!', ar: 'همست النجوم: من فضلك ابقَ مستيقظاً!', img: '⭐' },
+        { en: 'A little owl sang a quiet song.', ar: 'غنّت بومة صغيرة أغنية هادئة.', img: '🦉' },
+        { en: 'The children looked up from their windows.', ar: 'نظر الأطفال من نوافذهم إلى الأعلى.', img: '🪟' },
+        { en: 'The moon smiled and shone brighter.', ar: 'ابتسم القمر وسطع أكثر.', img: '😊' },
+        { en: 'Soon the sun came up. Good morning, world!', ar: 'وسرعان ما أشرقت الشمس. صباح الخير يا عالم!', img: '🌅' }
+      ]
     }
   ];
 
@@ -228,6 +308,48 @@ export class DataService {
       icon: '🔢',
       lyrics: `1 2 3 4 5 Once I caught a fish alive\n6 7 8 9 10 Then I let it go again!`,
       audioText: `One two three four five, Once I caught a fish alive, Six seven eight nine ten, Then I let it go again!`
+    },
+    {
+      title: 'Twinkle, Twinkle, Little Star',
+      ar_title: 'نجمة صغيرة تلمع',
+      icon: '⭐',
+      lyrics: `Twinkle, twinkle, little star,\nHow I wonder what you are!\nUp above the world so high,\nLike a diamond in the sky.\nTwinkle, twinkle, little star,\nHow I wonder what you are!`,
+      audioText: `Twinkle, twinkle, little star, How I wonder what you are! Up above the world so high, Like a diamond in the sky. Twinkle, twinkle, little star, How I wonder what you are!`
+    },
+    {
+      title: 'Old MacDonald Had a Farm',
+      ar_title: 'المزارع ماكدونالد',
+      icon: '🚜',
+      lyrics: `Old MacDonald had a farm, E-I-E-I-O!\nAnd on his farm he had a cow, E-I-E-I-O!\nWith a moo moo here, and a moo moo there,\nHere a moo, there a moo, everywhere a moo moo.\nOld MacDonald had a farm, E-I-E-I-O!`,
+      audioText: `Old MacDonald had a farm, E-I-E-I-O! And on his farm he had a cow, E-I-E-I-O! With a moo moo here, and a moo moo there, Here a moo, there a moo, everywhere a moo moo. Old MacDonald had a farm, E-I-E-I-O!`
+    },
+    {
+      title: 'Row, Row, Row Your Boat',
+      ar_title: 'جدّف بقاربك',
+      icon: '🚣',
+      lyrics: `Row, row, row your boat,\nGently down the stream.\nMerrily, merrily, merrily, merrily,\nLife is but a dream.`,
+      audioText: `Row, row, row your boat, Gently down the stream. Merrily, merrily, merrily, merrily, Life is but a dream.`
+    },
+    {
+      title: 'Baa Baa Black Sheep',
+      ar_title: 'يا خروف يا أسود',
+      icon: '🐑',
+      lyrics: `Baa, baa, black sheep,\nHave you any wool?\nYes sir, yes sir,\nThree bags full.\nOne for the master,\nOne for the dame,\nAnd one for the little boy\nWho lives down the lane.`,
+      audioText: `Baa, baa, black sheep, Have you any wool? Yes sir, yes sir, Three bags full. One for the master, One for the dame, And one for the little boy Who lives down the lane.`
+    },
+    {
+      title: 'Itsy Bitsy Spider',
+      ar_title: 'العنكبوت الصغير',
+      icon: '🕷️',
+      lyrics: `The itsy bitsy spider climbed up the water spout.\nDown came the rain and washed the spider out.\nOut came the sun and dried up all the rain,\nAnd the itsy bitsy spider climbed up the spout again.`,
+      audioText: `The itsy bitsy spider climbed up the water spout. Down came the rain and washed the spider out. Out came the sun and dried up all the rain, And the itsy bitsy spider climbed up the spout again.`
+    },
+    {
+      title: 'If You\'re Happy and You Know It',
+      ar_title: 'إذا كنت سعيداً',
+      icon: '😄',
+      lyrics: `If you're happy and you know it, clap your hands!\nIf you're happy and you know it, clap your hands!\nIf you're happy and you know it, then your face will surely show it.\nIf you're happy and you know it, clap your hands!`,
+      audioText: `If you're happy and you know it, clap your hands! If you're happy and you know it, clap your hands! If you're happy and you know it, then your face will surely show it. If you're happy and you know it, clap your hands!`
     }
   ];
 
@@ -261,7 +383,14 @@ export class DataService {
     { num: 27, en: 'Twenty-seven', ar: 'سبعة وعشرون', icon: '🌈' },
     { num: 28, en: 'Twenty-eight', ar: 'ثمانية وعشرون', icon: '🪁' },
     { num: 29, en: 'Twenty-nine', ar: 'تسعة وعشرون', icon: '🎸' },
-    { num: 30, en: 'Thirty', ar: 'ثلاثون', icon: '🏅' }
+    { num: 30, en: 'Thirty', ar: 'ثلاثون', icon: '🏅' },
+    { num: 40, en: 'Forty', ar: 'أربعون', icon: '🎯' },
+    { num: 50, en: 'Fifty', ar: 'خمسون', icon: '🎰' },
+    { num: 60, en: 'Sixty', ar: 'ستون', icon: '⏱️' },
+    { num: 70, en: 'Seventy', ar: 'سبعون', icon: '🎳' },
+    { num: 80, en: 'Eighty', ar: 'ثمانون', icon: '🎱' },
+    { num: 90, en: 'Ninety', ar: 'تسعون', icon: '🏆' },
+    { num: 100, en: 'One hundred', ar: 'مئة', icon: '💯' }
   ];
 
   readonly extraCategories: ExtraCategory[] = [
@@ -428,6 +557,244 @@ export class DataService {
         { en: 'Run', ar: 'يركض', img: '🏃', realImg: 'https://images.unsplash.com/photo-1552674605-db6ffd4facb5?w=300&auto=format&fit=crop' },
         { en: 'Swim', ar: 'يسبح', img: '🏊', realImg: 'https://images.unsplash.com/photo-1519315901367-f34f815be0c1?w=300&auto=format&fit=crop' },
         { en: 'Sing', ar: 'يغني', img: '🎤', realImg: 'https://images.unsplash.com/photo-1516280440502-62947029517e?w=300&auto=format&fit=crop' }
+      ]
+    },
+    {
+      id: 'family',
+      title: 'العائلة (My Family)',
+      icon: '👨‍👩‍👧‍👦',
+      items: [
+        { en: 'Mother', ar: 'أمي', img: '👩' },
+        { en: 'Father', ar: 'أبي', img: '👨' },
+        { en: 'Baby', ar: 'طفل رضيع', img: '👶' },
+        { en: 'Brother', ar: 'أخ', img: '👦' },
+        { en: 'Sister', ar: 'أخت', img: '👧' },
+        { en: 'Grandmother', ar: 'جدة', img: '👵' },
+        { en: 'Grandfather', ar: 'جد', img: '👴' },
+        { en: 'Uncle', ar: 'عم / خال', img: '👨‍🦱' },
+        { en: 'Aunt', ar: 'عمة / خالة', img: '👩‍🦰' },
+        { en: 'Friend', ar: 'صديق', img: '🧑‍🤝‍🧑' },
+        { en: 'Family', ar: 'عائلة', img: '👨‍👩‍👧‍👦' }
+      ]
+    },
+    {
+      id: 'body',
+      title: 'أجزاء الجسم (My Body)',
+      icon: '🧍',
+      items: [
+        { en: 'Eye', ar: 'عين', img: '👁️' },
+        { en: 'Ear', ar: 'أذن', img: '👂' },
+        { en: 'Nose', ar: 'أنف', img: '👃' },
+        { en: 'Mouth', ar: 'فم', img: '👄' },
+        { en: 'Hand', ar: 'يد', img: '✋' },
+        { en: 'Foot', ar: 'قدم', img: '🦶' },
+        { en: 'Leg', ar: 'ساق', img: '🦵' },
+        { en: 'Arm', ar: 'ذراع', img: '💪' },
+        { en: 'Tooth', ar: 'سن', img: '🦷' },
+        { en: 'Tongue', ar: 'لسان', img: '👅' },
+        { en: 'Brain', ar: 'مخ', img: '🧠' },
+        { en: 'Bone', ar: 'عظمة', img: '🦴' }
+      ]
+    },
+    {
+      id: 'weather',
+      title: 'الطقس (Weather)',
+      icon: '⛅',
+      items: [
+        { en: 'Sunny', ar: 'مشمس', img: '☀️' },
+        { en: 'Cloudy', ar: 'غائم', img: '☁️' },
+        { en: 'Rainy', ar: 'ممطر', img: '🌧️' },
+        { en: 'Windy', ar: 'عاصف', img: '💨' },
+        { en: 'Snowy', ar: 'ثلجي', img: '❄️' },
+        { en: 'Stormy', ar: 'عاصفة رعدية', img: '⛈️' },
+        { en: 'Rainbow', ar: 'قوس قزح', img: '🌈' },
+        { en: 'Hot', ar: 'حار', img: '🥵' },
+        { en: 'Cold', ar: 'بارد', img: '🥶' },
+        { en: 'Foggy', ar: 'ضبابي', img: '🌫️' },
+        { en: 'Lightning', ar: 'برق', img: '⚡' },
+        { en: 'Umbrella', ar: 'مظلة', img: '☂️' }
+      ]
+    },
+    {
+      id: 'feelings',
+      title: 'المشاعر (Feelings)',
+      icon: '😊',
+      items: [
+        { en: 'Happy', ar: 'سعيد', img: '😊' },
+        { en: 'Sad', ar: 'حزين', img: '😢' },
+        { en: 'Angry', ar: 'غاضب', img: '😠' },
+        { en: 'Scared', ar: 'خائف', img: '😨' },
+        { en: 'Sleepy', ar: 'نعسان', img: '😴' },
+        { en: 'Surprised', ar: 'متفاجئ', img: '😲' },
+        { en: 'Excited', ar: 'متحمس', img: '🤩' },
+        { en: 'Tired', ar: 'متعب', img: '🥱' },
+        { en: 'Sick', ar: 'مريض', img: '🤒' },
+        { en: 'Shy', ar: 'خجول', img: '😳' },
+        { en: 'Silly', ar: 'مرح', img: '🤪' },
+        { en: 'Calm', ar: 'هادئ', img: '😌' }
+      ]
+    },
+    {
+      id: 'jobs',
+      title: 'المهن (Jobs)',
+      icon: '👩‍⚕️',
+      items: [
+        { en: 'Doctor', ar: 'طبيب', img: '👨‍⚕️' },
+        { en: 'Teacher', ar: 'معلمة', img: '👩‍🏫' },
+        { en: 'Police officer', ar: 'ضابط شرطة', img: '👮' },
+        { en: 'Firefighter', ar: 'رجل إطفاء', img: '👨‍🚒' },
+        { en: 'Farmer', ar: 'مزارع', img: '👨‍🌾' },
+        { en: 'Chef', ar: 'طاهٍ', img: '👨‍🍳' },
+        { en: 'Pilot', ar: 'طيار', img: '👨‍✈️' },
+        { en: 'Artist', ar: 'فنان', img: '👨‍🎨' },
+        { en: 'Astronaut', ar: 'رائد فضاء', img: '👨‍🚀' },
+        { en: 'Scientist', ar: 'عالم', img: '👨‍🔬' },
+        { en: 'Builder', ar: 'عامل بناء', img: '👷' },
+        { en: 'Singer', ar: 'مغنٍّ', img: '🎤' }
+      ]
+    },
+    {
+      id: 'days',
+      title: 'أيام الأسبوع (Days of the Week)',
+      icon: '📅',
+      items: [
+        { en: 'Sunday', ar: 'الأحد', img: '1️⃣' },
+        { en: 'Monday', ar: 'الاثنين', img: '2️⃣' },
+        { en: 'Tuesday', ar: 'الثلاثاء', img: '3️⃣' },
+        { en: 'Wednesday', ar: 'الأربعاء', img: '4️⃣' },
+        { en: 'Thursday', ar: 'الخميس', img: '5️⃣' },
+        { en: 'Friday', ar: 'الجمعة', img: '6️⃣' },
+        { en: 'Saturday', ar: 'السبت', img: '7️⃣' }
+      ]
+    },
+    {
+      id: 'months',
+      title: 'شهور السنة (Months of the Year)',
+      icon: '🗓️',
+      items: [
+        { en: 'January', ar: 'يناير', img: '❄️' },
+        { en: 'February', ar: 'فبراير', img: '💝' },
+        { en: 'March', ar: 'مارس', img: '🌷' },
+        { en: 'April', ar: 'أبريل', img: '🌦️' },
+        { en: 'May', ar: 'مايو', img: '🌸' },
+        { en: 'June', ar: 'يونيو', img: '🏖️' },
+        { en: 'July', ar: 'يوليو', img: '☀️' },
+        { en: 'August', ar: 'أغسطس', img: '🍉' },
+        { en: 'September', ar: 'سبتمبر', img: '🍎' },
+        { en: 'October', ar: 'أكتوبر', img: '🎃' },
+        { en: 'November', ar: 'نوفمبر', img: '🍂' },
+        { en: 'December', ar: 'ديسمبر', img: '🎄' }
+      ]
+    },
+    {
+      id: 'shapes',
+      title: 'الأشكال (Shapes)',
+      icon: '🔷',
+      items: [
+        { en: 'Circle', ar: 'دائرة', img: '⭕' },
+        { en: 'Square', ar: 'مربع', img: '🟦' },
+        { en: 'Triangle', ar: 'مثلث', img: '🔺' },
+        { en: 'Star', ar: 'نجمة', img: '⭐' },
+        { en: 'Heart', ar: 'قلب', img: '❤️' },
+        { en: 'Diamond', ar: 'معين', img: '🔷' },
+        { en: 'Rectangle', ar: 'مستطيل', img: '🟧' },
+        { en: 'Oval', ar: 'شكل بيضاوي', img: '🥚' },
+        { en: 'Crescent', ar: 'هلال', img: '🌙' },
+        { en: 'Cube', ar: 'مكعب', img: '🧊' }
+      ]
+    },
+    {
+      id: 'sports',
+      title: 'الرياضة (Sports)',
+      icon: '⚽',
+      items: [
+        { en: 'Football', ar: 'كرة القدم', img: '⚽' },
+        { en: 'Basketball', ar: 'كرة السلة', img: '🏀' },
+        { en: 'Tennis', ar: 'التنس', img: '🎾' },
+        { en: 'Swimming', ar: 'السباحة', img: '🏊' },
+        { en: 'Running', ar: 'الجري', img: '🏃' },
+        { en: 'Cycling', ar: 'ركوب الدراجة', img: '🚴' },
+        { en: 'Volleyball', ar: 'الكرة الطائرة', img: '🏐' },
+        { en: 'Boxing', ar: 'الملاكمة', img: '🥊' },
+        { en: 'Baseball', ar: 'البيسبول', img: '⚾' },
+        { en: 'Skiing', ar: 'التزلج', img: '⛷️' },
+        { en: 'Golf', ar: 'الجولف', img: '⛳' },
+        { en: 'Gymnastics', ar: 'الجمباز', img: '🤸' }
+      ]
+    },
+    {
+      id: 'nature',
+      title: 'الطبيعة والفضاء (Nature & Space)',
+      icon: '🌍',
+      items: [
+        { en: 'Moon', ar: 'قمر', img: '🌙' },
+        { en: 'Planet', ar: 'كوكب', img: '🪐' },
+        { en: 'Earth', ar: 'الأرض', img: '🌍' },
+        { en: 'Rocket', ar: 'صاروخ', img: '🚀' },
+        { en: 'Mountain', ar: 'جبل', img: '⛰️' },
+        { en: 'River', ar: 'نهر', img: '🏞️' },
+        { en: 'Ocean', ar: 'محيط', img: '🌊' },
+        { en: 'Forest', ar: 'غابة', img: '🌲' },
+        { en: 'Volcano', ar: 'بركان', img: '🌋' },
+        { en: 'Desert', ar: 'صحراء', img: '🏜️' },
+        { en: 'Island', ar: 'جزيرة', img: '🏝️' },
+        { en: 'Telescope', ar: 'تلسكوب', img: '🔭' }
+      ]
+    },
+    {
+      id: 'house',
+      title: 'البيت (My House)',
+      icon: '🏠',
+      items: [
+        { en: 'Kitchen', ar: 'مطبخ', img: '🍳' },
+        { en: 'Bedroom', ar: 'غرفة النوم', img: '🛏️' },
+        { en: 'Bathroom', ar: 'حمام', img: '🛁' },
+        { en: 'Sofa', ar: 'أريكة', img: '🛋️' },
+        { en: 'Door', ar: 'باب', img: '🚪' },
+        { en: 'Window', ar: 'نافذة', img: '🪟' },
+        { en: 'Chair', ar: 'كرسي', img: '🪑' },
+        { en: 'Lamp', ar: 'مصباح', img: '💡' },
+        { en: 'Clock', ar: 'ساعة', img: '🕰️' },
+        { en: 'Key', ar: 'مفتاح', img: '🔑' },
+        { en: 'Mirror', ar: 'مرآة', img: '🪞' },
+        { en: 'Television', ar: 'تلفاز', img: '📺' }
+      ]
+    },
+    {
+      id: 'birds_insects',
+      title: 'الطيور والحشرات (Birds & Insects)',
+      icon: '🦋',
+      items: [
+        { en: 'Butterfly', ar: 'فراشة', img: '🦋' },
+        { en: 'Bee', ar: 'نحلة', img: '🐝' },
+        { en: 'Ant', ar: 'نملة', img: '🐜' },
+        { en: 'Ladybug', ar: 'دعسوقة', img: '🐞' },
+        { en: 'Spider', ar: 'عنكبوت', img: '🕷️' },
+        { en: 'Eagle', ar: 'نسر', img: '🦅' },
+        { en: 'Owl', ar: 'بومة', img: '🦉' },
+        { en: 'Duck', ar: 'بطة', img: '🦆' },
+        { en: 'Penguin', ar: 'بطريق', img: '🐧' },
+        { en: 'Parrot', ar: 'ببغاء', img: '🦜' },
+        { en: 'Peacock', ar: 'طاووس', img: '🦚' },
+        { en: 'Chicken', ar: 'دجاجة', img: '🐔' }
+      ]
+    },
+    {
+      id: 'sea',
+      title: 'حيوانات البحر (Sea Animals)',
+      icon: '🐙',
+      items: [
+        { en: 'Fish', ar: 'سمكة', img: '🐟' },
+        { en: 'Shark', ar: 'قرش', img: '🦈' },
+        { en: 'Whale', ar: 'حوت', img: '🐳' },
+        { en: 'Octopus', ar: 'أخطبوط', img: '🐙' },
+        { en: 'Crab', ar: 'سلطعون', img: '🦀' },
+        { en: 'Turtle', ar: 'سلحفاة', img: '🐢' },
+        { en: 'Squid', ar: 'حبار', img: '🦑' },
+        { en: 'Shrimp', ar: 'جمبري', img: '🦐' },
+        { en: 'Lobster', ar: 'استاكوزا', img: '🦞' },
+        { en: 'Seal', ar: 'فقمة', img: '🦭' },
+        { en: 'Shell', ar: 'صدفة', img: '🐚' }
       ]
     }
   ];

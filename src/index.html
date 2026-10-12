@@ -4,45 +4,69 @@
   <meta charset="utf-8">
   <title>تعلم مع يونس - Learn With Younis</title>
   <base href="/">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/jpeg" href="logo.jpg?v=3">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="تطبيق تعليمي للأطفال: تعلّم الحروف والكلمات والجمل بالإنجليزية والعربية من خلال الألعاب والقصص والأغاني.">
+  <meta name="theme-color" content="#1976d2">
+  <meta property="og:title" content="تعلم مع يونس - Learn With Younis">
+  <meta property="og:description" content="ألعاب وقصص وأغاني لتعليم الأطفال الإنجليزية والعربية">
+  <meta property="og:image" content="og-image.png">
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest?v=3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;800;900&amp;family=Fredoka:wght@400;600;700&amp;display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Cairo', 'Fredoka', sans-serif;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
   </style>
-  <link rel="manifest" href="manifest.webmanifest?v=2">
 </head>
 <body class="bg-gradient-to-b from-sky-100 via-blue-50 to-pink-50 min-h-screen">
   <app-root></app-root>
-  <noscript>Please enable JavaScript to continue using this application.</noscript>
+  <noscript>من فضلك فعّل JavaScript لتشغيل التطبيق.</noscript>
 
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
-  <!-- In-App Browser Detector -->
-  <div id="inapp-warning" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:999999; color:white; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center;">
+  <!-- In-App Browser Detector (Facebook, Instagram, TikTok...): the microphone does not work there -->
+  <div id="inapp-warning" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.92); z-index:999999; color:white; flex-direction:column; align-items:center; justify-content:center; padding:20px; text-align:center;">
     <h1 style="font-size:30px; margin-bottom:15px; color:#ffdd00;">⚠️ تنبيه هام</h1>
-    <p style="font-size:20px; line-height:1.5;">أنت تستخدم متصفح فيسبوك الداخلي، وهذا يمنع عمل <b>الميكروفون والصوت</b> في التطبيق.</p>
-    <p style="font-size:22px; margin-top:30px; font-weight:bold;">الرجاء الضغط على النقاط الثلاث (⋮) أو (⋯) بالأعلى واختيار:<br><br><span style="background:#ffdd00; color:black; padding:10px 20px; border-radius:10px; display:inline-block;">🌐 فتح في المتصفح الخارجي</span></p>
+    <p style="font-size:20px; line-height:1.6;">أنت تستخدم متصفح تطبيق آخر (فيسبوك / إنستجرام / تيك توك...)، وهذا قد يمنع عمل <b>الميكروفون والصوت</b>.</p>
+    <p style="font-size:20px; margin-top:24px; font-weight:bold;">اضغط على النقاط الثلاث (⋮) أو (⋯) واختر:<br><br>
+      <span style="background:#ffdd00; color:black; padding:10px 20px; border-radius:10px; display:inline-block;">🌐 فتح في المتصفح الخارجي</span></p>
+    <div style="margin-top:28px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center;">
+      <button id="inapp-copy" style="background:#38bdf8; color:#052e4a; font-size:18px; font-weight:800; padding:12px 22px; border-radius:12px; border:0;">📋 نسخ الرابط</button>
+      <button id="inapp-continue" style="background:#ffffff22; color:white; font-size:18px; font-weight:800; padding:12px 22px; border-radius:12px; border:2px solid #ffffff66;">متابعة على أي حال</button>
+    </div>
   </div>
 
   <script>
-    (function() {
-      var ua = navigator.userAgent || navigator.vendor || window.opera;
-      var isFacebookApp = (ua.indexOf("FBAN") > -1) || (ua.indexOf("FBAV") > -1) || (ua.indexOf("Instagram") > -1);
-      
-      if (isFacebookApp) {
-        var isAndroid = /android/i.test(ua);
-        if (isAndroid) {
-          // محاولة إجبار الأندرويد على فتح جوجل كروم خارجياً
-          var url = window.location.href.replace(/^https?:\/\//i, "");
-          window.location.href = "intent://" + url + "#Intent;scheme=https;package=com.android.chrome;end";
-        }
-        // إظهار الرسالة التحذيرية في كل الأحوال (للأيفون، أو إذا فشل الأندرويد)
-        document.getElementById('inapp-warning').style.display = 'flex';
+    (function () {
+      var ua = navigator.userAgent || navigator.vendor || window.opera || '';
+      var inApp = /FBAN|FBAV|FB_IAB|FBIOS|Instagram|Messenger|musical_ly|TikTok|BytedanceWebview|Snapchat|Line\/|LinkedInApp/i.test(ua);
+      if (!inApp) return;
+
+      var box = document.getElementById('inapp-warning');
+      if (/android/i.test(ua)) {
+        // try to open Chrome; if it is not installed, Android falls back to the normal URL
+        var url = window.location.href.replace(/^https?:\/\//i, '');
+        var fallback = encodeURIComponent(window.location.href);
+        window.location.href = 'intent://' + url + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + fallback + ';end';
       }
+      box.style.display = 'flex';
+
+      document.getElementById('inapp-continue').onclick = function () { box.style.display = 'none'; };
+      document.getElementById('inapp-copy').onclick = function () {
+        var btn = this;
+        var done = function () { btn.textContent = '✅ تم النسخ'; };
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(window.location.href).then(done, function () { window.prompt('انسخ الرابط:', window.location.href); });
+        } else { window.prompt('انسخ الرابط:', window.location.href); }
+      };
     })();
   </script>
 </body>

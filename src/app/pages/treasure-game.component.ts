@@ -21,7 +21,7 @@ const TARGETS = 5;
     @keyframes glow { 50% { transform: scale(1.6); filter: drop-shadow(0 0 14px gold); } }
   `],
   template: `
-    <div class="relative w-full h-[600px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-emerald-200 via-lime-100 to-amber-100"
+    <div class="relative w-full h-[80vh] min-h-[600px] max-h-[940px] rounded-3xl overflow-hidden select-none bg-gradient-to-b from-emerald-200 via-lime-100 to-amber-100"
          dir="ltr" style="touch-action: manipulation; -webkit-tap-highlight-color: transparent">
 
       <!-- Things to find -->
