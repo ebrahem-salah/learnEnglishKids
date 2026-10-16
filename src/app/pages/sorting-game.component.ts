@@ -110,7 +110,10 @@ interface SortItem {
 })
 export class SortingGameComponent implements OnDestroy {
   private timers = new Timers();
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 
   data = inject(DataService);
   audio = inject(AudioService);
@@ -157,6 +160,7 @@ export class SortingGameComponent implements OnDestroy {
   }
 
   nextItem() {
+    this.audio.stopAll();
     if (this.queue.length === 0) {
       this.currentItem.set(null);
       this.gameState.set('won');
@@ -177,12 +181,10 @@ export class SortingGameComponent implements OnDestroy {
 
     if (cur.category === target) {
       this.audio.playSoundEffect('ding');
-      this.audio.speak('Good job! ' + cur.name, 'en-US');
       this.score.update(s => s + 5);
-      this.timers.after(() => this.nextItem(), 600);
+      this.timers.after(() => this.nextItem(), 500);
     } else {
       this.audio.playSoundEffect('buzz');
-      this.audio.speak('Oops! Try another basket', 'en-US');
     }
   }
 }

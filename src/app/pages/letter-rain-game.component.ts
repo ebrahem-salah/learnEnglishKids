@@ -80,6 +80,7 @@ export class LetterRainGameComponent implements OnDestroy {
   }
 
   private nextTarget() {
+    this.audio.stopAll();
     const letters = [...new Set(this.pool.map(w => w.letter))]
       .filter(l => this.pool.filter(w => w.letter === l).length >= 2 && l !== this.target());
     const letter = pick(letters);
@@ -126,5 +127,8 @@ export class LetterRainGameComponent implements OnDestroy {
     this.audio.playCelebration();
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

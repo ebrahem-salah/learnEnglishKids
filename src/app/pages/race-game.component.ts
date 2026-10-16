@@ -98,6 +98,7 @@ export class RaceGameComponent implements OnDestroy {
   }
 
   private nextQuestion() {
+    this.audio.stopAll();
     const word = pick(this.pool);
     const others = shuffle(ALPHABET.filter(l => l !== word.letter)).slice(0, 2);
     this.q.set({ word, options: shuffle([word.letter, ...others]) });
@@ -137,5 +138,8 @@ export class RaceGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

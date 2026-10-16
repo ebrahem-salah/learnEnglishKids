@@ -87,6 +87,7 @@ export class HarakatGameComponent implements OnDestroy {
   }
 
   private next() {
+    this.audio.stopAll();
     this.letter.set(this.letters[this.round() - 1]);
     this.target.set(pick(HARAKAT));
     this.picked.set(null);
@@ -132,5 +133,8 @@ export class HarakatGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

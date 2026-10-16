@@ -88,7 +88,10 @@ interface Apple {
 })
 export class AppleGameComponent implements OnDestroy {
   private timers = new Timers();
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 
   data = inject(DataService);
   audio = inject(AudioService);
@@ -107,6 +110,7 @@ export class AppleGameComponent implements OnDestroy {
   }
 
   nextRound() {
+    this.audio.stopAll();
     this.droppedCount.set(0);
     
     // Random target between 1 and 9
@@ -131,7 +135,7 @@ export class AppleGameComponent implements OnDestroy {
   dropApple(apple: Apple) {
       if (apple.dropped || this.gameState() !== 'playing') return;
       
-      this.audio.playSoundEffect('bubble' as any); // use a nice pop sound, fallback to anything
+      this.audio.playSoundEffect('pop');
       
       this.apples.update(list => list.map(a => a.id === apple.id ? {...a, dropped: true} : a));
       this.droppedCount.update(c => c + 1);
@@ -140,16 +144,14 @@ export class AppleGameComponent implements OnDestroy {
   checkAnswer() {
       if (this.droppedCount() === this.targetNumber()) {
           // Success
-          this.audio.playSoundEffect('bell');
-          this.audio.speak('Excellent', 'en-US');
+          this.audio.playSoundEffect('ding');
           this.score.update(s => s + 1);
           this.data.addStars(2);
           
-          this.timers.after(() => this.nextRound(), 2000);
+          this.timers.after(() => this.nextRound(), 1200);
       } else {
           // Wrong
-          this.audio.playSoundEffect('error');
-          this.audio.speak('حاول مرة أخرى', 'ar-EG');
+          this.audio.playSoundEffect('buzz');
           // Reset apples
           this.apples.update(list => list.map(a => ({...a, dropped: false})));
           this.droppedCount.set(0);
@@ -158,6 +160,7 @@ export class AppleGameComponent implements OnDestroy {
 
   repeatInstruction() {
       if (this.targetNumber() > 0 && this.gameState() === 'playing') {
+          this.audio.stopAll();
           this.audio.speak(this.targetNumber().toString(), 'en-US');
       }
   }

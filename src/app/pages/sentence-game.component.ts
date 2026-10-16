@@ -192,5 +192,8 @@ export class SentenceGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

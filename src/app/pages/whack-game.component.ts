@@ -88,6 +88,7 @@ export class WhackGameComponent implements OnDestroy {
   }
 
   private nextTarget() {
+    this.audio.stopAll();
     const prev = this.target()?.word;
     this.target.set(pick(this.pool.filter(w => w.word !== prev)));
     this.say();
@@ -136,5 +137,8 @@ export class WhackGameComponent implements OnDestroy {
     this.audio.playCelebration();
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

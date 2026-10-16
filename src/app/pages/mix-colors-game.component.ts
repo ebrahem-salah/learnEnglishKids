@@ -194,5 +194,8 @@ export class MixColorsGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

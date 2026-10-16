@@ -82,7 +82,10 @@ interface AnimalSoundQuestion {
 })
 export class AnimalSoundGameComponent implements OnDestroy {
   private timers = new Timers();
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 
   data = inject(DataService);
   audio = inject(AudioService);
@@ -187,6 +190,7 @@ export class AnimalSoundGameComponent implements OnDestroy {
   playCurrentSound() {
     const q = this.currentQuestion();
     if (!q) return;
+    this.audio.stopAll();
     this.audio.speak(q.target.voiceLine, 'en-US');
   }
 
@@ -196,15 +200,13 @@ export class AnimalSoundGameComponent implements OnDestroy {
 
     if (opt.name === q.target.name) {
       this.audio.playSoundEffect('ding');
-      this.audio.speak('Awesome! It is the ' + opt.name, 'en-US');
       this.score.update(s => s + 5);
       this.timers.after(() => {
         this.currentIndex++;
         this.loadQuestion();
-      }, 1200);
+      }, 800);
     } else {
       this.audio.playSoundEffect('buzz');
-      this.audio.speak('Not quite, listen again!', 'en-US');
     }
   }
 }

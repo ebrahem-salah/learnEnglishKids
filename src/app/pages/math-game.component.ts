@@ -80,7 +80,10 @@ import { NgClass } from '@angular/common';
 })
 export class MathGameComponent implements OnDestroy {
   private timers = new Timers();
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 
   data = inject(DataService);
   audio = inject(AudioService);
@@ -105,6 +108,7 @@ export class MathGameComponent implements OnDestroy {
   }
 
   nextRound() {
+    this.audio.stopAll();
     this.selectedAnswer.set(null);
     this.isCorrect.set(false);
 
@@ -137,19 +141,17 @@ export class MathGameComponent implements OnDestroy {
       if (ans === this.targetSum()) {
           // Correct
           this.isCorrect.set(true);
-          this.audio.playSoundEffect('bell');
+          this.audio.playSoundEffect('ding');
           this.score.update(s => s + 1);
           this.data.addStars(2);
           
-          this.audio.speak(ans.toString(), 'en-US');
-          
-          this.timers.after(() => this.nextRound(), 2000);
+          this.timers.after(() => this.nextRound(), 1200);
       } else {
           // Wrong
-          this.audio.playSoundEffect('error');
+          this.audio.playSoundEffect('buzz');
           this.timers.after(() => {
               if (!this.isCorrect()) this.selectedAnswer.set(null);
-          }, 800);
+          }, 600);
       }
   }
 
@@ -159,6 +161,7 @@ export class MathGameComponent implements OnDestroy {
 
   repeatInstruction() {
       if (this.gameState() === 'playing') {
+          this.audio.stopAll();
           this.audio.speak(`How much is ${this.num1()} plus ${this.num2()}?`, 'en-US');
       }
   }

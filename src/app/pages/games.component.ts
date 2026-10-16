@@ -503,7 +503,10 @@ interface MemoryCard { id: number; letter: string; word: string; img: string; im
 })
 export class GamesComponent implements OnDestroy {
   private timers = new Timers();
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 
   data = inject(DataService);
   audio = inject(AudioService);
@@ -807,6 +810,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Save the Fish',
       desc: 'Spell the word to bring the fish back to shore',
       icon: '🐟',
+      image: 'fish.png',
       bg: 'bg-cyan-100',
       border: 'border-cyan-400',
       textColor: 'text-cyan-800',
@@ -910,6 +914,8 @@ export class GamesComponent implements OnDestroy {
   }
 
   backToMenu() {
+    this.timers.clearAll();
+    this.audio.stopAll();
     this.audio.playSoundEffect('bell');
     this.mode.set('menu');
   }
@@ -917,6 +923,8 @@ export class GamesComponent implements OnDestroy {
   constructor() {}
 
   setMode(m: 'menu' | GameId) {
+    this.timers.clearAll();
+    this.audio.stopAll();
     if (m !== 'menu') this.stats.playedGame(m);
     this.mode.set(m);
     if (m === 'match') this.initMatchGame();
@@ -977,13 +985,13 @@ export class GamesComponent implements OnDestroy {
       
       if (this.dragItems().length === 0) {
         this.timers.after(() => {
-          this.audio.speak('أحسنت! أنت بطل!', 'ar-EG');
+          this.audio.playCelebration();
           this.gameWon.set(true);
           this.data.addStars(10);
-        }, 500);
+        }, 300);
       }
     } else {
-      this.audio.speak('حاول مرة أخرى', 'ar-EG');
+      this.audio.playSoundEffect('buzz');
     }
     
     this.draggedItemIndex = -1;
@@ -1042,10 +1050,10 @@ export class GamesComponent implements OnDestroy {
           
           if (this.memoryCards().every(c => c.isMatched)) {
             this.timers.after(() => {
-              this.audio.speak('Well done! Great memory!', 'en-US');
+              this.audio.playCelebration();
               this.memoryWon.set(true);
               this.data.addStars(15);
-            }, 500);
+            }, 300);
           }
         }, 500);
       } else {
@@ -1066,6 +1074,7 @@ export class GamesComponent implements OnDestroy {
   // --- QUIZ GAME LOGIC ---
   initQuizGame() {
     this.quizWon.set(false);
+    this.audio.stopAll();
     
     // Pick 4 random words
     const allWords = this.data.alphabetData.flatMap(a => a.words).sort(() => 0.5 - Math.random());
@@ -1088,6 +1097,7 @@ export class GamesComponent implements OnDestroy {
   playQuizWord() {
     const q = this.quizQuestion();
     if (q) {
+      this.audio.stopAll();
       this.audio.speak(q.targetWord, 'en-US');
     }
   }
@@ -1098,13 +1108,12 @@ export class GamesComponent implements OnDestroy {
     
     if (word === q.targetWord) {
       // Success
-      this.audio.playSoundEffect('bell');
-      this.audio.speak('Awesome! Correct answer!', 'en-US');
+      this.audio.playSoundEffect('ding');
       this.quizWon.set(true);
       this.data.addStars(5);
     } else {
       // Wrong
-      this.audio.speak('Try again!', 'en-US');
+      this.audio.playSoundEffect('buzz');
     }
   }
 
@@ -1120,6 +1129,7 @@ export class GamesComponent implements OnDestroy {
   }
 
   loadJourneyLevel() {
+    this.audio.stopAll();
     const idx = this.journeyLevelIndex();
     if (idx >= this.data.alphabetData.length) {
       this.journeyState.set('finale');
@@ -1201,12 +1211,12 @@ export class GamesComponent implements OnDestroy {
   }
 
   loadShadowLevel() {
+    this.audio.stopAll();
     const idx = this.shadowLevelIndex();
     if (idx >= this.shadowLevels.length) {
       this.shadowState.set('win');
-      this.audio.playSoundEffect('bell');
+      this.audio.playCelebration();
       this.data.addStars(40);
-      this.audio.speak('Awesome! You mastered the shadows!', 'en-US');
       return;
     }
 
@@ -1279,10 +1289,9 @@ export class GamesComponent implements OnDestroy {
         if (this.shadowItems().every(item => item.matched)) {
             this.timers.after(() => {
                 this.audio.playSoundEffect('bell');
-                this.audio.speak('ممتاز', 'ar-EG');
                 this.shadowLevelIndex.update(i => i + 1);
                 this.loadShadowLevel();
-            }, 1500);
+            }, 800);
         }
       } else {
         // Wrong Match

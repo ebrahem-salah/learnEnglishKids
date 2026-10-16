@@ -130,6 +130,7 @@ export class TopicGameComponent implements OnDestroy {
   }
 
   private nextQuestion() {
+    this.audio.stopAll();
     const a = this.queue[this.round() - 1];
     const bad = shuffle(this.pool.filter(o => o.en !== a.en)).slice(0, 3);
     this.answer.set(a);
@@ -172,5 +173,8 @@ export class TopicGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

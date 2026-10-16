@@ -205,5 +205,8 @@ export class ColorLetterGameComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

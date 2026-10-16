@@ -119,7 +119,10 @@ interface TrainCar {
 })
 export class TrainGameComponent implements OnDestroy {
   private timers = new Timers();
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 
   data = inject(DataService);
   audio = inject(AudioService);
@@ -148,6 +151,7 @@ export class TrainGameComponent implements OnDestroy {
   }
 
   nextRound() {
+    this.audio.stopAll();
     this.trainMoving.set(false);
     
     // Pick 3 target animals

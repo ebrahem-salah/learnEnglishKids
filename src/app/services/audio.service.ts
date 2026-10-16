@@ -76,18 +76,49 @@ export class AudioService {
 
   activeAudio: HTMLAudioElement | null = null;
 
+  stopAll() {
+    this.playToken++;
+    this.playing.set(null);
+    if (this.activeAudio) {
+      try {
+        this.activeAudio.pause();
+        this.activeAudio.currentTime = 0;
+        this.activeAudio.src = '';
+      } catch { /* ignore */ }
+      this.activeAudio = null;
+    }
+    if ('speechSynthesis' in window) {
+      try {
+        speechSynthesis.cancel();
+      } catch { /* ignore */ }
+    }
+  }
+
   say(text: string, lang: string): Promise<void> {
+    const token = ++this.playToken;
+    return this.sayWithToken(token, text, lang);
+  }
+
+  private sayWithToken(token: number, text: string, lang: string): Promise<void> {
     if (!this.soundOn()) return Promise.resolve();
     return new Promise(resolve => {
+      if (token !== this.playToken) {
+        resolve();
+        return;
+      }
       this.unlockAudio();
       
       // Stop any currently playing audio and TTS
       if (this.activeAudio) {
-        this.activeAudio.pause();
-        this.activeAudio.currentTime = 0;
+        try {
+          this.activeAudio.pause();
+          this.activeAudio.currentTime = 0;
+          this.activeAudio.src = '';
+        } catch { /* ignore */ }
+        this.activeAudio = null;
       }
       if ('speechSynthesis' in window) {
-        speechSynthesis.cancel();
+        try { speechSynthesis.cancel(); } catch { /* ignore */ }
       }
 
       const tl = lang.startsWith('ar') ? 'ar' : 'en';
@@ -95,8 +126,14 @@ export class AudioService {
       const localUrl = `assets/audio/words/${cleanWord}.mp3`;
       const fallbackUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=${tl}`;
 
+      let currentTimer: any = null;
+
       // Check if we should attempt local offline file first (for English words/numbers/letters)
       const tryPlayUrl = (src: string, isLocal: boolean) => {
+        if (token !== this.playToken) {
+          resolve();
+          return;
+        }
         const audio = new Audio(src);
         this.activeAudio = audio;
         
@@ -106,6 +143,7 @@ export class AudioService {
 
         let resolved = false;
         const done = () => {
+          if (currentTimer) clearTimeout(currentTimer);
           if (!resolved) { 
             resolved = true; 
             if (this.activeAudio === audio) this.activeAudio = null;
@@ -113,16 +151,24 @@ export class AudioService {
           }
         };
 
-        audio.onended = done;
-        audio.onpause = done;
+        audio.onended = () => {
+          done();
+        };
+        audio.onpause = () => {
+          done();
+        };
         audio.onerror = () => {
+          if (token !== this.playToken) {
+            done();
+            return;
+          }
           if (isLocal) {
             // Local file didn't exist for this complex sentence, fallback to remote/TTS
             tryPlayUrl(fallbackUrl, false);
           } else {
             // Fallback to robotic browser TTS
-            if (!('speechSynthesis' in window)) return done();
-            speechSynthesis.cancel();
+            if (!('speechSynthesis' in window) || token !== this.playToken) return done();
+            try { speechSynthesis.cancel(); } catch { /* ignore */ }
             const u = new SpeechSynthesisUtterance(text);
             u.lang = lang;
             const v = this.getBestVoice(lang);
@@ -131,12 +177,23 @@ export class AudioService {
             u.pitch = 1.1;
             u.onend = done;
             u.onerror = done;
-            speechSynthesis.speak(u);
+            if (token === this.playToken) {
+              speechSynthesis.speak(u);
+            } else {
+              done();
+            }
           }
         };
 
-        audio.play().catch(audio.onerror);
-        setTimeout(done, 3000);
+        if (token === this.playToken) {
+          audio.play().catch(() => {
+            if (token === this.playToken) audio.onerror?.(new Event('error'));
+            else done();
+          });
+          currentTimer = setTimeout(done, 3000);
+        } else {
+          done();
+        }
       };
 
       if (tl === 'en') {
@@ -148,19 +205,24 @@ export class AudioService {
   }
 
   async sequence(key: string | null, steps: [string, string][]) {
-    if (!('speechSynthesis' in window)) return;
     const token = ++this.playToken;
-    speechSynthesis.cancel();
+    if ('speechSynthesis' in window) {
+      try { speechSynthesis.cancel(); } catch { /* ignore */ }
+    }
     this.playing.set(key);
     for (const [text, lang] of steps) {
       if (token !== this.playToken) return;
-      await this.say(text, lang);
+      await this.sayWithToken(token, text, lang);
+      if (token !== this.playToken) return;
       await new Promise(r => setTimeout(r, 250));
     }
     if (token === this.playToken) this.playing.set(null);
   }
 
-  speak(text: string, lang: string) { this.sequence(null, [[text, lang]]); }
+  speak(text: string, lang: string) { 
+    this.say(text, lang); 
+  }
+
   speakSlow(text: string, lang: string) {
     const prev = this.slow();
     this.slow.set(true);
@@ -171,22 +233,30 @@ export class AudioService {
   playAudioFile(src: string, fallbackText?: string, fallbackLang = 'en-US') {
     if (!this.soundOn()) return;
     this.unlockAudio();
+    const token = ++this.playToken;
     if (this.activeAudio) {
-      this.activeAudio.pause();
-      this.activeAudio.currentTime = 0;
+      try {
+        this.activeAudio.pause();
+        this.activeAudio.currentTime = 0;
+        this.activeAudio.src = '';
+      } catch { /* ignore */ }
       this.activeAudio = null;
     }
     if ('speechSynthesis' in window) {
-      speechSynthesis.cancel();
+      try { speechSynthesis.cancel(); } catch { /* ignore */ }
     }
     const audio = new Audio(src);
     this.activeAudio = audio;
     audio.onended = () => { if (this.activeAudio === audio) this.activeAudio = null; };
     audio.onerror = () => {
       if (this.activeAudio === audio) this.activeAudio = null;
-      if (fallbackText) this.speak(fallbackText, fallbackLang);
+      if (token === this.playToken && fallbackText) this.sayWithToken(token, fallbackText, fallbackLang);
     };
-    audio.play().catch(audio.onerror);
+    audio.play().catch(() => {
+      if (token === this.playToken && audio.onerror) {
+        (audio.onerror as any)(new Event('error'));
+      }
+    });
   }
 
   /** Arabic line: plays YOUR recording public/assets/audio/ar/<english-key>.mp3 if it exists,

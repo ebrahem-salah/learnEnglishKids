@@ -123,6 +123,7 @@ export class FishGameComponent implements OnDestroy {
   }
 
   private nextWord() {
+    this.audio.stopAll();
     const fresh = this.pool.filter(w => !this.used.has(w.word));
     const w = pick(fresh.length ? fresh : this.pool);
     this.used.add(w.word);
@@ -174,5 +175,8 @@ export class FishGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

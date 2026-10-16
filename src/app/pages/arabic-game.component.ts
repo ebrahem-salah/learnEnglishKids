@@ -96,6 +96,7 @@ export class ArabicGameComponent implements OnDestroy {
   }
 
   private next() {
+    this.audio.stopAll();
     const answer = this.queue[this.round() - 1];
     const bad = shuffle(ARABIC_LETTERS.filter(l => l.id !== answer.id)).slice(0, 3);
     this.q.set({ answer, options: shuffle([answer, ...bad]) });
@@ -145,5 +146,8 @@ export class ArabicGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

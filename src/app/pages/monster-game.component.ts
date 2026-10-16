@@ -92,6 +92,7 @@ export class MonsterGameComponent implements OnDestroy {
   say() { this.audio.speak(this.target(), 'en-US'); }
 
   private nextRound() {
+    this.audio.stopAll();
     const letters = [...new Set(this.pool.map(w => w.letter))].filter(l => l !== this.target());
     const letter = pick(letters);
     const good = pick(this.pool.filter(w => w.letter === letter));
@@ -129,5 +130,8 @@ export class MonsterGameComponent implements OnDestroy {
     this.audio.playCelebration();
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

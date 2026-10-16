@@ -88,6 +88,7 @@ export class ListenPickGameComponent implements OnDestroy {
   }
 
   private nextQuestion() {
+    this.audio.stopAll();
     const fresh = this.pool.filter(w => !this.used.has(w.word));
     const a = pick(fresh.length ? fresh : this.pool);
     this.used.add(a.word);
@@ -131,5 +132,8 @@ export class ListenPickGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

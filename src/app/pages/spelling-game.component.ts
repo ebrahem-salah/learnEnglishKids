@@ -99,7 +99,10 @@ interface WordChallenge {
 })
 export class SpellingGameComponent implements OnDestroy {
   private timers = new Timers();
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 
   data = inject(DataService);
   audio = inject(AudioService);
@@ -117,7 +120,7 @@ export class SpellingGameComponent implements OnDestroy {
     { word: 'CAR', ar: 'سيارة', image: 'car.png' },
     { word: 'LION', ar: 'أسد', image: 'lion.png' },
     { word: 'DUCK', ar: 'بطة', image: 'duck.png' },
-    { word: 'FISH', ar: 'سمكة', image: 'clown_fish.png' },
+    { word: 'FISH', ar: 'سمكة', image: 'fish.png' },
     { word: 'MOON', ar: 'قمر', image: 'moon.png' },
     { word: 'STAR', ar: 'نجمة', image: 'star.png' },
     { word: 'BOOK', ar: 'كتاب', image: 'book.png' },
@@ -143,6 +146,7 @@ export class SpellingGameComponent implements OnDestroy {
   }
 
   loadChallenge() {
+    this.audio.stopAll();
     if (this.currentIndex >= this.wordsPool.length) {
       this.gameState.set('won');
       this.data.stars.update(s => s + 15);
@@ -186,16 +190,14 @@ export class SpellingGameComponent implements OnDestroy {
       const spelled = slots.join('');
       if (spelled === this.currentChallenge().word) {
         this.audio.playSoundEffect('ding');
-        this.audio.speak('Correct! ' + this.currentChallenge().word, 'en-US');
         this.score.update(s => s + 5);
         this.timers.after(() => {
           this.currentIndex++;
           this.loadChallenge();
-        }, 1200);
+        }, 800);
       } else {
         this.audio.playSoundEffect('buzz');
-        this.audio.speak('Try again!', 'en-US');
-        this.timers.after(() => this.clearCurrentWord(), 800);
+        this.timers.after(() => this.clearCurrentWord(), 600);
       }
     }
   }

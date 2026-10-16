@@ -90,6 +90,7 @@ export class WeatherGameComponent implements OnDestroy {
 
   pickScene(s: WeatherScene, speak = true) {
     this.timers.clearAll();
+    this.audio.stopAll();
     this.scene.set(s);
     const good = shuffle(OUTFIT_ITEMS.filter(i => i.for.includes(s.key))).slice(0, 3);
     const bad = shuffle(OUTFIT_ITEMS.filter(i => !i.for.includes(s.key))).slice(0, 3);
@@ -124,5 +125,8 @@ export class WeatherGameComponent implements OnDestroy {
     }
   }
 
-  ngOnDestroy() { this.timers.clearAll(); }
+  ngOnDestroy() { 
+    this.timers.clearAll(); 
+    this.audio.stopAll();
+  }
 }

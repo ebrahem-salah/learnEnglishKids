@@ -1,4 +1,5 @@
 import { Component, signal, inject, OnInit, OnDestroy } from '@angular/core';
+import { Timers } from './game-utils';
 import { DataService } from '../services/data.service';
 import { AudioService } from '../services/audio.service';
 
@@ -84,6 +85,7 @@ interface Balloon {
   `]
 })
 export class BalloonGameComponent implements OnDestroy {
+  private timers = new Timers();
   data = inject(DataService);
   audio = inject(AudioService);
 
@@ -94,7 +96,6 @@ export class BalloonGameComponent implements OnDestroy {
   
   private balloonIdCounter = 0;
   private colors = ['#ef4444', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899'];
-  private loopInterval: any;
 
   startGame() {
     this.score.set(0);
@@ -103,6 +104,8 @@ export class BalloonGameComponent implements OnDestroy {
   }
 
   nextRound() {
+    this.audio.stopAll();
+    this.timers.clearAll();
     const chars = this.data.alphabetData.map(a => a.letter);
     const target = chars[Math.floor(Math.random() * chars.length)];
     this.targetLetter.set(target);
@@ -133,9 +136,8 @@ export class BalloonGameComponent implements OnDestroy {
 
     this.balloons.set(newBalloons);
 
-    // Refresh after 8 seconds if not clicked
-    clearInterval(this.loopInterval);
-    this.loopInterval = setInterval(() => {
+    // Refresh after 7 seconds if not clicked
+    this.timers.every(() => {
         if (this.gameState() === 'playing') {
             this.nextRound();
         }
@@ -160,28 +162,30 @@ export class BalloonGameComponent implements OnDestroy {
 
       if (b.isTarget) {
           // Success
-          this.audio.playSoundEffect('bell');
+          this.audio.playSoundEffect('ding');
           this.data.addStars(1);
           this.score.update(s => s + 1);
           
           this.balloons.update(list => list.map(item => item.id === b.id ? {...item, popped: true} : item));
           
-          clearInterval(this.loopInterval);
-          setTimeout(() => this.nextRound(), 1000);
+          this.timers.clearAll();
+          this.timers.after(() => this.nextRound(), 800);
       } else {
           // Wrong
-          this.audio.playSoundEffect('error');
+          this.audio.playSoundEffect('buzz');
           this.balloons.update(list => list.map(item => item.id === b.id ? {...item, popped: true} : item));
       }
   }
 
   repeatTarget() {
       if (this.targetLetter()) {
+          this.audio.stopAll();
           this.audio.speak(this.targetLetter(), 'en-US');
       }
   }
 
   ngOnDestroy() {
-      clearInterval(this.loopInterval);
+      this.timers.clearAll();
+      this.audio.stopAll();
   }
 }
