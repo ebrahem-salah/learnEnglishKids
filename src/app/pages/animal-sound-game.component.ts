@@ -28,7 +28,7 @@ interface AnimalSoundQuestion {
       @if (gameState() === 'start') {
         <div class="flex flex-col items-center justify-center text-center my-auto p-6">
           <div class="w-36 h-36 bg-indigo-200 rounded-3xl flex items-center justify-center shadow-lg border-4 border-indigo-400 mb-4 animate-bounce">
-            <img src="assets/images/lion.png" class="w-24 h-24 object-contain" alt="Lion" />
+            <img src="assets/images/lion.webp" class="w-24 h-24 object-contain" alt="Lion" />
           </div>
           <h2 class="text-4xl md:text-5xl font-black text-indigo-900 mb-2">Animal Sounds Detective 🦁🐶🦆</h2>
           <p class="text-indigo-800 text-lg md:text-xl font-bold max-w-md mb-6">
@@ -99,57 +99,57 @@ export class AnimalSoundGameComponent implements OnDestroy {
       name: 'Cat',
       soundCue: 'Meow, meow! I love milk.',
       voiceLine: 'Meow meow, I am a cute furry pet who loves to say meow and drink milk. Who am I?',
-      image: 'cat.png',
-      distractors: [{ name: 'Dog', image: 'dog.png' }, { name: 'Duck', image: 'duck.png' }]
+      image: 'cat.webp',
+      distractors: [{ name: 'Dog', image: 'dog.webp' }, { name: 'Duck', image: 'duck.webp' }]
     },
     {
       name: 'Dog',
       soundCue: 'Woof, woof! I wag my tail.',
       voiceLine: 'Woof woof! I am loyal, I wag my tail and bark happily. Who am I?',
-      image: 'dog.png',
-      distractors: [{ name: 'Lion', image: 'lion.png' }, { name: 'Rabbit', image: 'rabbit.png' }]
+      image: 'dog.webp',
+      distractors: [{ name: 'Lion', image: 'lion.webp' }, { name: 'Rabbit', image: 'rabbit.webp' }]
     },
     {
       name: 'Lion',
       soundCue: 'Roaaar! King of the jungle.',
       voiceLine: 'Roaaar! I have a big mane and I am the king of the jungle. Who am I?',
-      image: 'lion.png',
-      distractors: [{ name: 'Elephant', image: 'elephant.png' }, { name: 'Monkey', image: 'monkey.png' }]
+      image: 'lion.webp',
+      distractors: [{ name: 'Elephant', image: 'elephant.webp' }, { name: 'Monkey', image: 'monkey.webp' }]
     },
     {
       name: 'Duck',
       soundCue: 'Quack, quack! Swimming in the pond.',
       voiceLine: 'Quack quack! I swim in the pond and have yellow feathers. Who am I?',
-      image: 'duck.png',
-      distractors: [{ name: 'Bird', image: 'bird.png' }, { name: 'Frog', image: 'frog.png' }]
+      image: 'duck.webp',
+      distractors: [{ name: 'Bird', image: 'bird.webp' }, { name: 'Frog', image: 'frog.webp' }]
     },
     {
       name: 'Cow',
       soundCue: 'Mooo, mooo! I give delicious milk.',
       voiceLine: 'Mooo mooo! I live on the farm, eat green grass, and give fresh milk. Who am I?',
-      image: 'cow.png',
-      distractors: [{ name: 'Horse', image: 'horse.png' }, { name: 'Goat', image: 'goat.png' }]
+      image: 'cow.webp',
+      distractors: [{ name: 'Horse', image: 'horse.webp' }, { name: 'Goat', image: 'goat.webp' }]
     },
     {
       name: 'Bee',
       soundCue: 'Buzzzz, buzzzz! Making sweet honey.',
       voiceLine: 'Buzzzz buzzzz! I fly from flower to flower and make sweet honey. Who am I?',
-      image: 'bee.png',
-      distractors: [{ name: 'Butterfly', image: 'butterfly.png' }, { name: 'Ladybug', image: 'ladybug.png' }]
+      image: 'bee.webp',
+      distractors: [{ name: 'Butterfly', image: 'butterfly.webp' }, { name: 'Ladybug', image: 'ladybug.webp' }]
     },
     {
       name: 'Elephant',
       soundCue: 'Pawoo! I have a long trunk.',
       voiceLine: 'Pawoo! I am the largest land animal with big ears and a long trunk. Who am I?',
-      image: 'elephant.png',
-      distractors: [{ name: 'Hippo', image: 'hippo.png' }, { name: 'Giraffe', image: 'giraffe.png' }]
+      image: 'elephant.webp',
+      distractors: [{ name: 'Hippo', image: 'hippo.webp' }, { name: 'Giraffe', image: 'giraffe.webp' }]
     },
     {
       name: 'Horse',
       soundCue: 'Neigh! Galloping fast.',
       voiceLine: 'Neigh! I have hooves, a soft mane, and I run very fast. Who am I?',
-      image: 'horse.png',
-      distractors: [{ name: 'Zebra', image: 'zebra.png' }, { name: 'Cow', image: 'cow.png' }]
+      image: 'horse.webp',
+      distractors: [{ name: 'Zebra', image: 'zebra.webp' }, { name: 'Cow', image: 'cow.webp' }]
     }
   ];
 

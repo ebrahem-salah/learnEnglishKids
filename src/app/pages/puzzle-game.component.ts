@@ -48,7 +48,7 @@ interface PuzzleSlot {
                 <!-- Puzzle Board -->
                 <div class="relative w-72 h-72 bg-white/50 rounded-xl border-4 border-dashed border-indigo-400 p-2 shadow-inner grid grid-cols-2 grid-rows-2 gap-1">
                     <!-- Faint background hint -->
-                    <div class="absolute inset-2 opacity-20 bg-no-repeat bg-cover pointer-events-none" style="background-image: url('assets/images/dog.jpg')"></div>
+                    <div class="absolute inset-2 opacity-20 bg-no-repeat bg-cover pointer-events-none" style="background-image: url('assets/images/dog.webp')"></div>
                     
                     @for (slot of slots(); track slot.id) {
                         <div class="relative w-full h-full bg-black/5 rounded-lg border-2 border-transparent transition-colors"
@@ -65,7 +65,7 @@ interface PuzzleSlot {
                                      (dragstart)="onDragStart($event, piece)"
                                      (click)="selectPiece(piece); $event.stopPropagation()"
                                      [class.ring-4]="selectedPiece?.id === piece.id" [class.ring-yellow-400]="selectedPiece?.id === piece.id"
-                                     style="background-image: url('assets/images/dog.jpg');"
+                                     style="background-image: url('assets/images/dog.webp');"
                                      [style.backgroundPosition]="piece.bgPosition">
                                 </div>
                             }
@@ -82,7 +82,7 @@ interface PuzzleSlot {
                              (dragstart)="onDragStart($event, piece)"
                              (click)="selectPiece(piece); $event.stopPropagation()"
                              [class.ring-4]="selectedPiece?.id === piece.id" [class.ring-yellow-400]="selectedPiece?.id === piece.id"
-                             style="background-image: url('assets/images/dog.jpg');"
+                             style="background-image: url('assets/images/dog.webp');"
                              [style.backgroundPosition]="piece.bgPosition">
                         </div>
                     }
@@ -92,7 +92,7 @@ interface PuzzleSlot {
             @if (gameState() === 'win') {
                 <div class="absolute inset-0 z-40 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm">
                     <div class="text-center animate-[bounceIn_0.5s_ease-out]">
-                        <div class="w-64 h-64 mx-auto border-[10px] border-white shadow-2xl rounded-2xl bg-no-repeat bg-cover mb-6 rotate-3" style="background-image: url('assets/images/dog.jpg')"></div>
+                        <div class="w-64 h-64 mx-auto border-[10px] border-white shadow-2xl rounded-2xl bg-no-repeat bg-cover mb-6 rotate-3" style="background-image: url('assets/images/dog.webp')"></div>
                         <h2 class="text-6xl font-black text-green-400 mb-4 font-[Fredoka] drop-shadow-lg">Beautiful! 🎉</h2>
                         <button (click)="startGame()" class="px-8 py-3 bg-green-500 text-white font-bold text-2xl font-[Fredoka] rounded-full shadow-[0_6px_0_#16a34a] hover:bg-green-600 active:translate-y-2 active:shadow-none transition-all">
                             Play Again

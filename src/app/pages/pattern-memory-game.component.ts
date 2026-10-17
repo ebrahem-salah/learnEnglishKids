@@ -111,7 +111,7 @@ export class PatternMemoryGameComponent implements OnDestroy {
       bgClass: 'bg-red-500',
       activeClass: 'bg-red-400 ring-8 ring-red-200',
       borderClass: 'border-red-600',
-      image: 'red_color.png'
+      image: 'red_color.webp'
     },
     {
       color: 'blue',
@@ -120,7 +120,7 @@ export class PatternMemoryGameComponent implements OnDestroy {
       bgClass: 'bg-blue-500',
       activeClass: 'bg-blue-400 ring-8 ring-blue-200',
       borderClass: 'border-blue-600',
-      image: 'blue_color.png'
+      image: 'blue_color.webp'
     },
     {
       color: 'green',
@@ -129,7 +129,7 @@ export class PatternMemoryGameComponent implements OnDestroy {
       bgClass: 'bg-green-500',
       activeClass: 'bg-green-400 ring-8 ring-green-200',
       borderClass: 'border-green-600',
-      image: 'green_color.png'
+      image: 'green_color.webp'
     },
     {
       color: 'yellow',
@@ -138,7 +138,7 @@ export class PatternMemoryGameComponent implements OnDestroy {
       bgClass: 'bg-amber-400',
       activeClass: 'bg-yellow-300 ring-8 ring-yellow-200',
       borderClass: 'border-amber-500',
-      image: 'yellow_color.png'
+      image: 'yellow_color.webp'
     }
   ];
 

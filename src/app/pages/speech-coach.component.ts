@@ -115,14 +115,14 @@ export class SpeechCoachComponent {
 
   challenges: SpeechChallenge[] = [
     // Easy (Single Words for Kids)
-    { en: 'Apple', ar: 'تفاحة', image: 'apple.png', category: 'Fruits', difficulty: 'Easy' },
-    { en: 'Lion', ar: 'أسد', image: 'lion.png', category: 'Animals', difficulty: 'Easy' },
-    { en: 'Cat', ar: 'قطة', image: 'cat.png', category: 'Animals', difficulty: 'Easy' },
-    { en: 'Dog', ar: 'كلب', image: 'dog.png', category: 'Animals', difficulty: 'Easy' },
-    { en: 'Sun', ar: 'شمس', image: 'sun.png', category: 'Nature', difficulty: 'Easy' },
-    { en: 'Moon', ar: 'قمر', image: 'moon.png', category: 'Nature', difficulty: 'Easy' },
-    { en: 'Star', ar: 'نجمة', image: 'star.png', category: 'Nature', difficulty: 'Easy' },
-    { en: 'Car', ar: 'سيارة', image: 'car.png', category: 'Vehicles', difficulty: 'Easy' },
+    { en: 'Apple', ar: 'تفاحة', image: 'apple.webp', category: 'Fruits', difficulty: 'Easy' },
+    { en: 'Lion', ar: 'أسد', image: 'lion.webp', category: 'Animals', difficulty: 'Easy' },
+    { en: 'Cat', ar: 'قطة', image: 'cat.webp', category: 'Animals', difficulty: 'Easy' },
+    { en: 'Dog', ar: 'كلب', image: 'dog.webp', category: 'Animals', difficulty: 'Easy' },
+    { en: 'Sun', ar: 'شمس', image: 'sun.webp', category: 'Nature', difficulty: 'Easy' },
+    { en: 'Moon', ar: 'قمر', image: 'moon.webp', category: 'Nature', difficulty: 'Easy' },
+    { en: 'Star', ar: 'نجمة', image: 'star.webp', category: 'Nature', difficulty: 'Easy' },
+    { en: 'Car', ar: 'سيارة', image: 'car.webp', category: 'Vehicles', difficulty: 'Easy' },
 
     // Medium (Short Expressions & Phonics)
     { en: 'Good morning', ar: 'صباح الخير', category: 'Greetings', difficulty: 'Medium' },

@@ -552,34 +552,34 @@ export class GamesComponent implements OnDestroy {
   private shadowStartY = 0;
   private shadowLevels: { id: string, emoji: string, imagePath: string }[][] = [
       [
-        { id: 'butterfly', emoji: '🦋', imagePath: 'butterfly.png' },
-        { id: 'ladybug', emoji: '🐞', imagePath: 'ladybug.png' },
-        { id: 'bee', emoji: '🐝', imagePath: 'bee.png' }
+        { id: 'butterfly', emoji: '🦋', imagePath: 'butterfly.webp' },
+        { id: 'ladybug', emoji: '🐞', imagePath: 'ladybug.webp' },
+        { id: 'bee', emoji: '🐝', imagePath: 'bee.webp' }
       ],
       [
-        { id: 'car', emoji: '🚗', imagePath: 'car.png' },
-        { id: 'airplane', emoji: '✈️', imagePath: 'airplane.png' },
-        { id: 'rocket', emoji: '🚀', imagePath: 'rocket.png' }
+        { id: 'car', emoji: '🚗', imagePath: 'car.webp' },
+        { id: 'airplane', emoji: '✈️', imagePath: 'airplane.webp' },
+        { id: 'rocket', emoji: '🚀', imagePath: 'rocket.webp' }
       ],
       [
-        { id: 'dog', emoji: '🐶', imagePath: 'dog.png' },
-        { id: 'cat', emoji: '🐱', imagePath: 'cat.png' },
-        { id: 'rabbit', emoji: '🐰', imagePath: 'rabbit.png' }
+        { id: 'dog', emoji: '🐶', imagePath: 'dog.webp' },
+        { id: 'cat', emoji: '🐱', imagePath: 'cat.webp' },
+        { id: 'rabbit', emoji: '🐰', imagePath: 'rabbit.webp' }
       ],
       [
-        { id: 'apple', emoji: '🍎', imagePath: 'apple.png' },
-        { id: 'banana', emoji: '🍌', imagePath: 'banana.png' },
-        { id: 'watermelon', emoji: '🍉', imagePath: 'watermelon.png' }
+        { id: 'apple', emoji: '🍎', imagePath: 'apple.webp' },
+        { id: 'banana', emoji: '🍌', imagePath: 'banana.webp' },
+        { id: 'watermelon', emoji: '🍉', imagePath: 'watermelon.webp' }
       ],
       [
-        { id: 'lion', emoji: '🦁', imagePath: 'lion.png' },
-        { id: 'elephant', emoji: '🐘', imagePath: 'elephant.png' },
-        { id: 'giraffe', emoji: '🦒', imagePath: 'giraffe.png' }
+        { id: 'lion', emoji: '🦁', imagePath: 'lion.webp' },
+        { id: 'elephant', emoji: '🐘', imagePath: 'elephant.webp' },
+        { id: 'giraffe', emoji: '🦒', imagePath: 'giraffe.webp' }
       ],
       [
-        { id: 'fish', emoji: '🐟', imagePath: 'fish.png' },
-        { id: 'octopus', emoji: '🐙', imagePath: 'octopus.png' },
-        { id: 'whale', emoji: '🐳', imagePath: 'whale.png' }
+        { id: 'fish', emoji: '🐟', imagePath: 'fish.webp' },
+        { id: 'octopus', emoji: '🐙', imagePath: 'octopus.webp' },
+        { id: 'whale', emoji: '🐳', imagePath: 'whale.webp' }
       ]
   ];
 
@@ -589,7 +589,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Word Builder',
       desc: 'Look at the 3D picture and spell the word',
       icon: '🐝',
-      image: 'bee.png',
+      image: 'bee.webp',
       bg: 'bg-amber-100',
       border: 'border-amber-400',
       textColor: 'text-amber-800',
@@ -600,7 +600,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Category Sorter',
       desc: 'Sort fruits, animals, and vehicles into baskets',
       icon: '🧺',
-      image: 'apple.png',
+      image: 'apple.webp',
       bg: 'bg-emerald-100',
       border: 'border-emerald-400',
       textColor: 'text-emerald-800',
@@ -611,7 +611,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Animal Sounds',
       desc: 'Listen to mystery animal calls and guess who it is',
       icon: '🎧',
-      image: 'lion.png',
+      image: 'lion.webp',
       bg: 'bg-indigo-100',
       border: 'border-indigo-400',
       textColor: 'text-indigo-800',
@@ -622,7 +622,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Pattern Memory',
       desc: 'Watch the flashing color lights and repeat the sequence',
       icon: '🧠',
-      image: 'color_balloons.png',
+      image: 'color_balloons.webp',
       bg: 'bg-purple-100',
       border: 'border-purple-400',
       textColor: 'text-purple-800',
@@ -633,7 +633,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Animal Train',
       desc: 'Listen and arrange animals in train wagons',
       icon: '🚂',
-      image: 'train_engine.png',
+      image: 'train_engine.webp',
       bg: 'bg-emerald-100',
       border: 'border-emerald-300',
       textColor: 'text-emerald-700',
@@ -644,7 +644,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Shadow Match',
       desc: 'Match real items onto their exact dark shadows',
       icon: '👤',
-      image: 'butterfly.png',
+      image: 'butterfly.webp',
       bg: 'bg-amber-100',
       border: 'border-amber-300',
       textColor: 'text-amber-700',
@@ -655,7 +655,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Balloon Popper',
       desc: 'Pop floating balloons to learn letters & colors',
       icon: '🎈',
-      image: 'color_balloons.png',
+      image: 'color_balloons.webp',
       bg: 'bg-cyan-100',
       border: 'border-cyan-300',
       textColor: 'text-cyan-700',
@@ -666,7 +666,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Jigsaw Puzzle',
       desc: 'Assemble pieces to reveal the 3D character',
       icon: '🖼️',
-      image: 'dog.png',
+      image: 'dog.webp',
       bg: 'bg-indigo-100',
       border: 'border-indigo-300',
       textColor: 'text-indigo-700',
@@ -687,7 +687,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Math Basket',
       desc: 'Catch falling number apples into the basket',
       icon: '🍎',
-      image: 'apple.png',
+      image: 'apple.webp',
       bg: 'bg-red-100',
       border: 'border-red-300',
       textColor: 'text-red-700',
@@ -728,7 +728,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Alphabet Journey',
       desc: '26 adventure levels across all alphabet letters',
       icon: '✈️',
-      image: 'airplane.png',
+      image: 'airplane.webp',
       bg: 'bg-sky-100',
       border: 'border-sky-300',
       textColor: 'text-sky-700',
@@ -739,7 +739,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Colors & Shapes',
       desc: 'Recognize vibrant colors and shapes',
       icon: '🎨',
-      image: 'red_color.png',
+      image: 'red_color.webp',
       bg: 'bg-pink-100',
       border: 'border-pink-300',
       textColor: 'text-pink-700',
@@ -810,7 +810,7 @@ export class GamesComponent implements OnDestroy {
       title: 'Save the Fish',
       desc: 'Spell the word to bring the fish back to shore',
       icon: '🐟',
-      image: 'fish.png',
+      image: 'fish.webp',
       bg: 'bg-cyan-100',
       border: 'border-cyan-400',
       textColor: 'text-cyan-800',

@@ -64,10 +64,10 @@ export class CategoriesComponent implements OnDestroy {
   data = inject(DataService);
   audio = inject(AudioService);
 
-  /** Your own picture: drop public/assets/images/<english-word>.png (e.g. mother.png, police_officer.png).
+  /** Your own picture: drop public/assets/images/<english-word>.webp (e.g. mother.webp, police_officer.webp).
    *  If the file is missing, the emoji is shown instead. */
   imgFor(item: { en: string; imagePath?: string }) {
-    return item.imagePath ?? item.en.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') + '.png';
+    return item.imagePath ?? item.en.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') + '.webp';
   }
 
   playCategoryItem(item: { en: string; ar: string; soundEffect?: string }) {

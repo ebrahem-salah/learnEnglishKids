@@ -33,7 +33,7 @@ interface WordChallenge {
       @if (gameState() === 'start') {
         <div class="flex flex-col items-center justify-center text-center my-auto p-6">
           <div class="w-36 h-36 bg-amber-200 rounded-3xl flex items-center justify-center shadow-lg border-4 border-amber-400 mb-4 animate-bounce">
-            <img src="assets/images/bee.png" class="w-28 h-28 object-contain" alt="Bee" />
+            <img src="assets/images/bee.webp" class="w-28 h-28 object-contain" alt="Bee" />
           </div>
           <h2 class="text-4xl md:text-5xl font-black text-amber-900 mb-2">Word Builder 🐝</h2>
           <p class="text-amber-800 text-lg md:text-xl font-bold max-w-md mb-6">
@@ -112,20 +112,20 @@ export class SpellingGameComponent implements OnDestroy {
   currentIndex = 0;
 
   wordsPool: { word: string; ar: string; image: string }[] = [
-    { word: 'CAT', ar: 'قطة', image: 'cat.png' },
-    { word: 'DOG', ar: 'كلب', image: 'dog.png' },
-    { word: 'SUN', ar: 'شمس', image: 'sun.png' },
-    { word: 'BEE', ar: 'نحلة', image: 'bee.png' },
-    { word: 'BUS', ar: 'حافلة', image: 'bus.png' },
-    { word: 'CAR', ar: 'سيارة', image: 'car.png' },
-    { word: 'LION', ar: 'أسد', image: 'lion.png' },
-    { word: 'DUCK', ar: 'بطة', image: 'duck.png' },
-    { word: 'FISH', ar: 'سمكة', image: 'fish.png' },
-    { word: 'MOON', ar: 'قمر', image: 'moon.png' },
-    { word: 'STAR', ar: 'نجمة', image: 'star.png' },
-    { word: 'BOOK', ar: 'كتاب', image: 'book.png' },
-    { word: 'APPLE', ar: 'تفاحة', image: 'apple.png' },
-    { word: 'HORSE', ar: 'حصان', image: 'horse.png' }
+    { word: 'CAT', ar: 'قطة', image: 'cat.webp' },
+    { word: 'DOG', ar: 'كلب', image: 'dog.webp' },
+    { word: 'SUN', ar: 'شمس', image: 'sun.webp' },
+    { word: 'BEE', ar: 'نحلة', image: 'bee.webp' },
+    { word: 'BUS', ar: 'حافلة', image: 'bus.webp' },
+    { word: 'CAR', ar: 'سيارة', image: 'car.webp' },
+    { word: 'LION', ar: 'أسد', image: 'lion.webp' },
+    { word: 'DUCK', ar: 'بطة', image: 'duck.webp' },
+    { word: 'FISH', ar: 'سمكة', image: 'fish.webp' },
+    { word: 'MOON', ar: 'قمر', image: 'moon.webp' },
+    { word: 'STAR', ar: 'نجمة', image: 'star.webp' },
+    { word: 'BOOK', ar: 'كتاب', image: 'book.webp' },
+    { word: 'APPLE', ar: 'تفاحة', image: 'apple.webp' },
+    { word: 'HORSE', ar: 'حصان', image: 'horse.webp' }
   ];
 
   currentChallenge = signal<WordChallenge>({

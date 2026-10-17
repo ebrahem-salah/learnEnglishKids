@@ -32,7 +32,7 @@ interface SortItem {
       @if (gameState() === 'start') {
         <div class="flex flex-col items-center justify-center text-center my-auto p-6">
           <div class="w-36 h-36 bg-emerald-200 rounded-3xl flex items-center justify-center shadow-lg border-4 border-emerald-400 mb-4 animate-bounce">
-            <img src="assets/images/apple.png" class="w-24 h-24 object-contain" alt="Sort" />
+            <img src="assets/images/apple.webp" class="w-24 h-24 object-contain" alt="Sort" />
           </div>
           <h2 class="text-4xl md:text-5xl font-black text-emerald-900 mb-2">Category Sorter 🍎🚗🦁</h2>
           <p class="text-emerald-800 text-lg md:text-xl font-bold max-w-md mb-6">
@@ -124,28 +124,28 @@ export class SortingGameComponent implements OnDestroy {
 
   allItems: SortItem[] = [
     // Fruits
-    { id: 1, name: 'Apple', category: 'fruit', image: 'apple.png' },
-    { id: 2, name: 'Banana', category: 'fruit', image: 'banana.png' },
-    { id: 3, name: 'Orange', category: 'fruit', image: 'orange.png' },
-    { id: 4, name: 'Grape', category: 'fruit', image: 'grape.png' },
-    { id: 5, name: 'Strawberry', category: 'fruit', image: 'strawberry.png' },
-    { id: 6, name: 'Watermelon', category: 'fruit', image: 'watermelon.png' },
+    { id: 1, name: 'Apple', category: 'fruit', image: 'apple.webp' },
+    { id: 2, name: 'Banana', category: 'fruit', image: 'banana.webp' },
+    { id: 3, name: 'Orange', category: 'fruit', image: 'orange.webp' },
+    { id: 4, name: 'Grape', category: 'fruit', image: 'grape.webp' },
+    { id: 5, name: 'Strawberry', category: 'fruit', image: 'strawberry.webp' },
+    { id: 6, name: 'Watermelon', category: 'fruit', image: 'watermelon.webp' },
 
     // Animals
-    { id: 7, name: 'Lion', category: 'animal', image: 'lion.png' },
-    { id: 8, name: 'Cat', category: 'animal', image: 'cat.png' },
-    { id: 9, name: 'Dog', category: 'animal', image: 'dog.png' },
-    { id: 10, name: 'Duck', category: 'animal', image: 'duck.png' },
-    { id: 11, name: 'Rabbit', category: 'animal', image: 'rabbit.png' },
-    { id: 12, name: 'Elephant', category: 'animal', image: 'elephant.png' },
+    { id: 7, name: 'Lion', category: 'animal', image: 'lion.webp' },
+    { id: 8, name: 'Cat', category: 'animal', image: 'cat.webp' },
+    { id: 9, name: 'Dog', category: 'animal', image: 'dog.webp' },
+    { id: 10, name: 'Duck', category: 'animal', image: 'duck.webp' },
+    { id: 11, name: 'Rabbit', category: 'animal', image: 'rabbit.webp' },
+    { id: 12, name: 'Elephant', category: 'animal', image: 'elephant.webp' },
 
     // Vehicles
-    { id: 13, name: 'Car', category: 'vehicle', image: 'car.png' },
-    { id: 14, name: 'Bus', category: 'vehicle', image: 'bus.png' },
-    { id: 15, name: 'Airplane', category: 'vehicle', image: 'airplane.png' },
-    { id: 16, name: 'Rocket', category: 'vehicle', image: 'rocket.png' },
-    { id: 17, name: 'Boat', category: 'vehicle', image: 'boat.png' },
-    { id: 18, name: 'Train', category: 'vehicle', image: 'train.png' }
+    { id: 13, name: 'Car', category: 'vehicle', image: 'car.webp' },
+    { id: 14, name: 'Bus', category: 'vehicle', image: 'bus.webp' },
+    { id: 15, name: 'Airplane', category: 'vehicle', image: 'airplane.webp' },
+    { id: 16, name: 'Rocket', category: 'vehicle', image: 'rocket.webp' },
+    { id: 17, name: 'Boat', category: 'vehicle', image: 'boat.webp' },
+    { id: 18, name: 'Train', category: 'vehicle', image: 'train.webp' }
   ];
 
   queue: SortItem[] = [];
