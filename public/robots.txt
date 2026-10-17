@@ -1,2 +1,6 @@
 User-agent: *
 Allow: /
+Allow: /assets/
+Allow: /icons/
+
+Sitemap: https://learnwithyounis.vercel.app/sitemap.xml

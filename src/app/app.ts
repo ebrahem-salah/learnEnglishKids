@@ -6,6 +6,7 @@ import { AudioService, WordItem } from './services/audio.service';
 import { ProfileService } from './services/profile.service';
 import { PwaBarComponent } from './pages/pwa-bar.component';
 import { UiScaleService } from './services/ui-scale.service';
+import { SeoService } from './services/seo.service';
 
 interface Quiz { idx: number; score: number; answered: string | null; done: boolean; word: WordItem; answer: string; options: string[]; type: 'letter' | 'word'; }
 interface MemoryCard { id: number; letter: string; img: string; word: string; flipped: boolean; matched: boolean; }
@@ -346,6 +347,7 @@ export class App {
   router = inject(Router);
   profiles = inject(ProfileService);
   private uiScale = inject(UiScaleService);   // applies the saved text size at start
+  private seo = inject(SeoService);
 
   isHome = signal<boolean>(true);
 
@@ -385,6 +387,7 @@ export class App {
   }
 
   constructor() {
+    this.seo.init();
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         const url = event.urlAfterRedirects || event.url;
