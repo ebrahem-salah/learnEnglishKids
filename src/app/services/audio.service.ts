@@ -135,8 +135,10 @@ export class AudioService {
         const audio = new Audio(src);
         this.activeAudio = audio;
         
-        if (this.slow() && tl === 'en') {
+        if (this.slow() && tl === 'en' && text.split(/\s+/).length <= 2) {
           audio.playbackRate = 0.85;
+        } else {
+          audio.playbackRate = 1.0;
         }
 
         let resolved = false;
@@ -150,12 +152,11 @@ export class AudioService {
         };
 
         audio.onended = () => done();
-        audio.onpause = () => done();
         audio.onerror = () => done();
 
         if (token === this.playToken) {
           audio.play().catch(() => done());
-          currentTimer = setTimeout(done, 15000);
+          currentTimer = setTimeout(done, 20000);
         } else {
           done();
         }
