@@ -801,7 +801,7 @@ export class DataService {
 
   readonly alphabetData: AlphabetItem[] = [
     { 
-      letter: 'A', ar_letter: 'إيه', 
+      letter: 'A', ar_letter: 'إيه', videoId: 'klEWhdbPTQ8', 
       words: [
         { word: 'Apple', ar_word: 'تفاحة', img: '🍎', realImg: 'https://images.unsplash.com/photo-1560806887-1e4cd0b6cbd6?w=300&auto=format&fit=crop', imagePath: 'apple.webp' },
         { word: 'Ant', ar_word: 'نملة', img: '🐜', imagePath: 'ant.webp' },
@@ -812,7 +812,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'B', ar_letter: 'ب', 
+      letter: 'B', ar_letter: 'ب', videoId: 'WH9RqOKrtvw', 
       words: [
         { word: 'Ball', ar_word: 'كرة', img: '⚽', realImg: 'https://images.unsplash.com/photo-1614632537190-23e4146777db?w=300&auto=format&fit=crop', imagePath: 'ball.webp' },
         { word: 'Bear', ar_word: 'دب', img: '🐻', imagePath: 'bear.webp' },
@@ -823,7 +823,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'C', ar_letter: 'ك', 
+      letter: 'C', ar_letter: 'ك', videoId: 'UAX_2iK0V40', 
       words: [
         { word: 'Cat', ar_word: 'قطة', img: '🐈', realImg: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&auto=format&fit=crop', imagePath: 'cat.webp' },
         { word: 'Car', ar_word: 'سيارة', img: '🚗', imagePath: 'car.webp' },
@@ -834,7 +834,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'D', ar_letter: 'د', 
+      letter: 'D', ar_letter: 'د', videoId: 'Ag99p_yij0k', 
       words: [
         { word: 'Dog', ar_word: 'كلب', img: '🐕', realImg: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=300&auto=format&fit=crop', imagePath: 'dog.webp' },
         { word: 'Duck', ar_word: 'بطة', img: '🦆', imagePath: 'duck.webp' },
@@ -845,7 +845,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'E', ar_letter: 'إه', 
+      letter: 'E', ar_letter: 'إه', videoId: '3iufTARrOoQ', 
       words: [
         { word: 'Elephant', ar_word: 'فيل', img: '🐘', realImg: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=300&auto=format&fit=crop', imagePath: 'elephant.webp' },
         { word: 'Egg', ar_word: 'بيضة', img: '🥚', imagePath: 'egg.webp' },
@@ -856,7 +856,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'F', ar_letter: 'ف', 
+      letter: 'F', ar_letter: 'ف', videoId: 'RAi-VFnFolk', 
       words: [
         { word: 'Fish', ar_word: 'سمكة', img: '🐟', imagePath: 'fish.webp' },
         { word: 'Frog', ar_word: 'ضفدع', img: '🐸', imagePath: 'frog.webp' },
@@ -867,7 +867,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'G', ar_letter: 'ج', 
+      letter: 'G', ar_letter: 'ج', videoId: 'jyPZWfnMAFg', 
       words: [
         { word: 'Goat', ar_word: 'ماعز', img: '🐐', imagePath: 'goat.webp' },
         { word: 'Giraffe', ar_word: 'زرافة', img: '🦒', imagePath: 'giraffe.webp' },
@@ -878,7 +878,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'H', ar_letter: 'هـ', 
+      letter: 'H', ar_letter: 'هـ', videoId: 'WVpbHeYzH64', 
       words: [
         { word: 'Hat', ar_word: 'قبعة', img: '🎩', imagePath: 'hat.webp' },
         { word: 'Horse', ar_word: 'حصان', img: '🐎', imagePath: 'horse.webp' },
@@ -889,7 +889,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'I', ar_letter: 'آي', 
+      letter: 'I', ar_letter: 'آي', videoId: 'YNCXlzsD5NQ', 
       words: [
         { word: 'Ice cream', ar_word: 'آيس كريم', img: '🍦', imagePath: 'ice_cream.webp' },
         { word: 'Island', ar_word: 'جزيرة', img: '🏝️', imagePath: 'island.webp' },
@@ -900,7 +900,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'J', ar_letter: 'ج', 
+      letter: 'J', ar_letter: 'ج', videoId: 'BNq-DmAkDuo', 
       words: [
         { word: 'Juice', ar_word: 'عصير', img: '🧃', imagePath: 'juice.webp' },
         { word: 'Jacket', ar_word: 'جاكيت', img: '🧥', imagePath: 'jacket.webp' },
@@ -911,7 +911,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'K', ar_letter: 'ك', 
+      letter: 'K', ar_letter: 'ك', videoId: 'ZiPvzDiLxBM', 
       words: [
         { word: 'Kite', ar_word: 'طائرة ورقية', img: '🪁', imagePath: 'kite.webp' },
         { word: 'Key', ar_word: 'مفتاح', img: '🔑', imagePath: 'key.webp' },
@@ -922,7 +922,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'L', ar_letter: 'إل', 
+      letter: 'L', ar_letter: 'إل', videoId: '1Iq9OaWMCtw', 
       words: [
         { word: 'Lion', ar_word: 'أسد', img: '🦁', imagePath: 'lion.webp' },
         { word: 'Lemon', ar_word: 'ليمون', img: '🍋', imagePath: 'lemon.webp' },
@@ -933,7 +933,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'M', ar_letter: 'إم', 
+      letter: 'M', ar_letter: 'إم', videoId: 'kEP4MdRJq60', 
       words: [
         { word: 'Monkey', ar_word: 'قرد', img: '🐒', imagePath: 'monkey.webp' },
         { word: 'Moon', ar_word: 'قمر', img: '🌙', imagePath: 'moon.webp' },
@@ -944,7 +944,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'N', ar_letter: 'إن', 
+      letter: 'N', ar_letter: 'إن', videoId: 'EIag-P9ukPs', 
       words: [
         { word: 'Nest', ar_word: 'عش', img: '🪹', imagePath: 'nest.webp' },
         { word: 'Nose', ar_word: 'أنف', img: '👃', imagePath: 'nose.webp' },
@@ -955,7 +955,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'O', ar_letter: 'أو', 
+      letter: 'O', ar_letter: 'أو', videoId: 'suD2gU5v2mU', 
       words: [
         { word: 'Orange', ar_word: 'برتقالة', img: '🍊', imagePath: 'orange.webp' },
         { word: 'Owl', ar_word: 'بومة', img: '🦉', imagePath: 'owl.webp' },
@@ -966,7 +966,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'P', ar_letter: 'بي', 
+      letter: 'P', ar_letter: 'بي', videoId: '91eHCnYY3JY', 
       words: [
         { word: 'Pig', ar_word: 'خنزير', img: '🐷', imagePath: 'pig.webp' },
         { word: 'Pen', ar_word: 'قلم', img: '🖊️', imagePath: 'pen.webp' },
@@ -977,7 +977,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'Q', ar_letter: 'كيو', 
+      letter: 'Q', ar_letter: 'كيو', videoId: 'FXGqbI6iONg', 
       words: [
         { word: 'Queen', ar_word: 'ملكة', img: '👑', imagePath: 'queen.webp' },
         { word: 'Question', ar_word: 'سؤال', img: '❓', imagePath: 'question.webp' },
@@ -988,7 +988,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'R', ar_letter: 'آر', 
+      letter: 'R', ar_letter: 'آر', videoId: 'D3oK1-7qWs0', 
       words: [
         { word: 'Rabbit', ar_word: 'أرنب', img: '🐇', imagePath: 'rabbit.webp' },
         { word: 'Ring', ar_word: 'خاتم', img: '💍', imagePath: 'ring.webp' },
@@ -999,7 +999,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'S', ar_letter: 'إس', 
+      letter: 'S', ar_letter: 'إس', videoId: 'BQfOzwB7VOo', 
       words: [
         { word: 'Sun', ar_word: 'شمس', img: '☀️', imagePath: 'sun.webp' },
         { word: 'Star', ar_word: 'نجمة', img: '⭐', imagePath: 'star.webp' },
@@ -1010,7 +1010,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'T', ar_letter: 'تي', 
+      letter: 'T', ar_letter: 'تي', videoId: 'PYPn2SlmvYM', 
       words: [
         { word: 'Tree', ar_word: 'شجرة', img: '🌳', imagePath: 'tree.webp' },
         { word: 'Train', ar_word: 'قطار', img: '🚂', imagePath: 'train.webp' },
@@ -1021,7 +1021,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'U', ar_letter: 'يو', 
+      letter: 'U', ar_letter: 'يو', videoId: 'GEkxKr3Ma-I', 
       words: [
         { word: 'Umbrella', ar_word: 'مظلة', img: '☂️', imagePath: 'umbrella.webp' },
         { word: 'Unicorn', ar_word: 'وحيد القرن', img: '🦄', imagePath: 'unicorn.webp' },
@@ -1032,7 +1032,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'V', ar_letter: 'في', 
+      letter: 'V', ar_letter: 'في', videoId: '20QJ2MFQ8Xs', 
       words: [
         { word: 'Van', ar_word: 'شاحنة', img: '🚐', imagePath: 'van.webp' },
         { word: 'Violin', ar_word: 'كمان', img: '🎻', imagePath: 'violin.webp' },
@@ -1043,7 +1043,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'W', ar_letter: 'دبليو', 
+      letter: 'W', ar_letter: 'دبليو', videoId: 'eN-xttMHgsk', 
       words: [
         { word: 'Watermelon', ar_word: 'بطيخ', img: '🍉', imagePath: 'watermelon.webp' },
         { word: 'Wolf', ar_word: 'ذئب', img: '🐺', imagePath: 'wolf.webp' },
@@ -1054,7 +1054,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'X', ar_letter: 'إكس', 
+      letter: 'X', ar_letter: 'إكس', videoId: '0owe66BkZ7Q', 
       words: [
         { word: 'Xylophone', ar_word: 'إكسيليفون', img: '🎶', imagePath: 'xylophone.webp' },
         { word: 'X-ray', ar_word: 'أشعة سينية', img: '🩻', imagePath: 'xray.webp' },
@@ -1065,7 +1065,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'Y', ar_letter: 'واي', 
+      letter: 'Y', ar_letter: 'واي', videoId: '_DYMCluBVdw', 
       words: [
         { word: 'Yacht', ar_word: 'يخت', img: '🛥️', imagePath: 'yacht.webp' },
         { word: 'Yellow', ar_word: 'أصفر', img: '🟨', imagePath: 'yellow.webp' },
@@ -1076,7 +1076,7 @@ export class DataService {
       ] 
     },
     { 
-      letter: 'Z', ar_letter: 'زد', 
+      letter: 'Z', ar_letter: 'زد', videoId: 'MnktJOheQDI', 
       words: [
         { word: 'Zebra', ar_word: 'حمار وحشي', img: '🦓', imagePath: 'zebra.webp' },
         { word: 'Zoo', ar_word: 'حديقة حيوان', img: '🐘', imagePath: 'zoo.webp' },

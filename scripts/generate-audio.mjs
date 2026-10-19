@@ -30,11 +30,14 @@ const arPairs = new Map();   // english key -> { en, ar }
 const images = new Map();    // file -> english word
 for (const file of walk(path.join(root, 'src/app'))) {
   const src = fs.readFileSync(file, 'utf8');
-  for (const m of src.matchAll(/(?<![A-Za-z_])(?:en|word):\s*'((?:[^'\\]|\\.)*)'/g)) enTexts.add(unq(m[1]));
+  for (const m of src.matchAll(/(?<![A-Za-z_])(?:en|word|text|voiceLine):\s*'((?:[^'\\]|\\.)*)'/g)) enTexts.add(unq(m[1]));
+  for (const m of src.matchAll(/(?<![A-Za-z_])(?:en|word|text|voiceLine):\s*"((?:[^"\\]|\\.)*)"/g)) enTexts.add(unq(m[1]));
   for (const m of src.matchAll(/audioText:\s*`([^`]*)`/g)) enTexts.add(m[1]);
   for (const m of src.matchAll(/(?<![A-Za-z_])en:\s*'((?:[^'\\]|\\.)*)',\s*ar:\s*'((?:[^'\\]|\\.)*)'/g))
     arPairs.set(keyOf(unq(m[1])), { en: unq(m[1]), ar: unq(m[2]) });
   for (const m of src.matchAll(/(?<![A-Za-z_])word:\s*'((?:[^'\\]|\\.)*)',\s*ar_word:\s*'((?:[^'\\]|\\.)*)'/g))
+    arPairs.set(keyOf(unq(m[1])), { en: unq(m[1]), ar: unq(m[2]) });
+  for (const m of src.matchAll(/(?<![A-Za-z_])text:\s*'((?:[^'\\]|\\.)*)',\s*ar:\s*'((?:[^'\\]|\\.)*)'/g))
     arPairs.set(keyOf(unq(m[1])), { en: unq(m[1]), ar: unq(m[2]) });
   // Arabic course letters: <id>.mp3 = letter name, <id>_word.mp3 = example word
   for (const m of src.matchAll(/id:\s*'([a-z]+)',\s*glyph:\s*'([^']+)',\s*letterName:\s*'([^']+)',\s*exampleWord:\s*'([^']+)'/g)) {

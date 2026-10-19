@@ -157,21 +157,6 @@ export interface LessonQuizQuestion {
           @if (activeTab() === 'watch') {
             <div class="space-y-8">
               
-              <!-- أزرار الاستماع للإسكربت الصوتي (بدون تكرار ومع التكرار) -->
-              <div class="bg-indigo-50 border-2 border-indigo-200 rounded-2xl p-4 max-w-3xl mx-auto text-center shadow-sm">
-                <div class="text-xs font-black text-indigo-900 mb-1">🎧 نماذج الإسكربت الصوتي لدروس الفيديو:</div>
-                <div class="flex flex-col sm:flex-row justify-center gap-3 mt-3">
-                  <button (click)="audio.playAudioFile('assets/audio/words/sample_video_lesson_a_repeat.mp3')"
-                          class="bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white px-5 py-2.5 rounded-full font-black text-xs shadow-md inline-flex items-center justify-center gap-1.5 hover:scale-105 transition-all">
-                    <span>🔁 1. نموذج بالتكرار الإيقاعي: "A, ah, Apple.. A, ah, Apple" (المقترح)</span>
-                  </button>
-                  <button (click)="audio.playAudioFile('assets/audio/words/sample_video_lesson_a.mp3')"
-                          class="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-5 py-2.5 rounded-full font-black text-xs shadow-md inline-flex items-center justify-center gap-1.5 hover:scale-105 transition-all">
-                    <span>▶️ 2. نموذج النطق المفرد السريع</span>
-                  </button>
-                </div>
-              </div>
-
               <!-- إطار الفيديو الذكي (فيديو الحرف المنتج محلياً باللوجو أو فيديو يوتيوب) -->
               <div class="max-w-3xl mx-auto rounded-3xl overflow-hidden shadow-xl border-4 border-indigo-200 bg-black aspect-video relative">
                 @if (videoUrl()) {
@@ -187,6 +172,21 @@ export interface LessonQuizQuestion {
                     <p class="text-sm text-gray-300">تعلّم نطق الكلمات الست بالصوت والصورة أدناه</p>
                   </div>
                 }
+              </div>
+
+              <!-- أزرار الانتقال المباشر لليوتيوب وقائمة التشغيل -->
+              <div class="flex flex-wrap items-center justify-center gap-4 max-w-3xl mx-auto">
+                <a [href]="'https://www.youtube.com/watch?v=' + (youtubeVideos[lesson.letter] || '')" 
+                   target="_blank" 
+                   class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-2xl font-black text-sm shadow-md inline-flex items-center gap-2 hover:scale-105 transition-all">
+                  <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                  <span>مشاهدة الدرس على YouTube</span>
+                </a>
+                <a href="https://www.youtube.com/playlist?list=PLFPFQjPxfbLM" 
+                   target="_blank" 
+                   class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-2xl font-black text-sm shadow-md inline-flex items-center gap-2 hover:scale-105 transition-all">
+                  <span>📑 قائمة كورس الحروف كاملة (A - Z)</span>
+                </a>
               </div>
 
               <!-- الكلمات الست الخاصة بالحرف -->
@@ -456,32 +456,32 @@ export class LessonsComponent {
 
   // Video YouTube map (safe educational videos for each letter)
   readonly youtubeVideos: Record<string, string> = {
-    'A': 'KKA39r5C-bU',
-    'B': 'l3QETi0wzZg',
-    'C': 'q9oFqU6x_cM',
-    'D': 'yN3u0n2zP2I',
-    'E': 'n9Tf2u44Nuo',
-    'F': 'mG9kX57gC3c',
-    'G': 'd99N4F_3N5g',
-    'H': 'eQhW8s6w90U',
-    'I': 'pBw7y2eUu1o',
-    'J': 'mQv9T0bO084',
-    'K': 'qR1b2n3m4k5',
-    'L': 'vN3b8u7y6t5',
-    'M': 'kL9p0o1i2u3',
-    'N': 'wE4r5t6y7u8',
-    'O': 'zX9c8v7b6n5',
-    'P': 'yU8i7o6p5a4',
-    'Q': 'sD4f5g6h7j8',
-    'R': 'fG6h7j8k9l0',
-    'S': 'xZ1c2v3b4n5',
-    'T': 'aS2d3f4g5h6',
-    'U': 'qW3e4r5t6y7',
-    'V': 'zX4c5v6b7n8',
-    'W': 'mN7b6v5c4x3',
-    'X': 'lK8j7h6g5f4',
-    'Y': 'pO9i8u7y6t5',
-    'Z': 'wE1r2t3y4u5'
+    'A': 'klEWhdbPTQ8',
+    'B': 'WH9RqOKrtvw',
+    'C': 'UAX_2iK0V40',
+    'D': 'Ag99p_yij0k',
+    'E': '3iufTARrOoQ',
+    'F': 'RAi-VFnFolk',
+    'G': 'jyPZWfnMAFg',
+    'H': 'WVpbHeYzH64',
+    'I': 'YNCXlzsD5NQ',
+    'J': 'BNq-DmAkDuo',
+    'K': 'ZiPvzDiLxBM',
+    'L': '1Iq9OaWMCtw',
+    'M': 'kEP4MdRJq60',
+    'N': 'EIag-P9ukPs',
+    'O': 'suD2gU5v2mU',
+    'P': '91eHCnYY3JY',
+    'Q': 'FXGqbI6iONg',
+    'R': 'D3oK1-7qWs0',
+    'S': 'BQfOzwB7VOo',
+    'T': 'PYPn2SlmvYM',
+    'U': 'GEkxKr3Ma-I',
+    'V': '20QJ2MFQ8Xs',
+    'W': 'eN-xttMHgsk',
+    'X': '0owe66BkZ7Q',
+    'Y': '_DYMCluBVdw',
+    'Z': 'MnktJOheQDI'
   };
 
   videoUrl = computed<SafeResourceUrl | null>(() => {

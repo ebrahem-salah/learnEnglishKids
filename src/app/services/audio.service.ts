@@ -123,13 +123,11 @@ export class AudioService {
 
       const tl = lang.startsWith('ar') ? 'ar' : 'en';
       const cleanWord = text.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '').slice(0, 45);
-      const localUrl = `assets/audio/words/${cleanWord}.mp3`;
-      const fallbackUrl = `https://translate.google.com/translate_tts?ie=UTF-8&client=tw-ob&q=${encodeURIComponent(text)}&tl=${tl}`;
+      const localUrl = tl === 'ar' ? `assets/audio/ar/${cleanWord}.mp3` : `assets/audio/words/${cleanWord}.mp3`;
 
       let currentTimer: any = null;
 
-      // Check if we should attempt local offline file first (for English words/numbers/letters)
-      const tryPlayUrl = (src: string, isLocal: boolean) => {
+      const tryPlayUrl = (src: string) => {
         if (token !== this.playToken) {
           resolve();
           return;
@@ -138,7 +136,7 @@ export class AudioService {
         this.activeAudio = audio;
         
         if (this.slow() && tl === 'en') {
-          audio.playbackRate = 0.75;
+          audio.playbackRate = 0.85;
         }
 
         let resolved = false;
@@ -151,56 +149,19 @@ export class AudioService {
           }
         };
 
-        audio.onended = () => {
-          done();
-        };
-        audio.onpause = () => {
-          done();
-        };
-        audio.onerror = () => {
-          if (token !== this.playToken) {
-            done();
-            return;
-          }
-          if (isLocal) {
-            // Local file didn't exist for this complex sentence, fallback to remote/TTS
-            tryPlayUrl(fallbackUrl, false);
-          } else {
-            // Fallback to robotic browser TTS
-            if (!('speechSynthesis' in window) || token !== this.playToken) return done();
-            try { speechSynthesis.cancel(); } catch { /* ignore */ }
-            const u = new SpeechSynthesisUtterance(text);
-            u.lang = lang;
-            const v = this.getBestVoice(lang);
-            if (v) u.voice = v;
-            u.rate = (lang.startsWith('ar') ? 0.95 : 1) * (this.slow() ? 0.65 : 0.9);
-            u.pitch = 1.1;
-            u.onend = done;
-            u.onerror = done;
-            if (token === this.playToken) {
-              speechSynthesis.speak(u);
-            } else {
-              done();
-            }
-          }
-        };
+        audio.onended = () => done();
+        audio.onpause = () => done();
+        audio.onerror = () => done();
 
         if (token === this.playToken) {
-          audio.play().catch(() => {
-            if (token === this.playToken) audio.onerror?.(new Event('error'));
-            else done();
-          });
-          currentTimer = setTimeout(done, 3000);
+          audio.play().catch(() => done());
+          currentTimer = setTimeout(done, 15000);
         } else {
           done();
         }
       };
 
-      if (tl === 'en') {
-        tryPlayUrl(localUrl, true);
-      } else {
-        tryPlayUrl(fallbackUrl, false);
-      }
+      tryPlayUrl(localUrl);
     });
   }
 

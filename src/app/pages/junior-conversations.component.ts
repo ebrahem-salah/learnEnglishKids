@@ -238,10 +238,8 @@ export class JuniorConversationsComponent implements OnDestroy {
   async playAllDialogue() {
     const list = this.activeScenario().dialogue;
     for (const line of list) {
-      await new Promise<void>(resolve => {
-        this.audio.speak(line.text, 'en-US');
-        this.timers.after(resolve, 2400);
-      });
+      await this.audio.say(line.text, 'en-US');
+      await new Promise<void>(resolve => this.timers.after(resolve, 500));
     }
   }
 }

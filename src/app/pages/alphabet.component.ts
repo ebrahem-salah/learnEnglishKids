@@ -85,6 +85,12 @@ import { AudioService, AlphabetItem, WordItem } from '../services/audio.service'
                 class="bg-gradient-to-r from-amber-500 to-orange-600 text-white px-5 py-3 rounded-full text-base font-black hover:from-amber-600 hover:to-orange-700 hover:scale-105 transition-all shadow-lg border-2 border-white">
                 ✏️ Practice Letter
               </button>
+              @if (selected.videoId) {
+                <a [href]="'https://www.youtube.com/watch?v=' + selected.videoId" target="_blank"
+                   class="bg-gradient-to-r from-red-600 to-rose-600 text-white px-5 py-3 rounded-full text-base font-black hover:from-red-700 hover:to-rose-700 hover:scale-105 transition-all shadow-lg border-2 border-white inline-flex items-center gap-1.5">
+                  <span>📺 فيديو الحرف</span>
+                </a>
+              }
             </div>
           </div>
 
