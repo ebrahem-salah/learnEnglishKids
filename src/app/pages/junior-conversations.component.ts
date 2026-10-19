@@ -144,17 +144,13 @@ export interface ConversationScenario {
             <div class="space-y-2.5">
               @for (v of activeScenario().keyVocab; track v.word) {
                 <div (click)="playVocab(v)"
-                     class="bg-white p-3 rounded-2xl border border-sky-100 flex items-center justify-between hover:bg-sky-100/60 hover:border-sky-300 cursor-pointer transition-all shadow-xs active:scale-95 group">
-                  <!-- Word + Phonetics in neat vertical column -->
-                  <div class="flex flex-col text-left">
-                    <div class="flex items-center gap-1.5">
-                      <span class="font-black text-sky-950 text-base leading-tight">{{ v.word }}</span>
-                      <span class="text-xs text-sky-400 group-hover:text-sky-600 transition-colors">🔊</span>
-                    </div>
-                    <span class="text-xs text-teal-600 font-mono tracking-wide mt-0.5 whitespace-nowrap">/{{ v.phonetic }}/</span>
+                     class="bg-white p-3.5 rounded-2xl border border-sky-100 flex items-center justify-between hover:bg-sky-100/60 hover:border-sky-300 cursor-pointer transition-all shadow-xs active:scale-95 group">
+                  <div class="flex items-center gap-2">
+                    <span class="font-black text-sky-950 text-base leading-tight">{{ v.word }}</span>
+                    <span class="text-xs text-sky-400 group-hover:text-sky-600 transition-colors">🔊</span>
                   </div>
                   <!-- Translation on the right -->
-                  <span class="text-xs md:text-sm font-bold text-gray-700 text-right pr-1" dir="rtl">{{ v.ar }}</span>
+                  <span class="text-sm font-bold text-gray-700 text-right pr-1" dir="rtl">{{ v.ar }}</span>
                 </div>
               }
             </div>
@@ -210,7 +206,7 @@ export class JuniorConversationsComponent implements OnDestroy {
       ],
       keyVocab: [
         { word: 'Order', ar: 'يطلب طعاماً', phonetic: 'ˈɔːrdər' },
-        { word: 'Would like', ar: 'يرغب في / أود', phonetic: 'wʊd laɪk' },
+        { word: 'Would like', ar: 'أود أو أرغب في', phonetic: 'wʊd laɪk' },
         { word: 'Delicious', ar: 'لذيذ المذاق', phonetic: 'dɪˈlɪʃəs' },
         { word: 'The bill', ar: 'فاتورة الحساب', phonetic: 'ðə bɪl' }
       ],
