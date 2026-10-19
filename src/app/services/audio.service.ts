@@ -221,6 +221,59 @@ export class AudioService {
     });
   }
 
+  playFileAsync(src: string, fallbackText?: string, fallbackLang = 'en-US'): Promise<void> {
+    if (!this.soundOn()) return Promise.resolve();
+    this.unlockAudio();
+    const token = ++this.playToken;
+    return new Promise<void>(resolve => {
+      if (this.activeAudio) {
+        try {
+          this.activeAudio.pause();
+          this.activeAudio.currentTime = 0;
+          this.activeAudio.src = '';
+        } catch { /* ignore */ }
+        this.activeAudio = null;
+      }
+      if ('speechSynthesis' in window) {
+        try { speechSynthesis.cancel(); } catch { /* ignore */ }
+      }
+
+      const audio = new Audio(src);
+      this.activeAudio = audio;
+      audio.playbackRate = 1.0;
+
+      let resolved = false;
+      let timer: any = null;
+      const finish = () => {
+        if (timer) clearTimeout(timer);
+        if (!resolved) {
+          resolved = true;
+          if (this.activeAudio === audio) this.activeAudio = null;
+          resolve();
+        }
+      };
+
+      audio.onended = finish;
+      audio.onerror = () => {
+        if (token === this.playToken && fallbackText) {
+          this.sayWithToken(token, fallbackText, fallbackLang).then(finish);
+        } else {
+          finish();
+        }
+      };
+
+      timer = setTimeout(finish, 15000);
+
+      audio.play().catch(() => {
+        if (token === this.playToken && audio.onerror) {
+          (audio.onerror as any)(new Event('error'));
+        } else {
+          finish();
+        }
+      });
+    });
+  }
+
   /** Arabic line: plays YOUR recording public/assets/audio/ar/<english-key>.mp3 if it exists,
    *  otherwise falls back to browser / Google text-to-speech. (key = same name as the English mp3) */
   speakArabic(enText: string, arText: string) {

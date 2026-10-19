@@ -493,8 +493,9 @@ export class DataService {
         { en: 'Window', ar: 'شباك / نافذة', img: '🪟', realImg: 'https://images.unsplash.com/photo-1509644851169-2acc08aa25b5?w=300&auto=format&fit=crop', imagePath: 'window.webp' },
         { en: 'Book', ar: 'كتاب', img: '📖', realImg: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?w=300&auto=format&fit=crop', imagePath: 'book.webp' },
         { en: 'Pencil', ar: 'قلم رصاص', img: '✏️', realImg: 'https://images.unsplash.com/photo-1585336261026-8f5786372966?w=300&auto=format&fit=crop', imagePath: 'pencil.webp' },
-        { en: 'Bag / Backpack', ar: 'حقيبة مدرسية', img: '🎒', realImg: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&auto=format&fit=crop' },
-        { en: 'Clock / Watch', ar: 'ساعة حائط', img: '⏰', realImg: 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=300&auto=format&fit=crop' },
+        { en: 'Backpack', ar: 'حقيبة ظهر', img: '🎒', realImg: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=300&auto=format&fit=crop' },
+        { en: 'Clock', ar: 'ساعة حائط', img: '⏰', realImg: 'https://images.unsplash.com/photo-1563861826100-9cb868fdbe1c?w=300&auto=format&fit=crop' },
+        { en: 'Watch', ar: 'ساعة يد', img: '⌚', realImg: 'https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=300&auto=format&fit=crop' },
         { en: 'Bed', ar: 'سرير', img: '🛏️', realImg: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?w=300&auto=format&fit=crop' },
         { en: 'Lamp', ar: 'مصباح', img: '💡', realImg: 'https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=300&auto=format&fit=crop', imagePath: 'lamp.webp' }
       ]
