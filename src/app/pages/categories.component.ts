@@ -36,12 +36,24 @@ import { AudioService } from '../services/audio.service';
                 <div class="text-xl font-black text-indigo-900 cursor-pointer" (click)="playCategoryItem(item)">{{ item.en }}</div>
                 <div class="text-sm font-bold text-gray-600 mb-2 font-sans">{{ item.ar }}</div>
                 
-                <div class="flex flex-col gap-1">
-                  @if (item.soundEffect) {
-                    <span class="text-xs bg-indigo-200 text-indigo-800 font-bold px-2 py-0.5 rounded-full inline-block">🔊 Real Sound</span>
-                  }
-                  <button (click)="audio.speakArabic(item.en, item.ar); $event.stopPropagation()" class="text-xs bg-amber-100 text-amber-800 border border-amber-300 font-black px-2 py-1 rounded-full">🔊 عربي</button>
-                  <button (click)="testPronunciation(item.en, $event)" [disabled]="audio.isListening()" class="bg-red-500 text-white rounded-full py-1.5 px-2 text-xs font-black shadow hover:bg-red-600 flex items-center justify-center gap-1 mt-1 disabled:opacity-50">
+                <div class="flex flex-col gap-1.5 mt-2">
+                  <div class="flex items-center gap-1.5">
+                    <button (click)="audio.speak(item.en, 'en-US'); $event.stopPropagation()"
+                            class="flex-1 bg-sky-500 hover:bg-sky-600 text-white font-black py-1.5 px-1.5 rounded-xl text-xs flex items-center justify-center gap-1 shadow-xs transition-transform active:scale-95 cursor-pointer"
+                            title="نطق بالإنجليزية">
+                      <span>🔊</span>
+                      <span>English</span>
+                    </button>
+                    <button (click)="audio.speakArabic(item.en, item.ar); $event.stopPropagation()"
+                            class="flex-1 bg-emerald-500 hover:bg-emerald-600 text-white font-black py-1.5 px-1.5 rounded-xl text-xs flex items-center justify-center gap-1 shadow-xs transition-transform active:scale-95 cursor-pointer"
+                            title="نطق بالعربية">
+                      <span>🔊</span>
+                      <span>عربي</span>
+                    </button>
+                  </div>
+
+                  <button (click)="testPronunciation(item.en, $event)" [disabled]="audio.isListening()"
+                          class="w-full bg-rose-500 hover:bg-rose-600 text-white rounded-xl py-1.5 px-2 text-xs font-black shadow flex items-center justify-center gap-1 transition-transform active:scale-95 disabled:opacity-50 cursor-pointer">
                     @if (audio.isListening()) {
                       <span class="animate-pulse">🔴 Listening...</span>
                     } @else {
@@ -70,13 +82,8 @@ export class CategoriesComponent implements OnDestroy {
     return item.imagePath ?? item.en.trim().toLowerCase().replace(/[^a-z0-9]+/g, '_').replace(/^_+|_+$/g, '') + '.webp';
   }
 
-  playCategoryItem(item: { en: string; ar: string; soundEffect?: string }) {
-    if (item.soundEffect) {
-      this.audio.playSoundEffect(item.soundEffect);
-      this.timers.after(() => this.audio.speak(item.en, 'en-US'), 1000);
-    } else {
-      this.audio.speak(item.en, 'en-US');
-    }
+  playCategoryItem(item: { en: string; ar: string }) {
+    this.audio.speak(item.en, 'en-US');
   }
 
   async testPronunciation(word: string, event: Event) {

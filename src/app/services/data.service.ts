@@ -396,16 +396,16 @@ export class DataService {
   readonly extraCategories: ExtraCategory[] = [
     {
       id: 'animals',
-      title: 'عالم الحيوانات (Animals & Sounds)',
+      title: 'عالم الحيوانات (Animals)',
       icon: '🦁',
       items: [
-        { en: 'Lion', ar: 'أسد', img: '🦁', realImg: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=300&auto=format&fit=crop', soundEffect: 'roar', imagePath: 'lion.webp' },
-        { en: 'Elephant', ar: 'فيل', img: '🐘', realImg: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=300&auto=format&fit=crop', soundEffect: 'trumpet', imagePath: 'elephant.webp' },
-        { en: 'Cat', ar: 'قطة', img: '🐱', realImg: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&auto=format&fit=crop', soundEffect: 'meow', imagePath: 'cat.webp' },
-        { en: 'Dog', ar: 'كلب', img: '🐶', realImg: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=300&auto=format&fit=crop', soundEffect: 'bark', imagePath: 'dog.webp' },
-        { en: 'Bird', ar: 'طائر', img: '🐦', realImg: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=300&auto=format&fit=crop', soundEffect: 'tweet', imagePath: 'bird.webp' },
-        { en: 'Frog', ar: 'ضفدع', img: '🐸', realImg: 'https://images.unsplash.com/photo-1559253664-ca249d4608c6?w=300&auto=format&fit=crop', soundEffect: 'croak', imagePath: 'frog.webp' },
-        { en: 'Tiger', ar: 'نمر', img: '🐅', realImg: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=300&auto=format&fit=crop', soundEffect: 'roar', imagePath: 'tiger.webp' },
+        { en: 'Lion', ar: 'أسد', img: '🦁', realImg: 'https://images.unsplash.com/photo-1546182990-dffeafbe841d?w=300&auto=format&fit=crop', imagePath: 'lion.webp' },
+        { en: 'Elephant', ar: 'فيل', img: '🐘', realImg: 'https://images.unsplash.com/photo-1557050543-4d5f4e07ef46?w=300&auto=format&fit=crop', imagePath: 'elephant.webp' },
+        { en: 'Cat', ar: 'قطة', img: '🐱', realImg: 'https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?w=300&auto=format&fit=crop', imagePath: 'cat.webp' },
+        { en: 'Dog', ar: 'كلب', img: '🐶', realImg: 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?w=300&auto=format&fit=crop', imagePath: 'dog.webp' },
+        { en: 'Bird', ar: 'طائر', img: '🐦', realImg: 'https://images.unsplash.com/photo-1444464666168-49d633b86797?w=300&auto=format&fit=crop', imagePath: 'bird.webp' },
+        { en: 'Frog', ar: 'ضفدع', img: '🐸', realImg: 'https://images.unsplash.com/photo-1559253664-ca249d4608c6?w=300&auto=format&fit=crop', imagePath: 'frog.webp' },
+        { en: 'Tiger', ar: 'نمر', img: '🐅', realImg: 'https://images.unsplash.com/photo-1561731216-c3a4d99437d5?w=300&auto=format&fit=crop', imagePath: 'tiger.webp' },
         { en: 'Monkey', ar: 'قرد', img: '🐒', realImg: 'https://images.unsplash.com/photo-1540573133985-78164d64a234?w=300&auto=format&fit=crop', imagePath: 'monkey.webp' },
         { en: 'Giraffe', ar: 'زرافة', img: '🦒', realImg: 'https://images.unsplash.com/photo-1547721064-da6cfb341d50?w=300&auto=format&fit=crop', imagePath: 'giraffe.webp' },
         { en: 'Dolphin', ar: 'دلفين', img: '🐬', realImg: 'https://images.unsplash.com/photo-1607153333879-c174d261b141?w=300&auto=format&fit=crop', imagePath: 'dolphin.webp' },
@@ -505,12 +505,12 @@ export class DataService {
       title: 'وسائل المواصلات (Vehicles)',
       icon: '🚗',
       items: [
-        { en: 'Car', ar: 'سيارة', img: '🚗', realImg: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=300&auto=format&fit=crop', soundEffect: 'vroom', imagePath: 'car.webp' },
-        { en: 'Airplane', ar: 'طائرة', img: '✈️', realImg: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=300&auto=format&fit=crop', soundEffect: 'jet', imagePath: 'airplane.webp' },
-        { en: 'Train', ar: 'قطار', img: '🚂', realImg: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=300&auto=format&fit=crop', soundEffect: 'choo', imagePath: 'train.webp' },
-        { en: 'Bus', ar: 'حافلة', img: '🚌', realImg: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=300&auto=format&fit=crop', soundEffect: 'horn', imagePath: 'bus.webp' },
-        { en: 'Rocket', ar: 'صاروخ', img: '🚀', realImg: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?w=300&auto=format&fit=crop', soundEffect: 'blast', imagePath: 'rocket.webp' },
-        { en: 'Bicycle', ar: 'دراجة', img: '🚲', realImg: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=300&auto=format&fit=crop', soundEffect: 'bell' }
+        { en: 'Car', ar: 'سيارة', img: '🚗', realImg: 'https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?w=300&auto=format&fit=crop', imagePath: 'car.webp' },
+        { en: 'Airplane', ar: 'طائرة', img: '✈️', realImg: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=300&auto=format&fit=crop', imagePath: 'airplane.webp' },
+        { en: 'Train', ar: 'قطار', img: '🚂', realImg: 'https://images.unsplash.com/photo-1474487548417-781cb71495f3?w=300&auto=format&fit=crop', imagePath: 'train.webp' },
+        { en: 'Bus', ar: 'حافلة', img: '🚌', realImg: 'https://images.unsplash.com/photo-1570125909232-eb263c188f7e?w=300&auto=format&fit=crop', imagePath: 'bus.webp' },
+        { en: 'Rocket', ar: 'صاروخ', img: '🚀', realImg: 'https://images.unsplash.com/photo-1517976487492-5750f3195933?w=300&auto=format&fit=crop', imagePath: 'rocket.webp' },
+        { en: 'Bicycle', ar: 'دراجة', img: '🚲', realImg: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?w=300&auto=format&fit=crop' }
       ]
     },
     {
@@ -518,16 +518,16 @@ export class DataService {
       title: 'الألوان (Colors)',
       icon: '🎨',
       items: [
-        { en: 'Red', ar: 'أحمر', img: '🔴', realImg: 'https://images.unsplash.com/photo-1531315630201-bb15abeb1653?w=300&auto=format&fit=crop' },
-        { en: 'Blue', ar: 'أزرق', img: '🔵', realImg: 'https://images.unsplash.com/photo-1557672172-298e090bd0f1?w=300&auto=format&fit=crop' },
-        { en: 'Green', ar: 'أخضر', img: '🟢', realImg: 'https://images.unsplash.com/photo-1532453288672-3a27e9be9efd?w=300&auto=format&fit=crop' },
-        { en: 'Yellow', ar: 'أصفر', img: '🟡', realImg: 'https://images.unsplash.com/photo-1550684848-fac1c5b4e853?w=300&auto=format&fit=crop', imagePath: 'yellow.webp' },
-        { en: 'Orange', ar: 'برتقالي', img: '🟠', realImg: 'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=300&auto=format&fit=crop', imagePath: 'orange.webp' },
-        { en: 'Purple', ar: 'بنفسجي', img: '🟣', realImg: 'https://images.unsplash.com/photo-1552084117-56a98a414520?w=300&auto=format&fit=crop' },
-        { en: 'Pink', ar: 'وردي', img: '🌸', realImg: 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?w=300&auto=format&fit=crop' },
-        { en: 'Black', ar: 'أسود', img: '⚫', realImg: 'https://images.unsplash.com/photo-1505909182942-e2f09aee3e89?w=300&auto=format&fit=crop' },
-        { en: 'White', ar: 'أبيض', img: '⚪', realImg: 'https://images.unsplash.com/photo-1516382722697-e01124c1e459?w=300&auto=format&fit=crop' },
-        { en: 'Brown', ar: 'بني', img: '🟤', realImg: 'https://images.unsplash.com/photo-1550508122-d7b102875f60?w=300&auto=format&fit=crop' }
+        { en: 'Red', ar: 'أحمر', img: '🔴', imagePath: 'red_color.webp' },
+        { en: 'Blue', ar: 'أزرق', img: '🔵', imagePath: 'blue_color.webp' },
+        { en: 'Green', ar: 'أخضر', img: '🟢', imagePath: 'green_color.webp' },
+        { en: 'Yellow', ar: 'أصفر', img: '🟡', imagePath: 'yellow_color.webp' },
+        { en: 'Orange', ar: 'برتقالي', img: '🟠', imagePath: 'orange_color.webp' },
+        { en: 'Purple', ar: 'بنفسجي', img: '🟣', imagePath: 'purple_color.webp' },
+        { en: 'Pink', ar: 'وردي', img: '🌸', imagePath: 'pink_color.webp' },
+        { en: 'Black', ar: 'أسود', img: '⚫', imagePath: 'black_color.webp' },
+        { en: 'White', ar: 'أبيض', img: '⚪', imagePath: 'white_color.webp' },
+        { en: 'Brown', ar: 'بني', img: '🟤', imagePath: 'brown_color.webp' }
       ]
     },
     {

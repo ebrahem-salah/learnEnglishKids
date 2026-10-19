@@ -127,6 +127,35 @@ export class AudioService {
 
       let currentTimer: any = null;
 
+      const done = () => {
+        if (currentTimer) clearTimeout(currentTimer);
+        if (this.activeAudio) this.activeAudio = null;
+        resolve();
+      };
+
+      const speakWithTTS = () => {
+        if (token !== this.playToken) { done(); return; }
+        if (!('speechSynthesis' in window)) { done(); return; }
+        try {
+          const u = new SpeechSynthesisUtterance(text);
+          u.lang = lang;
+          const voice = this.getBestVoice(lang);
+          if (voice) u.voice = voice;
+          u.rate = tl === 'en' && this.slow() ? 0.85 : 1.0;
+          u.onend = () => done();
+          u.onerror = () => done();
+          speechSynthesis.speak(u);
+          currentTimer = setTimeout(done, 10000);
+        } catch {
+          done();
+        }
+      };
+
+      if (!cleanWord) {
+        speakWithTTS();
+        return;
+      }
+
       const tryPlayUrl = (src: string) => {
         if (token !== this.playToken) {
           resolve();
@@ -142,7 +171,7 @@ export class AudioService {
         }
 
         let resolved = false;
-        const done = () => {
+        const finish = () => {
           if (currentTimer) clearTimeout(currentTimer);
           if (!resolved) { 
             resolved = true; 
@@ -151,14 +180,14 @@ export class AudioService {
           }
         };
 
-        audio.onended = () => done();
-        audio.onerror = () => done();
+        audio.onended = () => finish();
+        audio.onerror = () => speakWithTTS();
 
         if (token === this.playToken) {
-          audio.play().catch(() => done());
-          currentTimer = setTimeout(done, 20000);
+          audio.play().catch(() => speakWithTTS());
+          currentTimer = setTimeout(finish, 20000);
         } else {
-          done();
+          finish();
         }
       };
 
