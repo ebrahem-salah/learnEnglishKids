@@ -31,7 +31,7 @@ export interface LessonQuizQuestion {
 @Component({
   selector: 'app-lessons',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   template: `
     <div class="max-w-6xl mx-auto px-4 py-4" dir="rtl">
       
@@ -41,7 +41,7 @@ export interface LessonQuizQuestion {
         <div class="flex flex-col md:flex-row items-center justify-between gap-6 relative z-10">
           <div class="text-right">
             <span class="inline-block bg-yellow-400 text-yellow-950 font-black px-4 py-1.5 rounded-full text-sm mb-3 shadow">
-              🎓 كورس إتقان الحروف والكلمات (نظام إبراهيم عادل)
+              🎓 كورس إتقان الحروف والكلمات | Learn with Younis 🌟
             </span>
             <h1 class="text-3xl md:text-5xl font-black mb-2 flex items-center gap-3">
               <span>مسار التعلّم والاختبارات التفاعلية</span>
@@ -180,12 +180,20 @@ export interface LessonQuizQuestion {
                    target="_blank" 
                    class="bg-red-600 hover:bg-red-700 text-white px-5 py-2.5 rounded-2xl font-black text-sm shadow-md inline-flex items-center gap-2 hover:scale-105 transition-all">
                   <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
-                  <span>مشاهدة الدرس على YouTube</span>
+                  <span>🇪🇬 الدرس بالعربي</span>
                 </a>
-                <a href="https://www.youtube.com/playlist?list=PLFPFQjPxfbLM" 
+                @if (youtubeVideosEn[lesson.letter]) {
+                  <a [href]="'https://www.youtube.com/watch?v=' + youtubeVideosEn[lesson.letter]" 
+                     target="_blank" 
+                     class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-2xl font-black text-sm shadow-md inline-flex items-center gap-2 hover:scale-105 transition-all">
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                    <span>🇬🇧 الدرس بالإنجليزي</span>
+                  </a>
+                }
+                <a href="https://www.youtube.com/@learnwithyounistv" 
                    target="_blank" 
                    class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2.5 rounded-2xl font-black text-sm shadow-md inline-flex items-center gap-2 hover:scale-105 transition-all">
-                  <span>📑 قائمة كورس الحروف كاملة (A - Z)</span>
+                  <span>📺 قناة Learn with Younis على YouTube</span>
                 </a>
               </div>
 
@@ -454,7 +462,7 @@ export class LessonsComponent {
   currentLesson = signal<AlphabetItem | null>(null);
   activeTab = signal<'watch' | 'quiz'>('watch');
 
-  // Video YouTube map (safe educational videos for each letter)
+  // Video YouTube map - Arabic channel (القناة القديمة - كل الحروف A-Z)
   readonly youtubeVideos: Record<string, string> = {
     'A': 'klEWhdbPTQ8',
     'B': 'WH9RqOKrtvw',
@@ -482,6 +490,14 @@ export class LessonsComponent {
     'X': '0owe66BkZ7Q',
     'Y': '_DYMCluBVdw',
     'Z': 'MnktJOheQDI'
+  };
+
+  // Video YouTube map - English channel (@learnwithyounistv)
+  readonly youtubeVideosEn: Record<string, string> = {
+    'A': 'Ytx1oTbPT8A',
+    'B': 'bDLMa0njMV0',
+    'C': 't5edKtCvt-A',
+    'D': 'Bqbg71YjFFg'
   };
 
   videoUrl = computed<SafeResourceUrl | null>(() => {
